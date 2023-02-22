@@ -1,5 +1,17 @@
 *.class
 *.log
+target/*
+.bloop/*
+.bsp/*
+.metals/*
+.vscode/*
+null/*
+.scalafix.conf
+.scalafmt.conf
+project/.bloop/*
+project/project/*
+project/target/*
+project/metals.sbt
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*

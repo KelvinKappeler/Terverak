@@ -2,6 +2,7 @@ package epfl
 
 import indigo.*
 import indigo.scenes.*
+
 import scala.scalajs.js.annotation.JSExportTopLevel
 
 @JSExportTopLevel("IndigoGame")
