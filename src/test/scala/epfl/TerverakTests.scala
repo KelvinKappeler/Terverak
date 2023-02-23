@@ -1,4 +1,4 @@
-package epfl
+package terverak
 
 class TerverakTests extends munit.FunSuite {
 

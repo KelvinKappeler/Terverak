@@ -1,4 +1,4 @@
-package epfl
+package terverak
 
 import indigo.*
 import indigo.scenes.*
