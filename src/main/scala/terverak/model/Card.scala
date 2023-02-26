@@ -31,6 +31,15 @@ object Cards {
     ) extends Card {
         require(damage >= 0, "Damage must be equal or greater than 0")
         require(life >= 1, "Life must be equal or greater than 1")
+
+        /**
+          * Converts the minion card to a minion.
+          *
+          * @return The minion.
+          */
+        def toMinion: Minion = {
+            Minion(name, life, life, damage)
+        }
     }
 
     final case class SpellCard (
