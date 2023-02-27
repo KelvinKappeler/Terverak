@@ -18,7 +18,7 @@ final case class Deck(cards: List[Card]) {
       * @return the new deck.
       */
     def addCard(card: Card): Deck = {
-        Deck(card :: cards)
+      copy(cards = card :: cards)
     } ensuring(_.cards.length == cards.length + 1, "Deck length must be increased by 1")
 
     /**
@@ -27,7 +27,7 @@ final case class Deck(cards: List[Card]) {
       * @return the new deck.
       */
     def addCards(cards: List[Card]): Deck = {
-        Deck(cards ::: this.cards)
+      copy(cards = cards ::: this.cards)
     } ensuring(_.cards.length == this.cards.length + cards.length, "Deck length must be increased by the number of cards added")
 
     /**
@@ -35,9 +35,9 @@ final case class Deck(cards: List[Card]) {
      * @return the new deck and the removed card as a tuple.
      */
     def removeTopCard(): (Deck, Card) = {
-        require(cards.nonEmpty, "Deck must not be empty")
+      require(cards.nonEmpty, "Deck must not be empty")
 
-        (Deck(cards.tail), cards.head)
+      (copy(cards = cards.tail), cards.head)
     } ensuring(_._1.cards.length == cards.length - 1, "Deck length must be decreased by 1")
 
     /**
@@ -45,6 +45,6 @@ final case class Deck(cards: List[Card]) {
      * @return the shuffled deck.
      */
     def shuffle(): Deck = {
-        Deck(scala.util.Random.shuffle(cards))
+      copy(cards = scala.util.Random.shuffle(cards))
     }
 }

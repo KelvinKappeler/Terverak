@@ -13,7 +13,7 @@ trait CardEffect {
   /**
     * Activates the effect of the card
     */
-  def activateEffect(): Unit
+  def activateEffect(game: Game): Unit
 }
 
 object CardEffects {
@@ -27,7 +27,7 @@ object CardEffects {
   ) extends CardEffect {
     require(amount >= 0, "Healing amount must be equal or greater than 0")
 
-    override def activateEffect(): Unit = {
+    override def activateEffect(game: Game): Unit = {
       ???
     }
   }
@@ -41,7 +41,7 @@ object CardEffects {
   ) extends CardEffect {
     require(amount >= 0, "Damage amount must be equal or greater than 0")
 
-    override def activateEffect(): Unit = {
+    override def activateEffect(game: Game): Unit = {
       ???
     }
   }

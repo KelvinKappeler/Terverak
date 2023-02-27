@@ -23,8 +23,8 @@ final case class Hand(cards: List[Card]) {
       * @return the new hand.
       */
     def addCard(card: Card): Hand = {
-        require(cards.length < MaxHandSize, "Hand must not be full")
-        Hand(card :: cards)
+      require(cards.length < MaxHandSize, "Hand must not be full")
+      copy(cards = card :: cards)
     } ensuring(_.cards.length == cards.length + 1, "Hand length must be increased by 1")
 
     /**
@@ -33,16 +33,16 @@ final case class Hand(cards: List[Card]) {
       * @return the new hand.
       */
     def removeCard(card: Card): Hand = {
-        require(cards.length > 0, "Hand must not be empty")
-        require(cards.contains(card), "Hand must contain the card to remove")
+      require(cards.length > 0, "Hand must not be empty")
+      require(cards.contains(card), "Hand must contain the card to remove")
 
-        def removeCardRec(cards: List[Card]): List[Card] = {
-            cards match {
-                case head :: tail => if (head == card) tail else removeCardRec(tail)
-                case Nil => cards
-            }
+      def removeCardRec(cards: List[Card]): List[Card] = {
+        cards match {
+          case head :: tail => if (head == card) tail else head :: removeCardRec(tail)
+          case Nil => cards
         }
+      }
 
-        Hand(removeCardRec(cards))
+      copy(cards = removeCardRec(cards))
     } ensuring(_.cards.length == cards.length - 1, "Hand length must be decreased by 1")
 }

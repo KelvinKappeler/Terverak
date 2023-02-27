@@ -6,12 +6,18 @@
 
 package terverak.model
 
-import terverak.model.Cards.*
-
 /**
   * A player.
   */
-final case class Player(name: String, maxHealthPoints: Int, healthPoints: Int, mana: Int, deck: Deck, hand: Hand, minions: List[Minion]) {
+final case class Player(
+  name: String,
+  maxHealthPoints: Int,
+  healthPoints: Int,
+  mana: Int,
+  deck: Deck,
+  hand: Hand,
+  minionBoard: MinionBoard
+) {
 
   /**
     * Takes damage for the player.
@@ -20,7 +26,6 @@ final case class Player(name: String, maxHealthPoints: Int, healthPoints: Int, m
     */
   def takeDamage(amount: Int): Player = {
     require(amount >= 0, "Damage amount must be equal or greater than 0")
-    require(healthPoints - amount >= 0, "Player must not die")
 
     copy(healthPoints = healthPoints - amount)
   } ensuring(_.healthPoints == healthPoints - amount, "Player health points must be decreased by the damage amount")
@@ -57,7 +62,7 @@ final case class Player(name: String, maxHealthPoints: Int, healthPoints: Int, m
   def drawCards(amount: Int): Player = {
     require(amount >= 0, "Draw amount must be equal or greater than 0")
     //TODO: Need to define what to do when the deck is empty
-    if amount == 0 || deck.cards.length == 0 then
+    if (amount == 0 || deck.cards.length == 0) then
       this
     else
       val (newDeck, drawnCard) = deck.removeTopCard()
@@ -67,14 +72,14 @@ final case class Player(name: String, maxHealthPoints: Int, healthPoints: Int, m
   /**
     * Discards a card from the hand.
     * @param card the card to discard.
-    * @return the new player and the effects of the discarded card.
+    * @return the new player
     */
-  def discardCard(card: Card): (Player, List[CardEffect]) = {
+  def discardCard(card: Card): Player = {
     require(hand.cards.contains(card), "Card must be in the hand")
 
     val newHand = hand.removeCard(card)
-    
-    (copy(hand = newHand), card.effectsWhenDiscard)
+
+    copy(hand = newHand)
   }
 
   /**
@@ -83,31 +88,21 @@ final case class Player(name: String, maxHealthPoints: Int, healthPoints: Int, m
     * @param card The card to play.
     * @return The new player and the effects of the played card.
     */
-  def playCard(card: Card): (Player, List[CardEffect]) = {
+  def playCard(card: Card): Player = {
     require(hand.cards.contains(card), "Card must be in the hand")
     require(mana >= card.manaCost, "Player must have enough mana to play the card")
 
     val newHand = hand.removeCard(card)
     val newMana = mana - card.manaCost
     
-    card match
-      case minionCard@MinionCard(name, _, effectsWhenPlayed, _, damage, life) => 
-        (copy(hand = newHand, mana = newMana), effectsWhenPlayed)
-      case SpellCard(_, _, effectsWhenPlayed, _) => 
-        (copy(hand = newHand, mana = newMana), effectsWhenPlayed)
-  }
-  
-  /**
-    * Remove all minions that have 0 or less health points.
-    * Need to call it after each turn.
-    * 
-    * @return The new player.
-    */
-  def removeDeadMinions(): Player = {
-    copy(minions = minions.filter(_.healthPoints > 0))
+    copy(hand = newHand, mana = newMana)
   }
 
   def startTurn(): Player = {
-    drawCards(1).removeDeadMinions()
+    drawCards(1)
+  }
+
+  def refresh(): Player = {
+    copy(minionBoard = minionBoard.refresh())
   }
 }
