@@ -6,6 +6,13 @@
 
 package terverak.model
 
+/**
+  * A game of Terverak.
+  *
+  * @param currentPlayer
+  * @param waitingPlayer
+  * @param winner
+  */
 final case class Game(currentPlayer: Player, waitingPlayer: Player, winner: Option[Player] = None) {
   
   def startTurn(): Game = {

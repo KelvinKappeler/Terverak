@@ -19,8 +19,8 @@ final case class Hand(cards: List[Card]) {
 
     /**
       * Adds a card to the hand.
-      * @param card The card to add.
-      * @return The new hand.
+      * @param card the card to add.
+      * @return the new hand.
       */
     def addCard(card: Card): Hand = {
         require(cards.length < MaxHandSize, "Hand must not be full")
@@ -29,8 +29,8 @@ final case class Hand(cards: List[Card]) {
 
     /**
       * Removes a specific card from the hand.
-      * @param card The card to remove.
-      * @return The new hand.
+      * @param card the card to remove.
+      * @return the new hand.
       */
     def removeCard(card: Card): Hand = {
         require(cards.length > 0, "Hand must not be empty")

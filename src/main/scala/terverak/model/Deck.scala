@@ -8,14 +8,14 @@ package terverak.model
 
 /**
   * A deck of cards.
-  * @param cards The cards in the deck.
+  * @param cards the cards in the deck.
   */
 final case class Deck(cards: List[Card]) {
 
     /**
       * Adds a card to the deck.
-      * @param card The card to add.
-      * @return The new deck.
+      * @param card the card to add.
+      * @return the new deck.
       */
     def addCard(card: Card): Deck = {
         Deck(card :: cards)
@@ -23,8 +23,8 @@ final case class Deck(cards: List[Card]) {
 
     /**
       * Adds a list of cards to the deck.
-      * @param cards The cards to add.
-      * @return The new deck.
+      * @param cards the cards to add.
+      * @return the new deck.
       */
     def addCards(cards: List[Card]): Deck = {
         Deck(cards ::: this.cards)
@@ -32,7 +32,7 @@ final case class Deck(cards: List[Card]) {
 
     /**
      * Removes the top card from the deck.
-     * @return The new deck and the removed card as a tuple.
+     * @return the new deck and the removed card as a tuple.
      */
     def removeTopCard(): (Deck, Card) = {
         require(cards.nonEmpty, "Deck must not be empty")
@@ -42,7 +42,7 @@ final case class Deck(cards: List[Card]) {
 
     /**
      * Shuffles the deck.
-     * @return The shuffled deck.
+     * @return the shuffled deck.
      */
     def shuffle(): Deck = {
         Deck(scala.util.Random.shuffle(cards))

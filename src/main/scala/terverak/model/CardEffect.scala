@@ -6,30 +6,43 @@
 
 package terverak.model
 
+/**
+  * A card effect
+  */
 trait CardEffect {
-    def activateEffect(): Unit
+  /**
+    * Activates the effect of the card
+    */
+  def activateEffect(): Unit
 }
 
 object CardEffects {
 
-    final case class HealingEffect (
-        amount: Int = 0
-    ) extends CardEffect {
-        require(amount >= 0, "Healing amount must be equal or greater than 0")
+  /**
+  * A card effect that heals the hero.
+  * @param amount the amount of damage healed
+  */
+  final case class HealingHeroEffect (
+    amount: Int = 0
+  ) extends CardEffect {
+    require(amount >= 0, "Healing amount must be equal or greater than 0")
 
-        override def activateEffect(): Unit = {
-            ???
-        }
+    override def activateEffect(): Unit = {
+      ???
     }
+  }
 
-    final case class DamageEffect (
-        amount: Int = 0
-    ) extends CardEffect {
-        require(amount >= 0, "Damage amount must be equal or greater than 0")
+  /**
+  * A card effect that damages the hero.
+  * @param amount the amount of damage healed
+  */
+  final case class DamageHeroEffect (
+    amount: Int = 0
+  ) extends CardEffect {
+    require(amount >= 0, "Damage amount must be equal or greater than 0")
 
-        override def activateEffect(): Unit = {
-            ???
-        }
+    override def activateEffect(): Unit = {
+      ???
     }
-
+  }
 }
