@@ -6,11 +6,13 @@
 
 package terverak.model
 
+import stainless.collection.*
+
 /**
   * The board of the minions for a player.
   */
 final case class MinionBoard(minions: List[Minion]) {
-    
+
   /**
     * The maximum number of minions on the board.
     */
@@ -22,7 +24,7 @@ final case class MinionBoard(minions: List[Minion]) {
    * @return the new board.
    */
   def addMinion(minion: Minion): MinionBoard = {
-    require(minions.length < MaxMinionBoardSize, "Minion board must not be full")
+    require(minions.isize < MaxMinionBoardSize, "Minion board must not be full")
     copy(minions = minion :: minions)
   } ensuring(_.minions.length == minions.length + 1, "Minion board length must be increased by 1")
 

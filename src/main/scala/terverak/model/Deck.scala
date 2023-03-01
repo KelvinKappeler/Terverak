@@ -6,6 +6,8 @@
 
 package terverak.model
 
+import stainless.collection.*
+
 /**
   * A deck of cards.
   * @param cards the cards in the deck.
@@ -27,7 +29,7 @@ final case class Deck(cards: List[Card]) {
       * @return the new deck.
       */
     def addCards(cards: List[Card]): Deck = {
-      copy(cards = cards ::: this.cards)
+      copy(cards = cards ++ this.cards)
     } ensuring(_.cards.length == this.cards.length + cards.length, "Deck length must be increased by the number of cards added")
 
     /**
@@ -44,7 +46,8 @@ final case class Deck(cards: List[Card]) {
      * Shuffles the deck.
      * @return the shuffled deck.
      */
+    @stainless.annotation.ignore
     def shuffle(): Deck = {
-      copy(cards = scala.util.Random.shuffle(cards))
+      copy(cards = List.fromScala(scala.util.Random.shuffle(cards.toScala)))
     }
 }

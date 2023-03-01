@@ -6,6 +6,8 @@
 
 package terverak.model
 
+import stainless.collection.*
+
 /**
   * A game of Terverak.
   * @param currentPlayer
@@ -13,7 +15,7 @@ package terverak.model
   * @param winner
   */
 final case class Game(currentPlayer: Player, waitingPlayer: Player) {
-  
+
   def startTurn(): Game = {
     val newPlayer = currentPlayer.startTurn()
     copy(currentPlayer = newPlayer)
@@ -33,10 +35,11 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
     * @return the new game
     */
   def discardCard(card: Card): Game = {
+    require(currentPlayer.hand.cards.contains(card))
     val newPlayer = currentPlayer.discardCard(card)
     val newGame = copy(currentPlayer = newPlayer)
 
-    card.effectsWhenDiscard.foreach(_.activateEffect(newGame))
+    // card.effectsWhenDiscard.foreach(_.activateEffect(newGame)) // TODO: foreach & side effects
     newGame.refresh();
   }
 
@@ -46,10 +49,12 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
     * @return the new game
     */
   def playCard(card: Card): Game = {
+    require(currentPlayer.hand.cards.contains(card))
+    require(currentPlayer.mana >= card.manaCost)
     val newPlayer = currentPlayer.playCard(card)
     val newGame = copy(currentPlayer = newPlayer)
 
-    card.effectsWhenPlayed.foreach(_.activateEffect(newGame))
+    // card.effectsWhenPlayed.foreach(_.activateEffect(newGame)) // TODO: foreach & side effects
     newGame.refresh();
   }
 }

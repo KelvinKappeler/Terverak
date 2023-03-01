@@ -3,8 +3,10 @@
 // Kelvin Kappeler & Bastien Jolidon
 // Bachelor Project EPFL, 2023
 // =======================================
-    
+
 package terverak.model
+
+import stainless.collection.*
 
 /**
   * A hand of cards.
@@ -23,7 +25,7 @@ final case class Hand(cards: List[Card]) {
       * @return the new hand.
       */
     def addCard(card: Card): Hand = {
-      require(cards.length < MaxHandSize, "Hand must not be full")
+      require(cards.isize < MaxHandSize, "Hand must not be full")
       copy(cards = card :: cards)
     } ensuring(_.cards.length == cards.length + 1, "Hand length must be increased by 1")
 
@@ -38,8 +40,8 @@ final case class Hand(cards: List[Card]) {
 
       def removeCardRec(cards: List[Card]): List[Card] = {
         cards match {
-          case head :: tail => if (head == card) tail else head :: removeCardRec(tail)
-          case Nil => cards
+          case Cons(head, tail) => if (head == card) tail else head :: removeCardRec(tail)
+          case Nil() => cards
         }
       }
 

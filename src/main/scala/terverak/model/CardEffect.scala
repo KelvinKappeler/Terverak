@@ -6,6 +6,8 @@
 
 package terverak.model
 
+import stainless.collection.*
+
 /**
   * A card effect
   */

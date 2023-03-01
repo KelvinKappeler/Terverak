@@ -6,6 +6,8 @@
 
 package terverak.model
 
+import stainless.collection.*
+
 /**
   * A player.
   */
@@ -27,8 +29,8 @@ final case class Player(
   def takeDamage(amount: Int): Player = {
     require(amount >= 0, "Damage amount must be equal or greater than 0")
 
-    copy(healthPoints = healthPoints - amount)
-  } ensuring(_.healthPoints == healthPoints - amount, "Player health points must be decreased by the damage amount")
+    copy(healthPoints = stainless.math.max(healthPoints - amount, 0))
+  } ensuring(_.healthPoints == stainless.math.max(healthPoints - amount, 0), "Player health points must be decreased by the damage amount")
 
   /**
     * Heals the player.
@@ -38,8 +40,8 @@ final case class Player(
   def heal(amount: Int): Player = {
     require(amount >= 0, "Healing amount must be equal or greater than 0")
 
-    copy(healthPoints = Math.min(healthPoints + amount, maxHealthPoints))
-  } ensuring(player => player.healthPoints == Math.min(healthPoints + amount, player.maxHealthPoints), "Player health points must be increased by the healing amount")
+    copy(healthPoints = stainless.math.min(healthPoints + amount, maxHealthPoints))
+  } ensuring(player => player.healthPoints == stainless.math.min(healthPoints + amount, player.maxHealthPoints), "Player health points must be increased by the healing amount")
 
   def addMana(amount: Int): Player = {
     require(amount >= 0, "Mana amount must be equal or greater than 0")
@@ -94,7 +96,7 @@ final case class Player(
 
     val newHand = hand.removeCard(card)
     val newMana = mana - card.manaCost
-    
+
     copy(hand = newHand, mana = newMana)
   }
 

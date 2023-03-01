@@ -15,3 +15,10 @@ project/metals.sbt
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# stainless a tendance a drop ses stacktrace par-ci et par là...
+stainless-stack-trace.txt
+# et de dump ça aussi
+.stainless-cache/
+# pour la plèbe qui utilise IntelliJ :p
+.idea/

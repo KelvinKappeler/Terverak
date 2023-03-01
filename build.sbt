@@ -24,6 +24,7 @@ lazy val mygame =
       scalafixOnCompile  := true,
       semanticdbEnabled  := true,
       semanticdbVersion  := scalafixSemanticdb.revision,
+//      unmanagedBase := baseDirectory.value / "unmanaged"
     )
     .settings( // Indigo specific settings
       showCursor            := true,
