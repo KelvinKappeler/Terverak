@@ -2,6 +2,7 @@ package terverak
 
 import indigo.*
 import indigo.scenes.*
+import terverak.init.GameAssets
 
 import scala.scalajs.js.annotation.JSExportTopLevel
 
@@ -9,7 +10,7 @@ import scala.scalajs.js.annotation.JSExportTopLevel
 object Terverak extends IndigoGame[Unit, Unit, Unit, Unit]:
 
   def initialScene(bootData: Unit): Option[SceneName] =
-    None
+    Option(GameScene.name)
 
   def scenes(bootData: Unit): NonEmptyList[Scene[Unit, Unit, Unit]] =
     NonEmptyList(GameScene)
@@ -18,12 +19,13 @@ object Terverak extends IndigoGame[Unit, Unit, Unit, Unit]:
     EventFilters.Permissive
 
   def boot(flags: Map[String, String]): Outcome[BootResult[Unit]] =
-    Outcome(
+    Outcome {
+      val assetPath: String = flags.getOrElse("baseUrl", "")
+      
       BootResult.noData(
-        GameConfig.default
-          .withViewport(550, 400)
-      )
-    )
+        GameConfig.default.withViewport(550, 400).withMagnification(5)
+      ).withAssets(GameAssets.assets(assetPath))
+    }
 
   def initialModel(startupData: Unit): Outcome[Unit] =
     Outcome(())

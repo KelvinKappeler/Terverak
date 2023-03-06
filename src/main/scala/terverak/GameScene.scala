@@ -2,14 +2,14 @@ package terverak
 
 import indigo.*
 import indigo.scenes.*
+import terverak.init.GameAssets
 
 object GameScene extends Scene[Unit, Unit, Unit]:
 
   type SceneModel     = Unit
   type SceneViewModel = Unit
 
-  val name: SceneName =
-    SceneName("game")
+  val name: SceneName = SceneName("game")
 
   val modelLens: Lens[Unit, Unit] =
     Lens.keepLatest
@@ -43,13 +43,14 @@ object GameScene extends Scene[Unit, Unit, Unit]:
   ): Outcome[SceneUpdateFragment] =
     Outcome(
       SceneUpdateFragment(
+        GameAssets.batoCard().moveTo(30, 30),
         Shape
           .Box(
             Rectangle(0, 0, 60, 60),
             Fill.LinearGradient(Point(0), RGBA.Magenta, Point(45), RGBA.Cyan)
           )
-          .withRef(30, 30)
-          .moveTo(100, 100)
+          .withRef(0, 0)
+          .moveTo(30, 30)
           .rotateTo(Radians.fromSeconds(context.running * 0.25))
       )
     )
