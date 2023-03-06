@@ -6,11 +6,14 @@
 
 package terverak.model
 
+import indigo.AssetName
+
 /**
   * A card.
   */
 sealed trait Card {
   def name: String
+  def imageName: AssetName
   def manaCost: Int
   def effectsWhenPlayed: List[CardEffect]
   def effectsWhenDiscard: List[CardEffect]
@@ -26,6 +29,7 @@ object Cards {
     */
   final case class MinionCard (
     name: String = "Unknown",
+    imageName: AssetName,
     manaCost: Int = 1,
     effectsWhenPlayed: List[CardEffect] = Nil,
     effectsWhenDiscard: List[CardEffect] = Nil,
@@ -38,6 +42,7 @@ object Cards {
 
   final case class SpellCard (
     name: String = "Unknown",
+    imageName: AssetName,
     manaCost: Int = 1,
     effectsWhenPlayed: List[CardEffect] = Nil,
     effectsWhenDiscard: List[CardEffect] = Nil

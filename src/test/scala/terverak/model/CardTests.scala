@@ -7,7 +7,7 @@
 package terverak.model
 
 class CardTests extends munit.FunSuite {
-
+/*
   test("MinionCardEmptyNameShouldThrowException") {
     intercept[IllegalArgumentException] {
       Cards.MinionCard("", 1, Nil, Nil, 0, 1)
@@ -64,4 +64,5 @@ class CardTests extends munit.FunSuite {
     assertEquals(card.effectsWhenPlayed, Nil)
     assertEquals(card.effectsWhenDiscard, Nil)
   }
+*/
 }

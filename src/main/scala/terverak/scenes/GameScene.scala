@@ -1,8 +1,9 @@
-package terverak
+package terverak.scenes
 
 import indigo.*
 import indigo.scenes.*
-import terverak.init.GameAssets
+import terverak.init.*
+import terverak.view.*
 
 object GameScene extends Scene[Unit, Unit, Unit]:
 
@@ -42,15 +43,8 @@ object GameScene extends Scene[Unit, Unit, Unit]:
       viewModel: Unit
   ): Outcome[SceneUpdateFragment] =
     Outcome(
-      SceneUpdateFragment(
-        GameAssets.batoCard().moveTo(30, 30),
-        Shape
-          .Box(
-            Rectangle(0, 0, 60, 60),
-            Fill.LinearGradient(Point(0), RGBA.Magenta, Point(45), RGBA.Cyan)
-          )
-          .withRef(0, 0)
-          .moveTo(30, 30)
-          .rotateTo(Radians.fromSeconds(context.running * 0.25))
+      SceneUpdateFragment.empty.addLayer(
+        Layer(BindingKey("game"),
+          CardView.drawCard(CardsData.bato, 0, 0))
       )
     )

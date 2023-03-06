@@ -8,17 +8,19 @@ package terverak.init
 
 import indigo.*
 
+/**
+  * The assets of the game.
+  */
 object GameAssets {
   
-  val batoTexture: AssetName = AssetName("batoCard")
-  val batoMaterial: Material.Bitmap = Material.Bitmap(batoTexture)
+  val bato: AssetName = AssetName("batoCard")
 
-  def batoCard(): Graphic[Material.Bitmap] =
-    Graphic(0, 0, 32, 64, 1, batoMaterial)
+  //def batoCard(): Graphic[Material.Bitmap] =
+  //  Graphic(0, 0, 32, 64, 1, Material.Bitmap(bato))
 
-  def assets(baseUrl: String): Set[AssetType] =
+  val assets: Set[AssetType] =
     Set(
-      AssetType.Image(batoTexture, AssetPath(baseUrl + "assets/ExampleCard.png")),
+      AssetType.Image(bato, AssetPath("assets/ExampleCard.png")),
     )
 
 }

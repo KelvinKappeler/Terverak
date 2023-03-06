@@ -2,7 +2,9 @@ package terverak
 
 import indigo.*
 import indigo.scenes.*
-import terverak.init.GameAssets
+import terverak.init.*
+import terverak.scenes.GameScene
+import terverak.scenes.*
 
 import scala.scalajs.js.annotation.JSExportTopLevel
 
@@ -24,7 +26,7 @@ object Terverak extends IndigoGame[Unit, Unit, Unit, Unit]:
       
       BootResult.noData(
         GameConfig.default.withViewport(550, 400).withMagnification(5)
-      ).withAssets(GameAssets.assets(assetPath))
+      ).withAssets(GameAssets.assets)
     }
 
   def initialModel(startupData: Unit): Outcome[Unit] =
