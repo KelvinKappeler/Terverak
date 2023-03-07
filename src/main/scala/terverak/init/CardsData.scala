@@ -18,6 +18,6 @@ object CardsData {
       bato,
     )
 
-  val bato: Cards.MinionCard = Cards.MinionCard("Bato", GameAssets.bato, 1, List(CardEffects.DamageHeroEffect(3)), Nil, 2, 3)
+  val bato: Cards.MinionCard = Cards.MinionCard("Bato", GameAssets.Cards.bato, 1, List(CardEffects.DamageHeroEffect(3)), Nil, 2, 3)
 
 }

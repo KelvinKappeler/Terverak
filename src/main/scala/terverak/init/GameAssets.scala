@@ -13,14 +13,38 @@ import indigo.*
   */
 object GameAssets {
   
-  val bato: AssetName = AssetName("batoCard")
-
-  //def batoCard(): Graphic[Material.Bitmap] =
-  //  Graphic(0, 0, 32, 64, 1, Material.Bitmap(bato))
-
   val assets: Set[AssetType] =
-    Set(
-      AssetType.Image(bato, AssetPath("assets/ExampleCard.png")),
-    )
+    Cards.assets ++ Fonts.assets
 
+  /**
+    * Cards assets.
+    */
+  object Cards {
+
+    val bato: AssetName = AssetName("batoCard")
+
+    val assets: Set[AssetType] =
+      Set(
+        AssetType.Image(bato, AssetPath("assets/ExampleCard.png")),
+      )
+  }
+
+  /**
+    * Fonts assets.
+    */
+  object Fonts {
+    private val numbersFontName: AssetName = AssetName("NumbersFont")
+    val fontKey: FontKey = FontKey("NumbersFont")
+    val fontMaterial: Material.ImageEffects = Material.ImageEffects(numbersFontName)
+
+    def fontInfo: FontInfo =
+      FontInfo(fontKey, 160, 16, FontChar("0", 0, 0, 16, 16))
+        .addChar(FontChar("0", 0, 0, 16, 16))
+        .addChar(FontChar("1", 16, 0, 16, 16))
+
+    val assets: Set[AssetType] =
+      Set(
+        AssetType.Image(Fonts.numbersFontName, AssetPath("assets/font_numbers.png")),
+      )
+  }
 }

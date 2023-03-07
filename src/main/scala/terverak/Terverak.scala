@@ -26,7 +26,7 @@ object Terverak extends IndigoGame[Unit, Unit, Unit, Unit]:
       
       BootResult.noData(
         GameConfig.default.withViewport(550, 400).withMagnification(5)
-      ).withAssets(GameAssets.assets)
+      ).withAssets(GameAssets.assets).withFonts(GameAssets.Fonts.fontInfo)
     }
 
   def initialModel(startupData: Unit): Outcome[Unit] =
