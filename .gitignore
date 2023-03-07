@@ -6,8 +6,6 @@ target/*
 .metals/*
 .vscode/*
 null/*
-.scalafix.conf
-.scalafmt.conf
 project/.bloop/*
 project/project/*
 project/target/*
