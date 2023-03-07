@@ -41,6 +41,14 @@ object GameAssets {
       FontInfo(fontKey, 160, 16, FontChar("0", 0, 0, 16, 16))
         .addChar(FontChar("0", 0, 0, 16, 16))
         .addChar(FontChar("1", 16, 0, 16, 16))
+        .addChar(FontChar("2", 32, 0, 16, 16))
+        .addChar(FontChar("3", 48, 0, 16, 16))
+        .addChar(FontChar("4", 64, 0, 16, 16))
+        .addChar(FontChar("5", 80, 0, 16, 16))
+        .addChar(FontChar("6", 96, 0, 16, 16))
+        .addChar(FontChar("7", 112, 0, 16, 16))
+        .addChar(FontChar("8", 128, 0, 16, 16))
+        .addChar(FontChar("9", 144, 0, 16, 16))
 
     val assets: Set[AssetType] =
       Set(

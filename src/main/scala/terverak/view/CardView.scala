@@ -22,11 +22,15 @@ object CardView {
     * @return the batch of the card
     */
   def drawCard(card: Card, x: Int, y: Int): Batch[SceneNode] = {
-    val batch: Batch[Graphic[_]] = Batch(Graphic(0, 0, 32, 64, 1, Material.Bitmap(card.imageName)).moveTo(x, y))
+    val batch: Batch[Graphic[_]] = Batch(Graphic(x, y, 32, 64, 1, Material.Bitmap(card.imageName)))
 
     card match {
       case Cards.MinionCard(_, _, _, _, _, damage, life) =>
-        batch ++ Batch(Text("101", 0, 0, 2, GameAssets.Fonts.fontKey, GameAssets.Fonts.fontMaterial.withTint(RGBA.Red)).moveTo(x, y))
+        batch
+          ++ Batch(Text(damage.toString(), x, y + 58, 2, GameAssets.Fonts.fontKey, GameAssets.Fonts.fontMaterial.withTint(RGBA.Yellow)),
+            Text(life.toString(), x + 28, y + 58, 2, GameAssets.Fonts.fontKey, GameAssets.Fonts.fontMaterial.withTint(RGBA.Red)))
+          ++ Batch(Shape.Box(Rectangle(x, y + 58, 8, 8), Fill.Color(RGBA.Teal)).withDepth(Depth(1)),
+            Shape.Box(Rectangle(x + 28, y + 58, 8, 8), Fill.Color(RGBA.Teal)).withDepth(Depth(1)))
       case _ =>
         batch
     }

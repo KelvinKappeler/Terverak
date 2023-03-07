@@ -44,7 +44,7 @@ object GameScene extends Scene[Unit, Unit, Unit]:
   ): Outcome[SceneUpdateFragment] =
     Outcome(
       SceneUpdateFragment.empty.addLayer(
-        Layer(BindingKey("ui"),
+        Layer(BindingKey("game"),
           CardView.drawCard(CardsData.bato, 0, 0)
         )
       )
