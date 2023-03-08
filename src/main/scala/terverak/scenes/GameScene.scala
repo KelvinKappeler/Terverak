@@ -45,7 +45,7 @@ object GameScene extends Scene[Unit, Unit, Unit]:
     Outcome(
       SceneUpdateFragment.empty.addLayer(
         Layer(BindingKey("game"),
-          CardView.drawCard(CardsData.bato, 0, 0)
+          CardView.drawCard(CardsData.bato, 10, 0)
         )
       )
     )
