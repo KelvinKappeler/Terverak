@@ -1,3 +1,9 @@
+// =======================================
+// Terverak -> GameScene.scala
+// Kelvin Kappeler & Bastien Jolidon
+// Bachelor Project EPFL, 2023
+// =======================================
+  
 package terverak.scenes
 
 import indigo.*
@@ -30,14 +36,16 @@ object GameScene extends Scene[Unit, Unit, Unit]:
       context: SceneContext[Unit],
       model: Unit
   ): GlobalEvent => Outcome[Unit] =
-    _ => Outcome(model)
+    case _ => Outcome(model)
 
   def updateViewModel(
       context: SceneContext[Unit],
       model: Unit,
       viewModel: Unit
   ): GlobalEvent => Outcome[Unit] =
-    _ => Outcome(viewModel)
+    case _ => Outcome(viewModel)
+
+  val zicTEST = ZoomInfoCard(true, CardsData.bato)
 
   def present(
       context: SceneContext[Unit],
@@ -47,12 +55,12 @@ object GameScene extends Scene[Unit, Unit, Unit]:
     Outcome(
       SceneUpdateFragment.empty.addLayer(
         Layer(BindingKey("game"),
-          GameView.drawGame(
+          GameView.draw(
             Game(Player(
               "Kelvin",20,20,0,
               Deck(List(CardsData.bato, CardsData.bato)),
               Hand(List(CardsData.bato,CardsData.bato, CardsData.bato)), 
               MinionBoard(Nil)),
-                Player("Kelvin",20,20,0,Deck(List(CardsData.bato, CardsData.bato, CardsData.bato)), Hand(List(CardsData.bato,CardsData.bato, CardsData.bato)), MinionBoard(Nil))))))
+                Player("Kelvin",20,20,0,Deck(List(CardsData.bato, CardsData.bato, CardsData.bato)), Hand(List(CardsData.bato,CardsData.bato, CardsData.bato)), MinionBoard(Nil))))
+          ++ ZoomInfoCardView.draw(zicTEST)))
     )
-      

@@ -6,6 +6,12 @@
     
 package terverak.view
 
+// =======================================
+// Terverak -> CardView.scala
+// Kelvin Kappeler & Bastien Jolidon
+// Bachelor Project EPFL, 2023
+// =======================================
+  
 import indigo.*
 import terverak.init.*
 import terverak.model.*
@@ -17,11 +23,10 @@ object CardView {
   
   /**
     * Draws a card.
-    *
     * @param card the card to draw
     * @return the batch of the card
     */
-  def drawCard(card: Card, x: Int, y: Int): Batch[SceneNode] = {
+  def draw(card: Card, x: Int, y: Int): Batch[SceneNode] = {
     val batch: Batch[Graphic[_]] = Batch(Graphic(x, y, 32, 64, 1, Material.Bitmap(card.imageName)))
 
     card match {
