@@ -27,10 +27,10 @@ object CardView {
     card match {
       case Cards.MinionCard(_, _, _, _, _, damage, life) =>
         batch
-          ++ Batch(Text(damage.toString(), x, y + 58, 2, GameAssets.Fonts.fontKey, GameAssets.Fonts.fontMaterial.withTint(RGBA.Yellow)),
-            Text(life.toString(), x + 28, y + 58, 2, GameAssets.Fonts.fontKey, GameAssets.Fonts.fontMaterial.withTint(RGBA.Red)))
-          ++ Batch(Shape.Box(Rectangle(x, y + 58, 8, 8), Fill.Color(RGBA.Teal)).withDepth(Depth(1)),
-            Shape.Box(Rectangle(x + 28, y + 58, 8, 8), Fill.Color(RGBA.Teal)).withDepth(Depth(1)))
+          ++ Batch(Text(damage.toString(), x - 2, y + 56, 2, GameAssets.Fonts.fontKey8, GameAssets.Fonts.fontMaterial8.withTint(RGBA.Yellow)),
+            Text(life.toString(), x + 26, y + 56, 2, GameAssets.Fonts.fontKey8, GameAssets.Fonts.fontMaterial8.withTint(RGBA.Red)))
+          ++ Batch(Shape.Box(Rectangle(x - 2, y + 56, 8, 8), Fill.Color(RGBA.Teal)).withDepth(Depth(1)),
+            Shape.Box(Rectangle(x + 26, y + 56, 8, 8), Fill.Color(RGBA.Teal)).withDepth(Depth(1)))
       case _ =>
         batch
     }

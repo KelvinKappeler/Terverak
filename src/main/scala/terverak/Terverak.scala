@@ -3,7 +3,6 @@ package terverak
 import indigo.*
 import indigo.scenes.*
 import terverak.init.*
-import terverak.scenes.GameScene
 import terverak.scenes.*
 
 import scala.scalajs.js.annotation.JSExportTopLevel
@@ -27,7 +26,7 @@ object Terverak extends IndigoGame[Unit, Unit, Unit, Unit]:
       
       BootResult.noData(
         GameConfig.default.withViewport(550, 400).withMagnification(magnification)
-      ).withAssets(GameAssets.assets).withFonts(GameAssets.Fonts.fontInfo)
+      ).withAssets(GameAssets.assets).withFonts(GameAssets.Fonts.fontInfo16, GameAssets.Fonts.fontInfo8)
     }
 
   def initialModel(startupData: Unit): Outcome[Unit] =
