@@ -11,6 +11,7 @@ import scala.scalajs.js.annotation.JSExportTopLevel
 @JSExportTopLevel("IndigoGame")
 object Terverak extends IndigoGame[Unit, Unit, Unit, Unit]:
 
+  val magnification = 2
   def initialScene(bootData: Unit): Option[SceneName] =
     Option(GameScene.name)
 
@@ -25,7 +26,7 @@ object Terverak extends IndigoGame[Unit, Unit, Unit, Unit]:
       val assetPath: String = flags.getOrElse("baseUrl", "")
       
       BootResult.noData(
-        GameConfig.default.withViewport(550, 400).withMagnification(5)
+        GameConfig.default.withViewport(550, 400).withMagnification(magnification)
       ).withAssets(GameAssets.assets).withFonts(GameAssets.Fonts.fontInfo)
     }
 

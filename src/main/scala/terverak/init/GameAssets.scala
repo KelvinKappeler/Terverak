@@ -22,10 +22,12 @@ object GameAssets {
   object Cards {
 
     val bato: AssetName = AssetName("batoCard")
+    val cardBack: AssetName = AssetName("cardBack")
 
     val assets: Set[AssetType] =
       Set(
         AssetType.Image(bato, AssetPath("assets/ExampleCard.png")),
+        AssetType.Image(cardBack, AssetPath("assets/card_back.png"))
       )
   }
 

@@ -3,7 +3,9 @@ package terverak.scenes
 import indigo.*
 import indigo.scenes.*
 import terverak.init.*
+import terverak.model.*
 import terverak.view.*
+
 
 object GameScene extends Scene[Unit, Unit, Unit]:
 
@@ -45,7 +47,12 @@ object GameScene extends Scene[Unit, Unit, Unit]:
     Outcome(
       SceneUpdateFragment.empty.addLayer(
         Layer(BindingKey("game"),
-          CardView.drawCard(CardsData.bato, 0, 0)
-        )
-      )
+          GameView.drawGame(
+            Game(Player(
+              "Kelvin",20,20,0,
+              Deck(List(CardsData.bato, CardsData.bato)),
+              Hand(List(CardsData.bato,CardsData.bato, CardsData.bato)), 
+              MinionBoard(Nil)),
+                Player("Kelvin",20,20,0,Deck(List(CardsData.bato, CardsData.bato)), Hand(List(CardsData.bato,CardsData.bato, CardsData.bato)), MinionBoard(Nil))))))
     )
+      
