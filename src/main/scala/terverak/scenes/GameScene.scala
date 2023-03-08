@@ -53,6 +53,6 @@ object GameScene extends Scene[Unit, Unit, Unit]:
               Deck(List(CardsData.bato, CardsData.bato)),
               Hand(List(CardsData.bato,CardsData.bato, CardsData.bato)), 
               MinionBoard(Nil)),
-                Player("Kelvin",20,20,0,Deck(List(CardsData.bato, CardsData.bato)), Hand(List(CardsData.bato,CardsData.bato, CardsData.bato)), MinionBoard(Nil))))))
+                Player("Kelvin",20,20,0,Deck(List(CardsData.bato, CardsData.bato, CardsData.bato)), Hand(List(CardsData.bato,CardsData.bato, CardsData.bato)), MinionBoard(Nil))))))
     )
       

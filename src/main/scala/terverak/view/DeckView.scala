@@ -11,6 +11,6 @@ object DeckView {
     val batch: Batch[Graphic[_]] = Batch(Graphic(position.x, position.y, 32, 64, 2, Material.Bitmap(GameAssets.Cards.cardBack)))
 
     batch
-      ++ Batch(Text(cardsNumber.toString(), position.x + 12, position.y + 28, 3, GameAssets.Fonts.fontKey, GameAssets.Fonts.fontMaterial.withTint(RGBA.Yellow)))
+      ++ Batch(Text(cardsNumber.toString(), position.x + 8, position.y + 24, 3, GameAssets.Fonts.fontKey16, GameAssets.Fonts.fontMaterial16.withTint(RGBA.Yellow)))
   } 
 }
