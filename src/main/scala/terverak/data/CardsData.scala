@@ -4,7 +4,7 @@
 // Bachelor Project EPFL, 2023
 // =======================================
     
-package terverak.init
+package terverak.data
 
 import terverak.model.*
 

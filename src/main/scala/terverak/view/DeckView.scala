@@ -7,7 +7,7 @@
 package terverak.view
 
 import indigo._
-import terverak.init.GameAssets
+import terverak.data.GameAssets
 import terverak.model._
 
 /**

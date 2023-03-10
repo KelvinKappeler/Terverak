@@ -13,7 +13,7 @@ package terverak.view
 // =======================================
   
 import indigo.*
-import terverak.init.*
+import terverak.data.*
 import terverak.model.*
 
 /**
