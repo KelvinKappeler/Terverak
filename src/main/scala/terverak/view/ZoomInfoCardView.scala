@@ -19,7 +19,7 @@ object ZoomInfoCardView {
     * @return the batch of the zoomed info card
     */
   def draw(zoomInfoCard: ZoomInfoCard): Batch[SceneNode] = {
-    if (zoomInfoCard.isShown) {
+    if (zoomInfoCard.isShown) { //Remove this condition (put this in viewmodel) maybe
       Batch(
         Shape.Box(
           Rectangle(0, 0, 500, 500),
