@@ -25,12 +25,12 @@ object HandView {
           case Nil =>
             Batch.empty
           case (card :: tail) =>
-            CardView.draw(card, position.x + 40 * index, position.y) ++ drawRec(tail, index + 1)
+            CardView.draw(card, position.x + 40 * index + 6, position.y+4) ++ drawRec(tail, index + 1)
         }
       }
       Batch(
         Shape.Box(
-          Rectangle(position.x, position.y, 40 * (hand.MaxHandSize), 64),
+          Rectangle(position.x, position.y, 40 * (hand.MaxHandSize)+4, 72),
           Fill.Color(RGBA.Blue)).withDepth(Depth(1)))
       ++ drawRec(hand.cards, 0)
     }

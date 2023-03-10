@@ -24,8 +24,12 @@ object DeckView {
   def draw(deck: Deck, position: Point): Batch[SceneNode] = {
     val cardsNumber = deck.cards.length
     val batch: Batch[Graphic[_]] = Batch(Graphic(position.x, position.y, 32, 64, 2, Material.Bitmap(GameAssets.Cards.cardBack)))
-
-    batch
-      ++ Batch(Text(cardsNumber.toString(), position.x + 8, position.y + 24, 3, GameAssets.Fonts.fontKey16, GameAssets.Fonts.fontMaterial16.withTint(RGBA.Yellow)))
-  } 
+    val textNumCards = 
+      if (cardsNumber < 10) then 
+        Batch(Text(cardsNumber.toString(), position.x + 8, position.y + 24, 3, GameAssets.Fonts.fontKey16, GameAssets.Fonts.fontMaterial16.withTint(RGBA.Yellow)))
+      else
+        Batch(Text(cardsNumber.toString(), position.x, position.y + 24, 3, GameAssets.Fonts.fontKey16, GameAssets.Fonts.fontMaterial16.withTint(RGBA.Yellow)))
+    
+    batch ++ textNumCards
+  }
 }

@@ -15,7 +15,7 @@ object GameAssets {
   
   private val assetsDirectory: String = "assets/"
 
-  val assets: Set[AssetType] = Cards.assets ++ Fonts.assets
+  val assets: Set[AssetType] = Cards.assets ++ Fonts.assets ++ Backgrounds.assets
 
   /**
     * Cards assets.
@@ -29,6 +29,14 @@ object GameAssets {
       Set(
         AssetType.Image(bato, AssetPath("assets/bato.png")),
         AssetType.Image(cardBack, AssetPath("assets/card_back.png"))
+      )
+  }
+
+  object Backgrounds {
+    val discardZone: AssetName = AssetName("discardZone")
+    val assets: Set[AssetType] =
+      Set(
+        AssetType.Image(discardZone, AssetPath("assets/discard_zone.png"))
       )
   }
 

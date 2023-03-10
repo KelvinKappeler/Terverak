@@ -58,5 +58,6 @@ object PlayScene extends Scene[Unit, TerverakModel, Unit]:
     Outcome(
       SceneUpdateFragment.empty.addLayer(
         Layer(BindingKey("game"),
-          GameView.draw(model.currentGame) ++ ZoomInfoCardView.draw(zicTEST)))
+          GameView.draw(model.currentGame) //++ ZoomInfoCardView.draw(zicTEST)
+          ))
     )
