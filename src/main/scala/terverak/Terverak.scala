@@ -8,24 +8,24 @@ package terverak
 
 import indigo.*
 import indigo.scenes.*
-import terverak.TerverakModel
 import terverak.data.*
 import terverak.model.*
-import terverak.scenes.*
+import terverak.scenes.play.*
 
 import scala.scalajs.js.annotation.JSExportTopLevel
+
 /**
   * The main class of the game.
   */
 @JSExportTopLevel("IndigoGame")
-object Terverak extends IndigoGame[Unit, Unit, TerverakModel, Unit]:
+object Terverak extends IndigoGame[Unit, Unit, TerverakModel, TerverakViewModel]:
 
   private val magnification = 2
 
   def initialScene(bootData: Unit): Option[SceneName] =
     Option(PlayScene.name)
 
-  def scenes(bootData: Unit): NonEmptyList[Scene[Unit, TerverakModel, Unit]] =
+  def scenes(bootData: Unit): NonEmptyList[Scene[Unit, TerverakModel, TerverakViewModel]] =
     NonEmptyList(PlayScene)
 
   val eventFilters: EventFilters =
@@ -43,8 +43,8 @@ object Terverak extends IndigoGame[Unit, Unit, TerverakModel, Unit]:
   def initialModel(startupData: Unit): Outcome[TerverakModel] =
     Outcome(TerverakModel.initial)
 
-  def initialViewModel(startupData: Unit, model: TerverakModel): Outcome[Unit] =
-    Outcome(())
+  def initialViewModel(startupData: Unit, model: TerverakModel): Outcome[TerverakViewModel] =
+    Outcome(TerverakViewModel.initial)
 
   def setup(
       bootData: Unit,
@@ -62,13 +62,13 @@ object Terverak extends IndigoGame[Unit, Unit, TerverakModel, Unit]:
   def updateViewModel(
       context: FrameContext[Unit],
       model: TerverakModel,
-      viewModel: Unit
-  ): GlobalEvent => Outcome[Unit] =
+      viewModel: TerverakViewModel
+  ): GlobalEvent => Outcome[TerverakViewModel] =
     _ => Outcome(viewModel)
 
   def present(
       context: FrameContext[Unit],
       model: TerverakModel,
-      viewModel: Unit
+      viewModel: TerverakViewModel
   ): Outcome[SceneUpdateFragment] =
     Outcome(SceneUpdateFragment.empty)

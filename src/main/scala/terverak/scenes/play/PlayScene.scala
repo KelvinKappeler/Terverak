@@ -4,19 +4,24 @@
 // Bachelor Project EPFL, 2023
 // =======================================
   
-package terverak.scenes
+package terverak.scenes.play
 
 import indigo.*
 import indigo.scenes.*
 import terverak.TerverakModel
+import terverak.TerverakViewModel
 import terverak.data.*
 import terverak.model.*
-import terverak.scenes.PlaySceneModel
+import terverak.scenes.play.*
 import terverak.view.*
-object PlayScene extends Scene[Unit, TerverakModel, Unit]:
 
-  type SceneModel     = PlaySceneModel
-  type SceneViewModel = Unit
+/**
+  * The play scene.
+  */
+object PlayScene extends Scene[Unit, TerverakModel, TerverakViewModel]:
+
+  type SceneModel = PlaySceneModel
+  type SceneViewModel = PlaySceneViewModel
 
   val name: SceneName = SceneName("game")
 
@@ -26,8 +31,11 @@ object PlayScene extends Scene[Unit, TerverakModel, Unit]:
       (model, updatedModel) => model.copy(playSceneModel = updatedModel)
     )
 
-  val viewModelLens: Lens[Unit, Unit] =
-    Lens.keepLatest
+  val viewModelLens: Lens[TerverakViewModel, SceneViewModel] =
+    Lens(
+      viewmodel => viewmodel.playSceneViewModel,
+      (viewmodel, updatedViewModel) => viewmodel.copy(playSceneViewModel = updatedViewModel)
+    )
 
   val eventFilters: EventFilters =
     EventFilters.Permissive
@@ -44,8 +52,8 @@ object PlayScene extends Scene[Unit, TerverakModel, Unit]:
   def updateViewModel(
       context: SceneContext[Unit],
       model: SceneModel,
-      viewModel: Unit
-  ): GlobalEvent => Outcome[Unit] =
+      viewModel: SceneViewModel
+  ): GlobalEvent => Outcome[SceneViewModel] =
     case _ => Outcome(viewModel)
 
   val zicTEST = ZoomInfoCard(true, CardsData.bato)
@@ -53,11 +61,7 @@ object PlayScene extends Scene[Unit, TerverakModel, Unit]:
   def present(
       context: SceneContext[Unit],
       model: SceneModel,
-      viewModel: Unit
+      viewModel: SceneViewModel
   ): Outcome[SceneUpdateFragment] =
-    Outcome(
-      SceneUpdateFragment.empty.addLayer(
-        Layer(BindingKey("game"),
-          GameView.draw(model.currentGame) //++ ZoomInfoCardView.draw(zicTEST)
-          ))
-    )
+    PlaySceneView.updateView(context, model, viewModel)
+  

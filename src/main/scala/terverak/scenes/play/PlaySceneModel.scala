@@ -4,7 +4,7 @@
 // Bachelor Project EPFL, 2023
 // =======================================
   
-package terverak.scenes
+package terverak.scenes.play
 
 import indigo.*
 import indigo.scenes.*
@@ -12,7 +12,7 @@ import terverak.data.*
 import terverak.model.*
 
 /**
-  * The model of the game scene.
+  * The model of the play scene.
   */
 final case class PlaySceneModel(currentGame: Game) {
 
@@ -28,7 +28,7 @@ final case class PlaySceneModel(currentGame: Game) {
 }
 
 /**
-  * Object containing the initial game scene state.
+  * Object containing the initial play scene model.
   */
 object PlaySceneModel {
 
