@@ -45,11 +45,11 @@ object GameAssets {
     */
   object Fonts {
     private val numbersFontName16: AssetName = AssetName("NumbersFont16")
-    private val numbersFontName8: AssetName = AssetName("NumbersFont8")
+    private val normalFont8Name: AssetName = AssetName("NumbersFont8")
     val fontKey16: FontKey = FontKey("NumbersFont16")
-    val fontKey8: FontKey = FontKey("NumbersFont8")
+    val fontNormal8Key: FontKey = FontKey("NumbersFont8")
     val fontMaterial16: Material.ImageEffects = Material.ImageEffects(numbersFontName16)
-    val fontMaterial8: Material.ImageEffects = Material.ImageEffects(numbersFontName8)
+    val fontNormal8Material: Material.ImageEffects = Material.ImageEffects(normalFont8Name)
 
     def fontInfo16: FontInfo =
       FontInfo(fontKey16, 160, 16, FontChar("0", 0, 0, 16, 16))
@@ -64,23 +64,53 @@ object GameAssets {
         .addChar(FontChar("8", 128, 0, 16, 16))
         .addChar(FontChar("9", 144, 0, 16, 16))
 
+    private val size8: Int = 8
     def fontInfo8: FontInfo =
-      FontInfo(fontKey8, 80, 8, FontChar("0", 0, 0, 8, 8))
-        .addChar(FontChar("0", 0, 0, 8, 8))
-        .addChar(FontChar("1", 13, 0, 3, 8))
-        .addChar(FontChar("2", 16, 0, 8, 8))
-        .addChar(FontChar("3", 24, 0, 8, 8))
-        .addChar(FontChar("4", 32, 0, 8, 8))
-        .addChar(FontChar("5", 40, 0, 8, 8))
-        .addChar(FontChar("6", 48, 0, 8, 8))
-        .addChar(FontChar("7", 56, 0, 8, 8))
-        .addChar(FontChar("8", 64, 0, 8, 8))
-        .addChar(FontChar("9", 72, 0, 8, 8))
+      FontInfo(fontNormal8Key, 64, 64, FontChar("?", 56, 56, size8, size8))
+        .addChar(FontChar("0", 0, 0, size8, size8))
+        .addChar(FontChar("1", 12, 0, 4, size8))
+        .addChar(FontChar("2", 16, 0, size8, size8))
+        .addChar(FontChar("3", 24, 0, size8, size8))
+        .addChar(FontChar("4", 32, 0, size8, size8))
+        .addChar(FontChar("5", 40, 0, size8, size8))
+        .addChar(FontChar("6", 48, 0, size8, size8))
+        .addChar(FontChar("7", 56, 0, size8, size8))
+        .addChar(FontChar("8", 0, 8, size8, size8))
+        .addChar(FontChar("9", 8, 8, size8, size8))
+        .addChar(FontChar("A", 16, 8, size8, size8))
+        .addChar(FontChar("B", 24, 8, size8, size8))
+        .addChar(FontChar("C", 32, 8, size8, size8))
+        .addChar(FontChar("D", 40, 8, size8, size8))
+        .addChar(FontChar("E", 48, 8, size8, size8))
+        .addChar(FontChar("F", 56, 8, size8, size8))
+        .addChar(FontChar("G", 0, 16, size8, size8))
+        .addChar(FontChar("H", 8, 16, size8, size8))
+        .addChar(FontChar("I", 16, 16, size8, size8))
+        .addChar(FontChar("J", 24, 16, size8, size8))
+        .addChar(FontChar("K", 32, 16, size8, size8))
+        .addChar(FontChar("L", 40, 16, size8, size8))
+        .addChar(FontChar("M", 48, 16, size8, size8))
+        .addChar(FontChar("N", 56, 16, size8, size8))
+        .addChar(FontChar("O", 0, 24, size8, size8))
+        .addChar(FontChar("P", 8, 24, size8, size8))
+        .addChar(FontChar("Q", 16, 24, size8, size8))
+        .addChar(FontChar("R", 24, 24, size8, size8))
+        .addChar(FontChar("S", 32, 24, size8, size8))
+        .addChar(FontChar("T", 40, 24, size8, size8))
+        .addChar(FontChar("U", 48, 24, size8, size8))
+        .addChar(FontChar("V", 56, 24, size8, size8))
+        .addChar(FontChar("W", 0, 32, size8, size8))
+        .addChar(FontChar("X", 8, 32, size8, size8))
+        .addChar(FontChar("Y", 16, 32, size8, size8))
+        .addChar(FontChar("Z", 24, 32, size8, size8))
+        .addChar(FontChar(".", 40, 56, size8, size8))
+        .addChar(FontChar("!", 48, 56, size8, size8))
+        .addChar(FontChar("?", 56, 56, size8, size8))
 
     val assets: Set[AssetType] =
       Set(
         AssetType.Image(Fonts.numbersFontName16, AssetPath(assetsDirectory + "font_numbers16.png")),
-        AssetType.Image(Fonts.numbersFontName8, AssetPath(assetsDirectory + "font_numbers8.png")),
+        AssetType.Image(Fonts.normalFont8Name, AssetPath(assetsDirectory + "font_normal8.png")),
       )
   }
 }

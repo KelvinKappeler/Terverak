@@ -21,11 +21,11 @@ object GameView {
     */
   def draw(game: Game): Batch[SceneNode] = {
     Batch.empty ++
-      DeckView.draw(game.currentPlayer.deck, Point(40*7+7, 3*72+4)) ++
-      DeckView.draw(game.waitingPlayer.deck, Point(40*7+7, 4)) ++
-      HandView.draw(game.currentPlayer.hand, Point(0, 3*72)) ++
+      DeckView.draw(game.currentPlayer.deck, Point(40 * 7 + 7, 3 * 72 + 4)) ++
+      DeckView.draw(game.waitingPlayer.deck, Point(40 * 7 + 7, 4)) ++
+      HandView.draw(game.currentPlayer.hand, Point(0, 3 * 72)) ++
       HandView.draw(game.waitingPlayer.hand, Point(0, 0)) ++
       DiscardZoneView.draw(Point(0, 72)) ++
-      DiscardZoneView.draw(Point(0, 2*72))
+      DiscardZoneView.draw(Point(0, 2 * 72))
   }
 }

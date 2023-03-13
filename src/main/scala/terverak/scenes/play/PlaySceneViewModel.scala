@@ -10,13 +10,16 @@ import indigo.*
 import indigo.scenes.*
 import terverak.data.*
 import terverak.model.*
+import terverak.viewmodel.*
 
 /**
   * The view model of the play scene.
   */
-final case class PlaySceneViewModel() {
+final case class PlaySceneViewModel(gameViewModel: GameViewModel) {
 
-  def updateViewModel(context: SceneContext[Unit]): GlobalEvent => Outcome[PlaySceneViewModel] =
+  def updateViewModel(context: SceneContext[Unit], model: PlaySceneModel): GlobalEvent => Outcome[PlaySceneViewModel] =
+    case MouseEvent.Move(point) =>
+      Outcome(this)
     case _ => Outcome(this)
 
 }
@@ -25,5 +28,7 @@ final case class PlaySceneViewModel() {
   * Object containing the initial play scene view model state.
   */
 object PlaySceneViewModel {
-  val initial: PlaySceneViewModel = PlaySceneViewModel()
+
+  val initial: PlaySceneViewModel = PlaySceneViewModel(GameViewModel.initial)
+  
 }

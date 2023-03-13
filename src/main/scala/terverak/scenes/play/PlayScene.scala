@@ -54,9 +54,7 @@ object PlayScene extends Scene[Unit, TerverakModel, TerverakViewModel]:
       model: SceneModel,
       viewModel: SceneViewModel
   ): GlobalEvent => Outcome[SceneViewModel] =
-    case _ => Outcome(viewModel)
-
-  val zicTEST = ZoomInfoCard(true, CardsData.bato)
+    viewModel.updateViewModel(context, model)
 
   def present(
       context: SceneContext[Unit],

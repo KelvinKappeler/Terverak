@@ -17,13 +17,11 @@ import terverak.view.*
   */
 object PlaySceneView {
 
-  private val zoomInfoCard: ZoomInfoCard = ZoomInfoCard(false, CardsData.bato) // TODO: Change location
-
   def updateView(context: SceneContext[Unit], model: PlaySceneModel, viewModel: PlaySceneViewModel): Outcome[SceneUpdateFragment] =
     Outcome(
       SceneUpdateFragment.empty.addLayer(
         Layer(BindingKey("game"),
-          GameView.draw(model.currentGame) ++ ZoomInfoCardView.draw(zoomInfoCard)
+          GameView.draw(model.currentGame) ++ ZoomInfoCardView.draw(model.zoomInfoCard)
         )
       )
     )
