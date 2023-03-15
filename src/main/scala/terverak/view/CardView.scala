@@ -9,6 +9,7 @@ package terverak.view
 import indigo.*
 import terverak.data.*
 import terverak.model.*
+import terverak.viewmodel.*
 
 /**
   * The view of a card.
@@ -20,7 +21,10 @@ object CardView {
     * @param card the card to draw
     * @return the batch of the card
     */
-  def draw(card: Card, x: Int, y: Int, depth: Int): Batch[SceneNode] = {
+  def draw(card: Card, cardViewModel: CardViewModel, depth: Int): Batch[SceneNode] = {
+    val x = cardViewModel.position.x
+    val y = cardViewModel.position.y
+
     val batch: Batch[Graphic[_]] = Batch(Graphic(x, y, 32, 64, depth, Material.Bitmap(card.imageName)))
 
     card match {

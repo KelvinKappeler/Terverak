@@ -10,6 +10,7 @@ import indigo.*
 import indigo.scenes.*
 import terverak.data.*
 import terverak.model.*
+import terverak.utils.TerverakEvents
 import terverak.viewmodel.*
 
 /**
@@ -18,8 +19,9 @@ import terverak.viewmodel.*
 final case class PlaySceneViewModel(gameViewModel: GameViewModel) {
 
   def updateViewModel(context: SceneContext[Unit], model: PlaySceneModel): GlobalEvent => Outcome[PlaySceneViewModel] =
-    case MouseEvent.Move(point) =>
-      Outcome(this)
+    case TerverakEvents.HandChanged(hand) =>
+      val newHand = gameViewModel.currentPlayerViewModel.handViewModel.updateCardsPosition(hand)
+      Outcome(copy(gameViewModel = gameViewModel.copy(currentPlayerViewModel = gameViewModel.currentPlayerViewModel.copy(handViewModel = newHand))))
     case _ => Outcome(this)
 
 }

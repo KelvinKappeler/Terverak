@@ -61,12 +61,12 @@ final case class Player(
     */
   def drawCards(amount: Int): Player = {
     require(amount >= 0, "Draw amount must be equal or greater than 0")
-    //TODO: Need to define what to do when the deck is empty
-    if (amount == 0 || deck.cards.length == 0) then
+    if (amount == 0 || deck.cards.length == 0 || hand.cards.length == hand.MaxHandSize) then
       this
     else
       val (newDeck, drawnCard) = deck.removeTopCard()
-      copy(deck = newDeck, hand = hand.addCard(drawnCard))
+      val newHand = hand.addCard(drawnCard)
+      copy(deck = newDeck, hand = newHand)
   }
 
   /**

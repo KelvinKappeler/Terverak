@@ -28,7 +28,7 @@ object ZoomInfoCardView {
           Rectangle(0, 0, 1000, 1000),
           Fill.Color(RGBA.Black.withAlpha(0.8))).withDepth(Depth(depthOfView + 1)),
       )
-      ++ CardView.draw(zoomInfoCard.card, 20, 20, depthOfView)
+      //++ CardView.draw(zoomInfoCard.card, 20, 20, depthOfView)
       ++ Batch(
         Text(zoomInfoCard.card.name, 20, 100, depthOfView, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.White)),
       )

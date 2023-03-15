@@ -6,18 +6,16 @@
 
 package terverak.viewmodel
 
-import terverak.model.*
 import indigo.*
 import indigoextras.geometry.*
 import indigoextras.ui.*
+import terverak.model.*
 
 /**
   * The view model of a card.
   */
-object CardViewModel {
+final case class CardViewModel(position: Point)
 
-  def update(card: Card, mouse: Mouse) = {
-    
-  }
-  
+object CardViewModel {
+  val CardSize: Size = Size(32, 64)
 }

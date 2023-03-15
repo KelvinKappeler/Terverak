@@ -8,30 +8,26 @@ package terverak.view
 
 import indigo.*
 import terverak.model.*
+import terverak.viewmodel.*
 
 /**
   * The view of a hand.
   */
 object HandView {
   
+  private val height: Int = 72
+
   /**
     * Draws a hand.
     * @param hand the hand to draw
+    * @param handViewModel the hand view model
     * @return the batch of the hand
     */
-  def draw(hand: Hand, position: Point): Batch[SceneNode] = {
-    def drawRec(cards: List[Card], index: Int): Batch[SceneNode] = {
-      cards match {
-        case Nil =>
-          Batch.empty
-        case (card :: tail) =>
-          CardView.draw(card, position.x + 40 * index + 6, position.y + 4, 20) ++ drawRec(tail, index + 1)
-      }
-    }
+  def draw(hand: Hand, handViewModel: HandViewModel, depth: Int): Batch[SceneNode] = {
     Batch(
       Shape.Box(
-        Rectangle(position.x, position.y, 40 * (hand.MaxHandSize)+4, 72),
-        Fill.Color(RGBA.Blue)).withDepth(Depth(40)))
-    ++ drawRec(hand.cards, 0)
+        Rectangle(handViewModel.position.x, handViewModel.position.y, (HandViewModel.cardSpacing * hand.MaxHandSize) + HandViewModel.offsetX, height),
+        Fill.Color(RGBA.Blue)).withDepth(Depth(depth)))
+    ++ hand.cards.zip(handViewModel.cardsViewModel).foldLeft(Batch.empty)((batch, card) => batch ++ CardView.draw(card._1, card._2, depth - 1))
   }
 }

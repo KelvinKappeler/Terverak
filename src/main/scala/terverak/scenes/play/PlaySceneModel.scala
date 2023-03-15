@@ -10,6 +10,7 @@ import indigo.*
 import indigo.scenes.*
 import terverak.data.*
 import terverak.model.*
+import terverak.utils.*
 
 /**
   * The model of the play scene.
@@ -17,13 +18,10 @@ import terverak.model.*
 final case class PlaySceneModel(currentGame: Game, zoomInfoCard: ZoomInfoCard) {
 
   def updateModel(context: SceneContext[Unit]): GlobalEvent => Outcome[PlaySceneModel] =
-    case MouseEvent.Click(point) =>
-      
-      Outcome(this)
     case KeyboardEvent.KeyDown(Key.KEY_W) =>
       val newCurrentPlayer = currentGame.currentPlayer.drawCards(1)
       val newGame = copy(currentGame = currentGame.copy(currentPlayer = newCurrentPlayer))
-      Outcome(copy(currentGame = currentGame.copy(currentPlayer = newCurrentPlayer)))
+      Outcome(copy(currentGame = currentGame.copy(currentPlayer = newCurrentPlayer))).addGlobalEvents(TerverakEvents.HandChanged(newGame.currentGame.currentPlayer.hand))
     case KeyboardEvent.KeyDown(Key.KEY_E) =>
       if (zoomInfoCard.isShown) Outcome(copy(zoomInfoCard = zoomInfoCard.unshow()))
       else Outcome(copy(zoomInfoCard = zoomInfoCard.show(CardsData.bato)))

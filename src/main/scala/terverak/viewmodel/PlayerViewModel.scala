@@ -9,14 +9,15 @@ package terverak.viewmodel
 import terverak.model.*
 
 /**
-  * The view model of the game.
+  * The view model of the player.
   */
-final case class PlayerViewModel() {
+final case class PlayerViewModel(handViewModel: HandViewModel) {
 
 }
 
 object PlayerViewModel {
 
-  val initial: GameViewModel = GameViewModel()
+  val initialCurrentPlayer: PlayerViewModel = PlayerViewModel(HandViewModel.initialCurrentPlayerHand)
+  val initialWaitingPlayer: PlayerViewModel = PlayerViewModel(HandViewModel.initialWaitingPlayerHand)
 
 }

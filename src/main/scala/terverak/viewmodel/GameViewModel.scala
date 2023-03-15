@@ -11,12 +11,12 @@ import terverak.model.*
 /**
   * The view model of the game.
   */
-final case class GameViewModel(playerViewModel: PlayerViewModel) {
+final case class GameViewModel(currentPlayerViewModel: PlayerViewModel, waitingPlayerViewModel: PlayerViewModel) {
 
 }
 
 object GameViewModel {
 
-  val initial: GameViewModel = GameViewModel()
+  val initial: GameViewModel = GameViewModel(PlayerViewModel.initialCurrentPlayer, PlayerViewModel.initialWaitingPlayer)
 
 }
