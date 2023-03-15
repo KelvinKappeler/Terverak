@@ -11,6 +11,6 @@ import terverak.model.*
 
 object TerverakEvents {
   
-  final case class HandChanged(hand: Hand) extends GlobalEvent
+  final case class HandChanged(isCurrentPlayer: Boolean, hand: Hand) extends GlobalEvent
 
 }

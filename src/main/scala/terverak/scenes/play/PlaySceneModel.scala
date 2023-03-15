@@ -22,12 +22,12 @@ final case class PlaySceneModel(currentGame: Game, zoomInfoCard: ZoomInfoCard) {
       val newCurrentPlayer = currentGame.currentPlayer.drawCards(1)
       val newGame = copy(currentGame = currentGame.copy(currentPlayer = newCurrentPlayer))
       Outcome(copy(currentGame = currentGame.copy(currentPlayer = newCurrentPlayer)))
-        .addGlobalEvents(TerverakEvents.HandChanged(newGame.currentGame.currentPlayer.hand))
+        .addGlobalEvents(TerverakEvents.HandChanged(true, newGame.currentGame.currentPlayer.hand))
     case KeyboardEvent.KeyDown(Key.KEY_S) =>
       val newWaitingPlayer = currentGame.waitingPlayer.drawCards(1)
       val newGame = copy(currentGame = currentGame.copy(waitingPlayer = newWaitingPlayer))
       Outcome(copy(currentGame = currentGame.copy(waitingPlayer = newWaitingPlayer)))
-        .addGlobalEvents(TerverakEvents.HandChanged(newGame.currentGame.waitingPlayer.hand))
+        .addGlobalEvents(TerverakEvents.HandChanged(false, newGame.currentGame.waitingPlayer.hand))
     case KeyboardEvent.KeyDown(Key.KEY_E) =>
       if (zoomInfoCard.isShown) Outcome(copy(zoomInfoCard = zoomInfoCard.unshow()))
       else Outcome(copy(zoomInfoCard = zoomInfoCard.show(CardsData.bato)))
