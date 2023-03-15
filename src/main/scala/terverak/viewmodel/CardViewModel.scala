@@ -14,7 +14,7 @@ import terverak.model.*
 /**
   * The view model of a card.
   */
-final case class CardViewModel(position: Point)
+final case class CardViewModel(position: Point, isFrontSide: Boolean)
 
 object CardViewModel {
   val CardSize: Size = Size(32, 64)

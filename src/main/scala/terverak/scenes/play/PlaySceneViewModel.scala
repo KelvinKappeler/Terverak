@@ -20,8 +20,12 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel) {
 
   def updateViewModel(context: SceneContext[Unit], model: PlaySceneModel): GlobalEvent => Outcome[PlaySceneViewModel] =
     case TerverakEvents.HandChanged(hand) =>
-      val newHand = gameViewModel.currentPlayerViewModel.handViewModel.updateCardsPosition(hand)
-      Outcome(copy(gameViewModel = gameViewModel.copy(currentPlayerViewModel = gameViewModel.currentPlayerViewModel.copy(handViewModel = newHand))))
+      val newCurrentPlayerHand = gameViewModel.currentPlayerViewModel.handViewModel.updateCardsPosition(hand)
+      val newWaitingPlayerHand = gameViewModel.waitingPlayerViewModel.handViewModel.updateCardsPosition(hand)
+      Outcome(copy(gameViewModel = gameViewModel.copy(
+        currentPlayerViewModel = gameViewModel.currentPlayerViewModel.copy(handViewModel = newCurrentPlayerHand),
+        waitingPlayerViewModel = gameViewModel.waitingPlayerViewModel.copy(handViewModel = newWaitingPlayerHand)
+      )))
     case _ => Outcome(this)
 
 }
