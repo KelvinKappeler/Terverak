@@ -27,6 +27,8 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel) {
         val newWaitingPlayerHand = gameViewModel.waitingPlayerViewModel.handViewModel.updateCardsPosition(hand)
         Outcome(copy(gameViewModel = gameViewModel.copy(waitingPlayerViewModel = gameViewModel.waitingPlayerViewModel.copy(handViewModel = newWaitingPlayerHand))))
       }
+    case MouseEvent.Move(position) =>
+      ???
     case _ => Outcome(this)
 
 }

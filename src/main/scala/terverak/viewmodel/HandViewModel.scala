@@ -27,6 +27,10 @@ final case class HandViewModel(position: Point, cardsViewModel: List[CardViewMod
     }
     copy(cardsViewModel = rec(hand.cards, 0))
   }
+
+  def updateHitAreaOfCards(hand: Hand): Outcome[HandViewModel] = {
+    ???
+  }
   
 }
 

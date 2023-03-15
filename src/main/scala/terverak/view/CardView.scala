@@ -25,7 +25,7 @@ object CardView {
     val x = cardViewModel.position.x
     val y = cardViewModel.position.y
 
-    if (cardViewModel.isFrontSide) {
+    if (cardViewModel.isRevealed) {
       val batch: Batch[Graphic[_]] = Batch(Graphic(x, y, CardViewModel.CardSize.width, CardViewModel.CardSize.height, depth, Material.Bitmap(card.imageName)))
 
       card match {
