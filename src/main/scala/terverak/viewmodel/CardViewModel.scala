@@ -29,7 +29,7 @@ final case class CardViewModel(
     * @param mouse the mouse
     * @return true if the mouse is over the card
     */
-  def checkMouseRightClickedOnCard(mouse: Mouse): Boolean = {
+  def checkMouseOverCard(mouse: Mouse): Boolean = {
     mouse.wasMousePositionWithin(bounds)
   }
 

@@ -35,13 +35,13 @@ final case class HandViewModel(position: Point, cardsViewModel: List[CardViewMod
   }
 
   /**
-    * Gets the first card that was right clicked on.
+    * Gets the first card under the mouse.
     * @param mouse the mouse
     * @param hand the hand
-    * @return the first card that was clicked on
+    * @return the first card that was under the mouse.
     */
   def getCardUnderMouse(mouse: Mouse, hand: Hand): Option[HandCard] = {
-    cardsViewModel.zip(hand.cards).find((cardViewModel, _) => cardViewModel.checkMouseRightClickedOnCard(mouse)) match {
+    cardsViewModel.zip(hand.cards).find((cardViewModel, _) => cardViewModel.checkMouseOverCard(mouse)) match {
       case Some(_, card) => Some(card)
       case None => None
     }
