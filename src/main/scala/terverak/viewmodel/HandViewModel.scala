@@ -22,23 +22,16 @@ final case class HandViewModel(position: Point, cardsViewModel: List[CardViewMod
           Point(
             position.x + (HandViewModel.CardSpacing * index) + HandViewModel.OffsetX,
             position.y + HandViewModel.OffsetY
-          ), isRevealed) :: rec(tail, index + 1)
+          ), isRevealed, false) :: rec(tail, index + 1)
       }
     }
     copy(cardsViewModel = rec(hand.cards, 0))
   }
 
-  /**
-    * Gets the first card that was left clicked on.
-    * @param mouse the mouse
-    * @param hand the hand
-    * @return the first card that was clicked on
-    */
-  def getFirstHandCardMouseLeftClickedOn(mouse: Mouse, hand: Hand): Option[HandCard] = {
-    cardsViewModel.zip(hand.cards).find((cardViewModel, _) => cardViewModel.checkMouseLeftClickedOnCard(mouse)) match {
-      case Some(_, card) => Some(card)
-      case None => None
-    }
+  def updateUniqueCardPosition(hand: Hand, card: HandCard, newPos: Point): HandViewModel = {
+    val index = hand.cards.indexOf(card)
+    val cardViewModel = CardViewModel(newPos, isRevealed, true)
+    copy(cardsViewModel = cardsViewModel.updated(index, cardViewModel))
   }
 
   /**
@@ -47,7 +40,7 @@ final case class HandViewModel(position: Point, cardsViewModel: List[CardViewMod
     * @param hand the hand
     * @return the first card that was clicked on
     */
-  def getFirstHandCardMouseRightClickedOn(mouse: Mouse, hand: Hand): Option[HandCard] = {
+  def getCardUnderMouse(mouse: Mouse, hand: Hand): Option[HandCard] = {
     cardsViewModel.zip(hand.cards).find((cardViewModel, _) => cardViewModel.checkMouseRightClickedOnCard(mouse)) match {
       case Some(_, card) => Some(card)
       case None => None

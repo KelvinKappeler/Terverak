@@ -27,24 +27,44 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel) {
         val newWaitingPlayerHand = gameViewModel.waitingPlayerViewModel.handViewModel.updateCardsPosition(hand)
         Outcome(copy(gameViewModel = gameViewModel.copy(waitingPlayerViewModel = gameViewModel.waitingPlayerViewModel.copy(handViewModel = newWaitingPlayerHand))))
       }
-    case TerverakEvents.LeftClickOnCard(handCard) =>
-      logger.consoleLog("LEFT" + handCard.id.toString)
-      Outcome(this)
     case TerverakEvents.RightClickOnCard(handCard) =>
-      logger.consoleLog("RIGHT" + handCard.id.toString)
+      logger.consoleLog("name: " + handCard.card.name + ", id: " + handCard.id)
       Outcome(this)
-    case FrameTick =>
-      gameViewModel.currentPlayerViewModel.handViewModel.getFirstHandCardMouseLeftClickedOn(context.mouse, model.currentGame.currentPlayer.hand) match {
-        case Some(handCard) =>
-          Outcome(this).addGlobalEvents(TerverakEvents.LeftClickOnCard(handCard))
-        case None =>
-          gameViewModel.currentPlayerViewModel.handViewModel.getFirstHandCardMouseRightClickedOn(context.mouse, model.currentGame.currentPlayer.hand) match {
-          case Some(handCard) =>
-            Outcome(this).addGlobalEvents(TerverakEvents.RightClickOnCard(handCard))
-          case None =>
-            Outcome(this)
-          }
+    
+    case TerverakEvents.StartDrag(handCard, pos) =>
+      Outcome(this).addGlobalEvents(TerverakEvents.KeepDrag(handCard, pos))
+    case TerverakEvents.KeepDrag(handCard, pos) =>
+      if (context.mouse.isLeftDown) {
+        val newPos = Point(context.mouse.position.x - CardViewModel.CardSize.width / 2, context.mouse.position.y - CardViewModel.CardSize.height / 2)
+        Outcome(copy(
+          gameViewModel = gameViewModel.copy(
+            currentPlayerViewModel = gameViewModel.currentPlayerViewModel.copy(
+              handViewModel = gameViewModel.currentPlayerViewModel.handViewModel.updateUniqueCardPosition(model.currentGame.currentPlayer.hand, handCard, newPos)
+            )
+          )
+        )).addGlobalEvents(TerverakEvents.KeepDrag(handCard, context.mouse.position))
+      } else {
+        val refreshHand = gameViewModel.currentPlayerViewModel.handViewModel.updateCardsPosition(model.currentGame.currentPlayer.hand)
+        Outcome(copy(gameViewModel = gameViewModel.copy(currentPlayerViewModel = gameViewModel.currentPlayerViewModel.copy(handViewModel = refreshHand))))
+          .addGlobalEvents(TerverakEvents.StopDrag(handCard, context.mouse.position))
       }
+    case TerverakEvents.StopDrag(handCard, pos) =>
+      Outcome(this)
+
+    case MouseEvent.MouseUp(_, MouseButton.RightMouseButton) =>
+      gameViewModel.currentPlayerViewModel.handViewModel.getCardUnderMouse(context.mouse, model.currentGame.currentPlayer.hand) match {
+        case Some(handCard) =>
+          Outcome(this).addGlobalEvents(TerverakEvents.RightClickOnCard(handCard))
+        case None =>
+          Outcome(this)
+        }
+    case MouseEvent.MouseDown(position, MouseButton.LeftMouseButton) =>
+      gameViewModel.currentPlayerViewModel.handViewModel.getCardUnderMouse(context.mouse, model.currentGame.currentPlayer.hand) match {
+        case Some(handCard) =>
+          Outcome(this).addGlobalEvents(TerverakEvents.StartDrag(handCard, position))
+        case None =>
+          Outcome(this)
+        }
     case _ => Outcome(this)
 
 }

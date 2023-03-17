@@ -20,7 +20,7 @@ object DiscardZoneView {
     * @return the batch of the discard zone
     */
   def draw(position: Point): Batch[SceneNode] = {
-    Batch(Graphic(position.x, position.y, 40, 72, 20, Material.Bitmap(GameAssets.Backgrounds.discardZone)))
+    Batch(Graphic(position.x, position.y, 40, 72, 100, Material.Bitmap(GameAssets.Backgrounds.discardZone)))
       
   }
 }

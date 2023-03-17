@@ -18,27 +18,19 @@ import terverak.utils.*
   */
 final case class CardViewModel(
   position: Point,
-  isRevealed: Boolean
+  isRevealed: Boolean,
+  isDragged: Boolean = false,
 ) {
 
   private val bounds = Rectangle(position.x, position.y, CardViewModel.CardSize.width, CardViewModel.CardSize.height)
 
   /**
-    * Check if the mouse has left clicked on the card.
+    * Check if the mouse is over the card.
     * @param mouse the mouse
-    * @return true if the mouse has left clicked on the card, false otherwise
-    */
-  def checkMouseLeftClickedOnCard(mouse: Mouse): Boolean = {
-    mouse.wasMouseClickedWithin(bounds)
-  }
-
-  /**
-    * Check if the mouse has right clicked on the card.
-    * @param mouse the mouse
-    * @return true if the mouse has right clicked on the card, false otherwise
+    * @return true if the mouse is over the card
     */
   def checkMouseRightClickedOnCard(mouse: Mouse): Boolean = {
-    mouse.wasMousePositionWithin(bounds) && mouse.released(MouseButton.RightMouseButton)
+    mouse.wasMousePositionWithin(bounds)
   }
 
 }
