@@ -32,11 +32,11 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
     * @param card the card to discard.
     * @return the new game
     */
-  def discardCard(card: Card): Game = {
-    val newPlayer = currentPlayer.discardCard(card)
+  def discardCard(handCard: HandCard): Game = {
+    val newPlayer = currentPlayer.discardCard(handCard)
     val newGame = copy(currentPlayer = newPlayer)
 
-    card.effectsWhenDiscard.foreach(_.activateEffect(newGame))
+    handCard.card.effectsWhenDiscard.foreach(_.activateEffect(newGame))
     newGame.refresh();
   }
 
@@ -45,11 +45,11 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
     * @param card the card to play.
     * @return the new game
     */
-  def playCard(card: Card): Game = {
-    val newPlayer = currentPlayer.playCard(card)
+  def playCard(handCard: HandCard): Game = {
+    val newPlayer = currentPlayer.playCard(handCard)
     val newGame = copy(currentPlayer = newPlayer)
 
-    card.effectsWhenPlayed.foreach(_.activateEffect(newGame))
+    handCard.card.effectsWhenPlayed.foreach(_.activateEffect(newGame))
     newGame.refresh();
   }
 }

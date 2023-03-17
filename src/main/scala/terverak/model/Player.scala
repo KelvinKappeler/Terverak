@@ -74,10 +74,10 @@ final case class Player(
     * @param card the card to discard.
     * @return the new player
     */
-  def discardCard(card: Card): Player = {
-    require(hand.cards.contains(card), "Card must be in the hand")
+  def discardCard(handCard: HandCard): Player = {
+    require(hand.cards.contains(handCard.card), "Card must be in the hand")
 
-    val newHand = hand.removeCard(card)
+    val newHand = hand.removeCard(handCard)
 
     copy(hand = newHand)
   }
@@ -88,12 +88,12 @@ final case class Player(
     * @param card The card to play.
     * @return The new player and the effects of the played card.
     */
-  def playCard(card: Card): Player = {
-    require(hand.cards.contains(card), "Card must be in the hand")
-    require(mana >= card.manaCost, "Player must have enough mana to play the card")
+  def playCard(handCard: HandCard): Player = {
+    require(hand.cards.contains(handCard), "Card must be in the hand")
+    require(mana >= handCard.card.manaCost, "Player must have enough mana to play the card")
 
-    val newHand = hand.removeCard(card)
-    val newMana = mana - card.manaCost
+    val newHand = hand.removeCard(handCard)
+    val newMana = mana - handCard.card.manaCost
     
     copy(hand = newHand, mana = newMana)
   }

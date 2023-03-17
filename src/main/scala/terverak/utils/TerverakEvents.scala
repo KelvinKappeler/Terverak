@@ -12,6 +12,7 @@ import terverak.model.*
 object TerverakEvents {
   
   final case class HandChanged(isCurrentPlayer: Boolean, hand: Hand) extends GlobalEvent
-  final case class ClickOnCard(mouseButton: MouseButton, card: Card) extends GlobalEvent
+  final case class LeftClickOnCard(handCard: HandCard) extends GlobalEvent
+  final case class RightClickOnCard(handCard: HandCard) extends GlobalEvent
 
 }

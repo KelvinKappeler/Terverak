@@ -15,7 +15,7 @@ import terverak.model.*
 final case class HandViewModel(position: Point, cardsViewModel: List[CardViewModel], isRevealed: Boolean) {
   
   def updateCardsPosition(hand: Hand): HandViewModel = {
-    def rec(cards: List[Card], index: Int): List[CardViewModel] = {
+    def rec(cards: List[HandCard], index: Int): List[CardViewModel] = {
       cards match {
         case Nil => List.empty
         case (card :: tail) => CardViewModel(
@@ -28,8 +28,30 @@ final case class HandViewModel(position: Point, cardsViewModel: List[CardViewMod
     copy(cardsViewModel = rec(hand.cards, 0))
   }
 
-  def updateHitAreaOfCards(hand: Hand): Outcome[HandViewModel] = {
-    ???
+  /**
+    * Gets the first card that was left clicked on.
+    * @param mouse the mouse
+    * @param hand the hand
+    * @return the first card that was clicked on
+    */
+  def getFirstHandCardMouseLeftClickedOn(mouse: Mouse, hand: Hand): Option[HandCard] = {
+    cardsViewModel.zip(hand.cards).find((cardViewModel, _) => cardViewModel.checkMouseLeftClickedOnCard(mouse)) match {
+      case Some(_, card) => Some(card)
+      case None => None
+    }
+  }
+
+  /**
+    * Gets the first card that was right clicked on.
+    * @param mouse the mouse
+    * @param hand the hand
+    * @return the first card that was clicked on
+    */
+  def getFirstHandCardMouseRightClickedOn(mouse: Mouse, hand: Hand): Option[HandCard] = {
+    cardsViewModel.zip(hand.cards).find((cardViewModel, _) => cardViewModel.checkMouseRightClickedOnCard(mouse)) match {
+      case Some(_, card) => Some(card)
+      case None => None
+    }
   }
   
 }
