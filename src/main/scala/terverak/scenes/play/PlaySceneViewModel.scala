@@ -51,6 +51,11 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel) {
     case TerverakEvents.StopDrag(handCard, pos) =>
       Outcome(this)
 
+    case TerverakEvents.ShowDescription(newCard) =>
+      Outcome(copy(gameViewModel = gameViewModel.copy(descriptionViewModel = DescriptionViewModel(newCard))))
+    case TerverakEvents.ClearDescription() =>
+      Outcome(copy(gameViewModel = gameViewModel.copy(descriptionViewModel = DescriptionViewModel.initialDescription)))
+    
     case MouseEvent.MouseUp(_, MouseButton.RightMouseButton) =>
       gameViewModel.currentPlayerViewModel.handViewModel.getCardUnderMouse(context.mouse, model.currentGame.currentPlayer.hand) match {
         case Some(handCard) =>
@@ -64,6 +69,13 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel) {
           Outcome(this).addGlobalEvents(TerverakEvents.StartDrag(handCard, position))
         case None =>
           Outcome(this)
+        }
+    case MouseEvent.Move(_) =>
+      gameViewModel.currentPlayerViewModel.handViewModel.getCardUnderMouse(context.mouse, model.currentGame.currentPlayer.hand) match {
+        case Some(handCard) =>
+          Outcome(this).addGlobalEvents(TerverakEvents.ShowDescription(handCard.card))
+        case None =>
+          Outcome(this).addGlobalEvents(TerverakEvents.ClearDescription())
         }
     case _ => Outcome(this)
 

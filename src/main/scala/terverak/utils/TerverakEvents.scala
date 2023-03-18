@@ -17,5 +17,7 @@ object TerverakEvents {
   final case class StartDrag(handCard: HandCard, position: Point) extends GlobalEvent
   final case class StopDrag(handCard: HandCard, position: Point) extends GlobalEvent
   final case class KeepDrag(handCard: HandCard, position: Point) extends GlobalEvent
+  final case class ShowDescription(card: Card) extends GlobalEvent
+  final case class ClearDescription() extends GlobalEvent
 
 }

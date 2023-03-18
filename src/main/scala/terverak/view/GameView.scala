@@ -29,6 +29,7 @@ object GameView {
       PlayerView.draw(game.currentPlayer, gameViewModel.currentPlayerViewModel) ++
       PlayerView.draw(game.waitingPlayer, gameViewModel.waitingPlayerViewModel) ++
       DiscardZoneView.draw(Point(0, 72)) ++
-      DiscardZoneView.draw(Point(0, 2 * 72))
+      DiscardZoneView.draw(Point(0, 2 * 72)) ++
+      CardDescriptionView.draw(gameViewModel.descriptionViewModel)
   }
 }
