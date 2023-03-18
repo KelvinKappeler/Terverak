@@ -55,6 +55,8 @@ object HandViewModel {
   val OffsetY: Int = 4
   val CardSpacing: Int = 8 + CardViewModel.CardSize.width
 
+  val HandSize: Size = Size((HandViewModel.CardSpacing * Hand(List.empty).MaxHandSize) + HandViewModel.OffsetX, 72)
+
   val initialCurrentPlayerHand: HandViewModel = HandViewModel(Point(0, 3 * 72), List.empty, true)
   val initialWaitingPlayerHand: HandViewModel = HandViewModel(Point(0, 0), List.empty, false)
 

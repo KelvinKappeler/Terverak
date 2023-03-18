@@ -14,8 +14,6 @@ import terverak.viewmodel.*
   * The view of a hand.
   */
 object HandView {
-  
-  private val Height: Int = 72
 
   /**
     * Draws a hand.
@@ -26,7 +24,7 @@ object HandView {
   def draw(hand: Hand, handViewModel: HandViewModel, depth: Int): Batch[SceneNode] = {
     Batch(
       Shape.Box(
-        Rectangle(handViewModel.position.x, handViewModel.position.y, (HandViewModel.CardSpacing * hand.MaxHandSize) + HandViewModel.OffsetX, Height),
+        Rectangle(handViewModel.position.x, handViewModel.position.y, HandViewModel.HandSize.width, HandViewModel.HandSize.height),
         Fill.Color(RGBA.Blue)).withDepth(Depth(depth)))
     ++ hand.cards.zip(handViewModel.cardsViewModel).foldLeft(Batch.empty)((batch, cardAndViewModel) =>
       batch ++ CardView.draw(cardAndViewModel._1.card, cardAndViewModel._2, depth - 1))
