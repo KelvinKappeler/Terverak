@@ -34,6 +34,16 @@ final case class HandViewModel(position: Point, cardsViewModel: List[CardViewMod
     copy(cardsViewModel = cardsViewModel.updated(index, cardViewModel))
   }
 
+  def showDescription(hand: Hand, card: HandCard): HandViewModel = {
+    val index = hand.cards.indexOf(card)
+    val cardViewModel = cardsViewModel(index).copy(isDescriptionShown = true)
+    copy(cardsViewModel = cardsViewModel.updated(index, cardViewModel))
+  }
+
+  def clearDescription(hand: Hand): HandViewModel = {
+    copy(cardsViewModel = cardsViewModel.map(_.copy(isDescriptionShown = false)))
+  }
+
   /**
     * Gets the first card under the mouse.
     * @param mouse the mouse

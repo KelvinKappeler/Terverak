@@ -20,6 +20,7 @@ final case class CardViewModel(
   position: Point,
   isRevealed: Boolean,
   isDragged: Boolean = false,
+  isDescriptionShown: Boolean = false,
 ) {
 
   private val bounds = Rectangle(position.x, position.y, CardViewModel.CardSize.width, CardViewModel.CardSize.height)
@@ -36,7 +37,6 @@ final case class CardViewModel(
 }
 
 object CardViewModel {
-
+  val DescriptionOffset = 30
   val CardSize: Size = Size(32, 64)
-
 }

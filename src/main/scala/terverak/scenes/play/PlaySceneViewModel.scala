@@ -52,10 +52,14 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel) {
       Outcome(this)
 
     case TerverakEvents.ShowDescription(newCard) =>
-      Outcome(copy(gameViewModel = gameViewModel.copy(descriptionViewModel = DescriptionViewModel(newCard))))
+      val newHandViewModel = gameViewModel.currentPlayerViewModel.handViewModel.showDescription(model.currentGame.currentPlayer.hand, newCard)
+      Outcome(copy(gameViewModel = gameViewModel.copy(currentPlayerViewModel = gameViewModel.currentPlayerViewModel.copy(handViewModel = newHandViewModel))))
+
     case TerverakEvents.ClearDescription() =>
-      Outcome(copy(gameViewModel = gameViewModel.copy(descriptionViewModel = DescriptionViewModel.initialDescription)))
-    
+      val newHandViewModel = gameViewModel.currentPlayerViewModel.handViewModel.clearDescription(model.currentGame.currentPlayer.hand)
+      Outcome(copy(gameViewModel = gameViewModel.copy(currentPlayerViewModel = gameViewModel.currentPlayerViewModel.copy(handViewModel = newHandViewModel))))
+      
+
     case MouseEvent.MouseUp(_, MouseButton.RightMouseButton) =>
       gameViewModel.currentPlayerViewModel.handViewModel.getCardUnderMouse(context.mouse, model.currentGame.currentPlayer.hand) match {
         case Some(handCard) =>
@@ -71,12 +75,16 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel) {
           Outcome(this)
         }
     case MouseEvent.Move(_) =>
-      gameViewModel.currentPlayerViewModel.handViewModel.getCardUnderMouse(context.mouse, model.currentGame.currentPlayer.hand) match {
-        case Some(handCard) =>
-          Outcome(this).addGlobalEvents(TerverakEvents.ShowDescription(handCard.card))
-        case None =>
-          Outcome(this).addGlobalEvents(TerverakEvents.ClearDescription())
-        }
+      val handViewModel = gameViewModel.currentPlayerViewModel.handViewModel
+      if (handViewModel.cardsViewModel.forall(!_.isDragged)) then
+        handViewModel.getCardUnderMouse(context.mouse, model.currentGame.currentPlayer.hand) match {
+          case Some(handCard) =>
+            Outcome(this).addGlobalEvents(TerverakEvents.ClearDescription()).addGlobalEvents(TerverakEvents.ShowDescription(handCard))
+          case None =>
+            Outcome(this).addGlobalEvents(TerverakEvents.ClearDescription())
+          }
+      else
+        Outcome(this)
     case _ => Outcome(this)
 
 }

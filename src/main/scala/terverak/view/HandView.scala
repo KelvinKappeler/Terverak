@@ -14,7 +14,6 @@ import terverak.viewmodel.*
   * The view of a hand.
   */
 object HandView {
-
   /**
     * Draws a hand.
     * @param hand the hand to draw

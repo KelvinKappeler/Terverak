@@ -42,7 +42,7 @@ final case class PlaySceneModel(currentGame: Game, zoomInfoCard: ZoomInfoCard) {
   */
 object PlaySceneModel {
 
-  private val deck: Deck = Deck(List.fill(12)(CardsData.bato))
+  private val deck: Deck = Deck(List.fill(15)(CardsData.bato) ++ List.fill(5)(CardsData.shinyBato)).shuffle()
   private val player1: Player = Player("Player1", 20, 20, 0, deck, Hand(List.empty), MinionBoard(List.empty))
   private val player2: Player = Player("Player2", 20, 12, 0, deck, Hand(List.empty), MinionBoard(List.empty))
 
