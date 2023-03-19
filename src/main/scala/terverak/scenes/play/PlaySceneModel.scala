@@ -36,7 +36,7 @@ final case class PlaySceneModel(currentGame: Game, zoomInfoCard: ZoomInfoCard) {
       val removeCard = copy(currentGame = currentGame.copy(currentPlayer = currentGame.currentPlayer.copy(hand = currentGame.currentPlayer.hand.removeCard(handCard))))
       val newGame = handCard.card.effectsWhenPlayed
         .foldLeft(removeCard.currentGame)((game, effect) => effect.activateEffect(game))
-      Outcome(copy(currentGame = newGame)).addGlobalEvents(TerverakEvents.HandChanged(true, newGame.currentPlayer.hand)).addGlobalEvents(TerverakEvents.MinionBoardChanged(newGame.currentPlayer.minionBoard, newGame.waitingPlayer.minionBoard))
+      Outcome(copy(currentGame = newGame)).addGlobalEvents(PlaySound(GameAssets.Audio.batoNoise, Volume(0.5))).addGlobalEvents(TerverakEvents.HandChanged(true, newGame.currentPlayer.hand)).addGlobalEvents(TerverakEvents.MinionBoardChanged(newGame.currentPlayer.minionBoard, newGame.waitingPlayer.minionBoard))
     case FrameTick =>
       Outcome(this)
     case _ => Outcome(this)
