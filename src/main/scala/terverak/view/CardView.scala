@@ -19,11 +19,15 @@ object CardView {
   /**
     * Draws a card.
     * @param card the card to draw
+    * @param cardViewModel the view model of the card
+    * @param depth the depth of the card
     * @return the batch of the card
     */
   def draw(card: Card, cardViewModel: CardViewModel, depth: Int): Batch[SceneNode] = {
     val x = cardViewModel.position.x
     val y = cardViewModel.position.y
+    val cardWidth = CardViewModel.CardSize.width
+    val cardHeight = CardViewModel.CardSize.height
     val isCardDragged = cardViewModel.isDragged
 
     val description_x = HandViewModel.HandSize.width + PlayerViewModel.HeroSize.width
@@ -34,9 +38,9 @@ object CardView {
     if (cardViewModel.isRevealed) {
       val batch: Batch[Graphic[_]] = 
         if (isCardDragged) then
-          Batch(Graphic(x, y, 32, 64, depth-3, Material.Bitmap(card.imageName)))
+          Batch(Graphic(x, y, cardWidth, cardHeight, depth-3, Material.Bitmap(card.imageName)))
         else
-          Batch(Graphic(x, y, 32, 64, depth, Material.Bitmap(card.imageName)))
+          Batch(Graphic(x, y, cardWidth, cardHeight, depth, Material.Bitmap(card.imageName)))
 
       val descriptionBatch = 
         if (cardViewModel.isDescriptionShown || cardViewModel.isDragged) then
@@ -64,7 +68,7 @@ object CardView {
           batch
       }
     } else {
-      Batch(Graphic(x, y, CardViewModel.CardSize.width, CardViewModel.CardSize.height, depth, Material.Bitmap(GameAssets.Cards.cardBack)))
+      Batch(Graphic(x, y, cardWidth, cardHeight, depth, Material.Bitmap(GameAssets.Cards.cardBack)))
     }
   }
 }

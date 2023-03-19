@@ -14,7 +14,7 @@ final case class MinionBoard(minions: List[Minion]) {
   /**
     * The maximum number of minions on the board.
     */
-  val MaxMinionBoardSize = 4
+  val MaxMinionBoardSize = 5
 
   /**
    * Adds a minion to the board.

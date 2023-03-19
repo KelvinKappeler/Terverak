@@ -8,11 +8,16 @@ package terverak.viewmodel
 
 import indigo.*
 import terverak.model.*
+import terverak.view.DiscardZoneView
 
 /**
   * The view model of a hand.
   */
-final case class HandViewModel(position: Point, cardsViewModel: List[CardViewModel], isRevealed: Boolean) {
+final case class HandViewModel(
+  position: Point, 
+  cardsViewModel: List[CardViewModel], 
+  isRevealed: Boolean
+  ) {
   
   def updateCardsPosition(hand: Hand): HandViewModel = {
     def rec(cards: List[HandCard], index: Int): List[CardViewModel] = {
@@ -67,7 +72,7 @@ object HandViewModel {
 
   val HandSize: Size = Size((HandViewModel.CardSpacing * Hand(List.empty).MaxHandSize) + HandViewModel.OffsetX, 72)
 
-  val initialCurrentPlayerHand: HandViewModel = HandViewModel(Point(0, 3 * 72), List.empty, true)
+  val initialCurrentPlayerHand: HandViewModel = HandViewModel(Point(0, HandViewModel.HandSize.height + 2 * DiscardZoneView.discardZoneSize.height), List.empty, true)
   val initialWaitingPlayerHand: HandViewModel = HandViewModel(Point(0, 0), List.empty, false)
 
 }

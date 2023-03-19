@@ -6,6 +6,8 @@
 
 package terverak.model
 
+import indigo.*
+
 /**
   * A card effect
   */
@@ -13,7 +15,7 @@ trait CardEffect {
   /**
     * Activates the effect of the card
     */
-  def activateEffect(game: Game): Unit
+  def activateEffect(game: Game): Game
 }
 
 object CardEffects {
@@ -27,8 +29,8 @@ object CardEffects {
   ) extends CardEffect {
     require(amount >= 0, "Healing amount must be equal or greater than 0")
 
-    override def activateEffect(game: Game): Unit = {
-      ???
+    override def activateEffect(game: Game): Game = {
+      game
     }
   }
 
@@ -41,8 +43,28 @@ object CardEffects {
   ) extends CardEffect {
     require(amount >= 0, "Damage amount must be equal or greater than 0")
 
-    override def activateEffect(game: Game): Unit = {
-      ???
+    override def activateEffect(game: Game): Game = {
+      game
     }
   }
+
+  final case class InvokeMinion(
+    handMinionCard: HandCards.MinionHandCard
+  ) extends CardEffect {
+
+    override def activateEffect(game: Game): Game = {
+      val minionCard = handMinionCard.card
+      val newMinionBoard = game.currentPlayer.minionBoard.addMinion(
+        Minion(minionCard, minionCard.life, minionCard.life, minionCard.damage)
+      )
+
+      game.copy(
+        currentPlayer = game.currentPlayer.copy(
+          minionBoard = newMinionBoard,
+        )
+      )
+    }
+
+  }
+
 }

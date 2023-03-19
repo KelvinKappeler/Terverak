@@ -24,8 +24,10 @@ final case class Hand(cards: List[HandCard]) {
     */
   def addCard(card: Card): Hand = {
     require(cards.length < MaxHandSize, "Hand must not be full")
+    card match
+      case minion: Cards.MinionCard => copy(cards = HandCards.MinionHandCard(minion, nextId()) :: cards)
+      case spell: Cards.SpellCard => copy(cards = HandCards.SpellHandCard(spell, nextId()) :: cards)
 
-    copy(cards = HandCard(card, nextId()) :: cards)
   } ensuring(_.cards.length == cards.length + 1, "Hand length must be increased by 1")
 
   /**
@@ -39,7 +41,7 @@ final case class Hand(cards: List[HandCard]) {
 
     def removeCardRec(cards: List[HandCard]): List[HandCard] = {
       cards match {
-        case head :: tail => if (head == card) tail else head :: removeCardRec(tail)
+        case head :: tail => if (head.id == card.id) tail else head :: removeCardRec(tail)
         case Nil => cards
       }
     }

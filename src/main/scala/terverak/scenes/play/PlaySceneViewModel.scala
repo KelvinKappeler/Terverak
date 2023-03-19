@@ -27,6 +27,13 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel) {
         val newWaitingPlayerHand = gameViewModel.waitingPlayerViewModel.handViewModel.updateCardsPosition(hand)
         Outcome(copy(gameViewModel = gameViewModel.copy(waitingPlayerViewModel = gameViewModel.waitingPlayerViewModel.copy(handViewModel = newWaitingPlayerHand))))
       }
+    case TerverakEvents.MinionBoardChanged(currentPlayerBoard, waitingPlayerBoard) =>
+        val newCurrentPlayerMinionBoard = gameViewModel.currentPlayerViewModel.minionBoardViewModel.updateMinionsPosition(currentPlayerBoard)
+        val newWaitingPlayerMinionBoard = gameViewModel.waitingPlayerViewModel.minionBoardViewModel.updateMinionsPosition(waitingPlayerBoard)
+        Outcome(copy(gameViewModel = gameViewModel.copy(
+          currentPlayerViewModel = gameViewModel.currentPlayerViewModel.copy(minionBoardViewModel = newCurrentPlayerMinionBoard),
+          waitingPlayerViewModel = gameViewModel.waitingPlayerViewModel.copy(minionBoardViewModel = newWaitingPlayerMinionBoard)
+        )))
     case TerverakEvents.RightClickOnCard(handCard) =>
       logger.consoleLog("name: " + handCard.card.name + ", id: " + handCard.id)
       Outcome(this)
@@ -49,7 +56,12 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel) {
           .addGlobalEvents(TerverakEvents.StopDrag(handCard, context.mouse.position))
       }
     case TerverakEvents.StopDrag(handCard, pos) =>
-      Outcome(this)
+      if (gameViewModel.currentPlayerViewModel.minionBoardViewModel.checkMouseOverMinionBoard(context.mouse)
+        || gameViewModel.waitingPlayerViewModel.minionBoardViewModel.checkMouseOverMinionBoard(context.mouse)) {
+        Outcome(this).addGlobalEvents(TerverakEvents.PlayCard(handCard))
+      } else {
+        Outcome(this)
+      }
 
     case TerverakEvents.ShowDescription(newCard) =>
       val newHandViewModel = gameViewModel.currentPlayerViewModel.handViewModel.showDescription(model.currentGame.currentPlayer.hand, newCard)

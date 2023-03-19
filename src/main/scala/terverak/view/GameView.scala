@@ -18,6 +18,7 @@ object GameView {
   /**
     * Draws a game.
     * @param game the game to draw
+    * @param gameViewModel the game view model
     * @return the batch of the game
     */
   def draw(game: Game, gameViewModel: GameViewModel): Batch[SceneNode] = {
@@ -26,9 +27,11 @@ object GameView {
       DeckView.draw(game.waitingPlayer.deck, Point(40 * 7 + 7, 4)) ++
       HandView.draw(game.currentPlayer.hand, gameViewModel.currentPlayerViewModel.handViewModel, 40) ++
       HandView.draw(game.waitingPlayer.hand, gameViewModel.waitingPlayerViewModel.handViewModel, 40) ++
+      MinionBoardView.draw(game.currentPlayer.minionBoard, gameViewModel.currentPlayerViewModel.minionBoardViewModel, 40) ++
+      MinionBoardView.draw(game.waitingPlayer.minionBoard, gameViewModel.waitingPlayerViewModel.minionBoardViewModel, 40) ++
       PlayerView.draw(game.currentPlayer, gameViewModel.currentPlayerViewModel) ++
       PlayerView.draw(game.waitingPlayer, gameViewModel.waitingPlayerViewModel) ++
-      DiscardZoneView.draw(Point(0, 72)) ++
-      DiscardZoneView.draw(Point(0, 2 * 72))
+      DiscardZoneView.draw(Point(0, HandViewModel.HandSize.height)) ++
+      DiscardZoneView.draw(Point(0, HandViewModel.HandSize.height + DiscardZoneView.discardZoneSize.height))
   }
 }

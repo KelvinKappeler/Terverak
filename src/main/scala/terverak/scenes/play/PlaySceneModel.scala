@@ -9,6 +9,7 @@ package terverak.scenes.play
 import indigo.*
 import indigo.scenes.*
 import terverak.data.*
+import terverak.model.Cards.MinionCard
 import terverak.model.*
 import terverak.utils.*
 
@@ -31,6 +32,11 @@ final case class PlaySceneModel(currentGame: Game, zoomInfoCard: ZoomInfoCard) {
     case KeyboardEvent.KeyDown(Key.KEY_E) =>
       if (zoomInfoCard.isShown) Outcome(copy(zoomInfoCard = zoomInfoCard.unshow()))
       else Outcome(copy(zoomInfoCard = zoomInfoCard.show(CardsData.bato)))
+    case TerverakEvents.PlayCard(handCard) =>
+      val removeCard = copy(currentGame = currentGame.copy(currentPlayer = currentGame.currentPlayer.copy(hand = currentGame.currentPlayer.hand.removeCard(handCard))))
+      val newGame = handCard.card.effectsWhenPlayed
+        .foldLeft(removeCard.currentGame)((game, effect) => effect.activateEffect(game))
+      Outcome(copy(currentGame = newGame)).addGlobalEvents(TerverakEvents.HandChanged(true, newGame.currentPlayer.hand)).addGlobalEvents(TerverakEvents.MinionBoardChanged(newGame.currentPlayer.minionBoard, newGame.waitingPlayer.minionBoard))
     case FrameTick =>
       Outcome(this)
     case _ => Outcome(this)
