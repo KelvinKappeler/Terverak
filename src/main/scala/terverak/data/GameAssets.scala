@@ -34,15 +34,24 @@ object GameAssets {
       )
   }
 
+  /**
+    * Backgrounds assets.
+    */
   object Backgrounds {
+
     val discardZone: AssetName = AssetName("discardZone")
+
     val assets: Set[AssetType] =
       Set(
         AssetType.Image(discardZone, AssetPath("assets/discard_zone.png"))
       )
   }
 
+  /**
+    * Heroes assets.
+    */
   object Heroes {
+
     val human = AssetName("human")
     val troll = AssetName("troll")
 
@@ -53,7 +62,11 @@ object GameAssets {
       )
   }
 
+  /**
+    * Audio assets.
+    */
   object Audio {
+
     val batoNoise: AssetName = AssetName("batoNoise")
     
     val assets: Set[AssetType] =
@@ -61,10 +74,12 @@ object GameAssets {
         AssetType.Audio(batoNoise, AssetPath("assets/bato_noise.mp3"))
       )
   }
+
   /**
     * Fonts assets.
     */
   object Fonts {
+
     private val numbersFontName16: AssetName = AssetName("NumbersFont16")
     private val normalFont8Name: AssetName = AssetName("NumbersFont8")
     val fontKey16: FontKey = FontKey("NumbersFont16")

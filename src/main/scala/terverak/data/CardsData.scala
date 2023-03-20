@@ -6,7 +6,6 @@
     
 package terverak.data
 
-import terverak.model.HandCards.MinionHandCard
 import terverak.model.*
 
 /**
@@ -14,34 +13,26 @@ import terverak.model.*
   */
 object CardsData {
   
-  val cards: Set[Card] =
-    Set(
+  val cards: Set[Card] = MinionCards.minionCards ++ SpellCards.spellCards
+
+  object MinionCards {
+    val minionCards = Set(
       bato,
       shinyBato
     )
 
-  val bato: Cards.MinionCard = Cards.MinionCard(
-    "Bato", ("Small boat chilling in the water.","Draw 1 card.","Give 2 mana."), GameAssets.Cards.bato, 1, List(CardEffects.InvokeMinion(MinionHandCard(MinionCardsData.batoMinion, 0))), Nil, 2, 3
+    val bato: Card.MinionCard = Card.MinionCard(
+      "Bato", ("Small boat chilling in the water.","Draw 1 card.","Give 2 mana."), GameAssets.Cards.bato, 0, Nil, Nil, 2, 3
+      )
+
+    val shinyBato: Card.MinionCard = Card.MinionCard(
+      "Shiny Bato", ("An expensive boat","Draw 2 cards","Give 4 mana."), GameAssets.Cards.shinyBato, 0, Nil, Nil, 3, 5
+      )
+  }
+
+  object SpellCards {
+    val spellCards = Set(
+      // List of spells
     )
-
-
-
-  val shinyBato: Cards.MinionCard = Cards.MinionCard(
-    "Shiny Bato", ("An expensive boat","Draw 2 cards","Give 4 mana."), GameAssets.Cards.shinyBato, 2, List(CardEffects.InvokeMinion(MinionHandCard(MinionCardsData.shinyBatoMinion, 0))), Nil, 3, 5
-    )
-
-
-
-
-}
-
-object MinionCardsData {
-
-  val batoMinion: Cards.MinionCard = Cards.MinionCard(
-    "Minion Bato", ("", "", ""), GameAssets.Cards.bato, 1, Nil, Nil, 2, 3
-    )
-
-  val shinyBatoMinion: Cards.MinionCard = Cards.MinionCard(
-    "Minion Shiny Bato", ("", "", ""), GameAssets.Cards.shinyBato, 2, Nil, Nil, 3, 5
-    )
+  }
 }

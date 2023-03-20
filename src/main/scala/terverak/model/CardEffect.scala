@@ -18,6 +18,9 @@ trait CardEffect {
   def activateEffect(game: Game): Game
 }
 
+/**
+  * Card effects types
+  */
 object CardEffects {
 
   /**
@@ -30,7 +33,7 @@ object CardEffects {
     require(amount >= 0, "Healing amount must be equal or greater than 0")
 
     override def activateEffect(game: Game): Game = {
-      game
+      game.copy(currentPlayer = game.currentPlayer.heal(amount))
     }
   }
 
@@ -44,27 +47,28 @@ object CardEffects {
     require(amount >= 0, "Damage amount must be equal or greater than 0")
 
     override def activateEffect(game: Game): Game = {
-      game
+      game.copy(currentPlayer = game.currentPlayer.takeDamage(amount))
     }
   }
 
+  /**
+    * A card effect that invoke a minion on the board.
+    * @param minionCard the minion card
+    */
   final case class InvokeMinion(
-    handMinionCard: HandCards.MinionHandCard
+    minionCard: Card.MinionCard
   ) extends CardEffect {
 
     override def activateEffect(game: Game): Game = {
-      val minionCard = handMinionCard.card
       val newMinionBoard = game.currentPlayer.minionBoard.addMinion(
         Minion(minionCard, minionCard.life, minionCard.life, minionCard.damage)
       )
 
       game.copy(
         currentPlayer = game.currentPlayer.copy(
-          minionBoard = newMinionBoard,
+          minionBoard = newMinionBoard
         )
       )
     }
-
   }
-
 }

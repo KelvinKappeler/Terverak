@@ -9,7 +9,7 @@ package terverak.model
 import indigo.AssetName
 
 /**
-  * A card.
+  * A card model in Terverak.
   */
 sealed trait Card {
   def name: String
@@ -23,7 +23,10 @@ sealed trait Card {
   require(manaCost >= 0, "Mana cost must be equal or greater than 0")
 }
 
-object Cards {
+/**
+  * Cards types
+  */
+object Card {
 
   /**
     * A minion card.
@@ -42,6 +45,9 @@ object Cards {
     require(life >= 1, "Life must be equal or greater than 1")
   }
 
+  /**
+    * A spell card.
+    */
   final case class SpellCard (
     name: String = "Unknown",
     description: (String, String, String) = ("", "", ""),

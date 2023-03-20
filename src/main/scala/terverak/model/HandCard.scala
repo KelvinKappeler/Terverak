@@ -11,21 +11,21 @@ sealed trait HandCard {
   def id: Int
 }
 
-object HandCards {
+object HandCard {
   /**
     * A card in a hand.
     * @param card the card
     * @param id the id of the card in the hand
     */
   final case class MinionHandCard(
-    card: Cards.MinionCard,
+    card: Card.MinionCard,
     id: Int
   ) extends HandCard {
     require(id >= 0, "Id must be positive")
   } 
 
   final case class SpellHandCard(
-    card: Cards.SpellCard,
+    card: Card.SpellCard,
     id: Int
   ) extends HandCard {
     require(id >= 0, "Id must be positive")

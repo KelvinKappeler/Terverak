@@ -56,7 +56,7 @@ object CardView {
           Batch.empty
 
       card match {
-        case Cards.MinionCard(_, _, _, _, _, _, damage, life) =>
+        case Card.MinionCard(_, _, _, _, _, _, damage, life) =>
           batch ++ descriptionBatch
             ++ Batch(
               Text(damage.toString(), x - 2, y + 56, if isCardDragged then depth - 2 else depth + 1, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Yellow)),

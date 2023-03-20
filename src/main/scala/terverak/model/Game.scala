@@ -49,7 +49,13 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
     val newPlayer = currentPlayer.playCard(handCard)
     val newGame = copy(currentPlayer = newPlayer)
 
-    handCard.card.effectsWhenPlayed.foreach(_.activateEffect(newGame))
-    newGame.refresh();
+    handCard match {
+      case HandCard.MinionHandCard(card, _) => CardEffects.InvokeMinion(card).activateEffect(newGame).refresh()
+      case _ => newGame
+    }
+    
+    //Remove comment when it will working
+    //handCard.card.effectsWhenPlayed.foreach(_.activateEffect(newnewGame))
+    //newGame.refresh();
   }
 }
