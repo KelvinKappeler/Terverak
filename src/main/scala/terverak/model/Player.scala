@@ -90,7 +90,7 @@ final case class Player(
     */
   def playCard(handCard: HandCard): Player = {
     require(hand.cards.contains(handCard), "Card must be in the hand")
-    require(mana <= handCard.card.manaCost, "Player must have enough mana to play the card")
+    require(mana >= handCard.card.manaCost, "Player must have enough mana to play the card")
 
     val newHand = hand.removeCard(handCard)
     val newMana = mana - handCard.card.manaCost

@@ -21,7 +21,6 @@ object MinionBoardView {
 
   /**
     * Draws the minionBoard.
-    *
     * @param minionBoard the minionBoard to draw
     * @param minionBoardViewModel the minionBoard view model
     * @param depth the depth of the minionBoard
@@ -35,5 +34,4 @@ object MinionBoardView {
       ++ minionBoard.minions.zip(minionBoardViewModel.minionsViewModel).foldLeft(Batch.empty)((batch, minionAndViewModel) =>
       batch ++ MinionView.draw(minionAndViewModel._1, minionAndViewModel._2, depth - 1))
   }
-  
 }

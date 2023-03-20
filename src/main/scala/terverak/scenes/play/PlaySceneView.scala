@@ -21,7 +21,7 @@ object PlaySceneView {
     Outcome(
       SceneUpdateFragment.empty.addLayer(
         Layer(BindingKey("game"),
-          GameView.draw(model.currentGame, viewModel.gameViewModel) ++ ZoomInfoCardView.draw(model.zoomInfoCard)
+          GameView.draw(model.currentGame, viewModel.gameViewModel)
         )
       )
     )

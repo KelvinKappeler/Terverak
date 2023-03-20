@@ -13,7 +13,7 @@ import terverak.view.DiscardZoneView
 final case class MinionBoardViewModel(
   position: Point, 
   minionsViewModel: List[MinionViewModel]
-  ) {
+) {
 
   private val bounds = Rectangle(position.x, position.y, MinionBoardViewModel.MinionBoardSize.width, MinionBoardViewModel.MinionBoardSize.height)
 
