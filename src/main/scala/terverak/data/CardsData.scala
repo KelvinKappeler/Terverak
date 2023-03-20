@@ -26,7 +26,7 @@ object CardsData {
       )
 
     val shinyBato: Card.MinionCard = Card.MinionCard(
-      "Shiny Bato", ("An expensive boat","Draw 2 cards","Give 4 mana."), GameAssets.Cards.shinyBato, 0, Nil, Nil, 3, 5
+      "Shiny Bato", ("An expensive boat","Draw 2 cards","Give 4 mana."), GameAssets.Cards.shinyBato, 2, Nil, Nil, 3, 5
       )
   }
 
