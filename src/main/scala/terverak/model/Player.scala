@@ -16,7 +16,8 @@ final case class Player(
   mana: Int,
   deck: Deck,
   hand: Hand,
-  minionBoard: MinionBoard
+  minionBoard: MinionBoard,
+  discardZone: DiscardZone
 ) {
 
   /**
@@ -75,11 +76,13 @@ final case class Player(
     * @return the new player
     */
   def discardCard(handCard: HandCard): Player = {
-    require(hand.cards.contains(handCard.card), "Card must be in the hand")
+    require(hand.cards.contains(handCard), "Card must be in the hand")
 
     val newHand = hand.removeCard(handCard)
+    val newDiscardZone = discardZone.addCard(handCard.card)
 
-    copy(hand = newHand)
+
+    copy(hand = newHand, discardZone = newDiscardZone)
   }
 
   /**
@@ -94,8 +97,9 @@ final case class Player(
 
     val newHand = hand.removeCard(handCard)
     val newMana = mana - handCard.card.manaCost
+    val newDiscardZone = discardZone.addCard(handCard.card)
     
-    copy(hand = newHand, mana = newMana)
+    copy(hand = newHand, mana = newMana, discardZone = newDiscardZone)
   }
 
   def startTurn(): Player = {

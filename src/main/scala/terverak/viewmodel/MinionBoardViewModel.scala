@@ -10,10 +10,15 @@ import indigo.*
 import terverak.model.*
 import terverak.view.DiscardZoneView
 
+/**
+  * The view model of a minion board.
+  * @param position the position of the minion board
+  * @param minionsViewModel the view model of the minions
+  */
 final case class MinionBoardViewModel(
   position: Point, 
   minionsViewModel: List[MinionViewModel]
-) {
+  ) {
 
   private val bounds = Rectangle(position.x, position.y, MinionBoardViewModel.MinionBoardSize.width, MinionBoardViewModel.MinionBoardSize.height)
 
@@ -26,6 +31,11 @@ final case class MinionBoardViewModel(
     mouse.wasMousePositionWithin(bounds)
   }
 
+  /**
+    * Update the position of the minions.
+    * @param minionBoard the minion board
+    * @return the updated minion board view model
+    */
   def updateMinionsPosition(minionBoard: MinionBoard): MinionBoardViewModel = {
     def rec(minions: List[Minion], index: Int): List[MinionViewModel] = {
       minions match {
@@ -66,6 +76,6 @@ object MinionBoardViewModel {
 
   val MinionBoardSize: Size = Size((MinionBoardViewModel.MinionSpacing * MinionBoard(List.empty).MaxMinionBoardSize) + MinionBoardViewModel.OffsetX, MinionViewModel.MinionSize.height + 2*MinionBoardViewModel.OffsetY)
 
-  val initialCurrentPlayerMinionBoard: MinionBoardViewModel = MinionBoardViewModel(Point(DiscardZoneView.discardZoneSize.width, HandViewModel.HandSize.height + MinionBoardViewModel.MinionBoardSize.height), List.empty)
-  val initialWaitingPlayerMinionBoard: MinionBoardViewModel = MinionBoardViewModel(Point(DiscardZoneView.discardZoneSize.width, HandViewModel.HandSize.height), List.empty)
+  val initialCurrentPlayerMinionBoard: MinionBoardViewModel = MinionBoardViewModel(Point(DiscardZoneViewModel.DiscardZoneSize.width, HandViewModel.HandSize.height + MinionBoardViewModel.MinionBoardSize.height), List.empty)
+  val initialWaitingPlayerMinionBoard: MinionBoardViewModel = MinionBoardViewModel(Point(DiscardZoneViewModel.DiscardZoneSize.width, HandViewModel.HandSize.height), List.empty)
  }

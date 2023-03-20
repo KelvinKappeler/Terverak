@@ -31,7 +31,7 @@ object GameView {
       MinionBoardView.draw(game.waitingPlayer.minionBoard, gameViewModel.waitingPlayerViewModel.minionBoardViewModel, 40) ++
       PlayerView.draw(game.currentPlayer, gameViewModel.currentPlayerViewModel) ++
       PlayerView.draw(game.waitingPlayer, gameViewModel.waitingPlayerViewModel) ++
-      DiscardZoneView.draw(Point(0, HandViewModel.HandSize.height)) ++
-      DiscardZoneView.draw(Point(0, HandViewModel.HandSize.height + DiscardZoneView.discardZoneSize.height))
+      DiscardZoneView.draw(game.currentPlayer.discardZone, gameViewModel.currentPlayerViewModel.discardZoneViewModel) ++
+      DiscardZoneView.draw(game.waitingPlayer.discardZone, gameViewModel.waitingPlayerViewModel.discardZoneViewModel)
   }
 }

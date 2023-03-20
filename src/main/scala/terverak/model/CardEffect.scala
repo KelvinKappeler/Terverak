@@ -47,7 +47,21 @@ object CardEffects {
     require(amount >= 0, "Damage amount must be equal or greater than 0")
 
     override def activateEffect(game: Game): Game = {
-      game.copy(currentPlayer = game.currentPlayer.takeDamage(amount))
+      game.copy(waitingPlayer = game.waitingPlayer.takeDamage(amount))
+    }
+  }
+
+  /**
+   * A card effect that add mana to the hero.
+   * @param amount the amount of mana added
+   */
+  final case class AddManaEffect (
+    amount: Int = 0
+  ) extends CardEffect {
+    require(amount >= 0, "Mana amount must be equal or greater than 0")
+
+    override def activateEffect(game: Game): Game = {
+      game.copy(currentPlayer = game.currentPlayer.addMana(amount))
     }
   }
 

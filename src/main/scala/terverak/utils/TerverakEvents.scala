@@ -21,5 +21,6 @@ object TerverakEvents {
   final case class ShowDescription(handCard: HandCard) extends GlobalEvent
   final case class ClearDescription() extends GlobalEvent
   final case class PlayCard(handCard: HandCard) extends GlobalEvent
+  final case class DiscardCard(handCard: HandCard) extends GlobalEvent
 
 }

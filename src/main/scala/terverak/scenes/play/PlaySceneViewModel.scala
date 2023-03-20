@@ -59,6 +59,9 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel) {
       if (gameViewModel.currentPlayerViewModel.minionBoardViewModel.checkMouseOverMinionBoard(context.mouse)
         || gameViewModel.waitingPlayerViewModel.minionBoardViewModel.checkMouseOverMinionBoard(context.mouse)) {
         Outcome(this).addGlobalEvents(TerverakEvents.PlayCard(handCard))
+      } else if (gameViewModel.currentPlayerViewModel.discardZoneViewModel.checkMouseOverDiscardZone(context.mouse)
+        || gameViewModel.waitingPlayerViewModel.discardZoneViewModel.checkMouseOverDiscardZone(context.mouse)) {
+        Outcome(this).addGlobalEvents(TerverakEvents.DiscardCard(handCard))      
       } else {
         Outcome(this)
       }

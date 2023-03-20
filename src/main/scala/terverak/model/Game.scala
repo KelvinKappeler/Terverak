@@ -35,9 +35,7 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
   def discardCard(handCard: HandCard): Game = {
     val newPlayer = currentPlayer.discardCard(handCard)
     val newGame = copy(currentPlayer = newPlayer)
-
-    handCard.card.effectsWhenDiscard.foreach(_.activateEffect(newGame))
-    newGame.refresh();
+    handCard.card.effectsWhenDiscard.foldLeft(newGame)((game, effect) => effect.activateEffect(game)).refresh()
   }
 
   /**
@@ -50,8 +48,13 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
       val newPlayer = currentPlayer.playCard(handCard)
       val newGame = copy(currentPlayer = newPlayer)
       handCard.card match {
-        case minion: Card.MinionCard => (CardEffects.InvokeMinion(minion).activateEffect(newGame).refresh(), true)
-        case _ => (newGame, true)
+        case minion: Card.MinionCard => 
+          val gameWithInvoke = CardEffects.InvokeMinion(minion).activateEffect(newGame).refresh()
+          val gameWithInvokeAndEffect = handCard.card.effectsWhenPlayed.foldLeft(gameWithInvoke)((game, effect) => effect.activateEffect(game))
+          (gameWithInvokeAndEffect, true)
+        case spell: Card.SpellCard => 
+          val gameWithEffect = handCard.card.effectsWhenPlayed.foldLeft(newGame)((game, effect) => effect.activateEffect(game))
+          (gameWithEffect, true)
       }
     } else {
       (this, false)

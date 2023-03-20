@@ -40,6 +40,12 @@ final case class PlaySceneModel(currentGame: Game) {
       } else {
         Outcome(this)
       }
+    case TerverakEvents.DiscardCard(handCard) =>
+      // Discard a card from the hand
+      val newGame = currentGame.discardCard(handCard)
+      Outcome(copy(currentGame = newGame))
+        .addGlobalEvents(TerverakEvents.HandChanged(true, newGame.currentPlayer.hand))
+        .addGlobalEvents(TerverakEvents.MinionBoardChanged(newGame.currentPlayer.minionBoard, newGame.waitingPlayer.minionBoard))
     case _ => Outcome(this)
 
 }
@@ -50,8 +56,8 @@ final case class PlaySceneModel(currentGame: Game) {
 object PlaySceneModel {
 
   private val deck: Deck = Deck(List.fill(9)(CardsData.MinionCards.bato) ++ List.fill(3)(CardsData.MinionCards.shinyBato)).shuffle()
-  private val player1: Player = Player("Player1", 20, 20, 0, deck, Hand(List.empty), MinionBoard(List.empty))
-  private val player2: Player = Player("Player2", 20, 12, 0, deck, Hand(List.empty), MinionBoard(List.empty))
+  private val player1: Player = Player("Player1", 20, 20, 0, deck, Hand(List.empty), MinionBoard(List.empty), DiscardZone(List.empty))
+  private val player2: Player = Player("Player2", 20, 12, 0, deck, Hand(List.empty), MinionBoard(List.empty), DiscardZone(List.empty))
 
   val initial: PlaySceneModel = PlaySceneModel(Game(player1, player2))
 }
