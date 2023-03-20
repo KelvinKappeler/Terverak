@@ -49,8 +49,8 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
     val newPlayer = currentPlayer.playCard(handCard)
     val newGame = copy(currentPlayer = newPlayer)
 
-    handCard match {
-      case HandCard.MinionHandCard(card, _) => CardEffects.InvokeMinion(card).activateEffect(newGame).refresh()
+    handCard.card match {
+      case minion: Card.MinionCard => CardEffects.InvokeMinion(minion).activateEffect(newGame).refresh()
       case _ => newGame
     }
     

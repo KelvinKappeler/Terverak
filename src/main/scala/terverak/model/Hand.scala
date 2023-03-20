@@ -24,10 +24,7 @@ final case class Hand(cards: List[HandCard]) {
     */
   def addCard(card: Card): Hand = {
     require(cards.length < MaxHandSize, "Hand must not be full")
-    card match
-      case minion: Card.MinionCard => copy(cards = HandCard.MinionHandCard(minion, nextId()) :: cards)
-      case spell: Card.SpellCard => copy(cards = HandCard.SpellHandCard(spell, nextId()) :: cards)
-
+    copy(cards = HandCard(card, nextId()) :: cards)
   } ensuring(_.cards.length == cards.length + 1, "Hand length must be increased by 1")
 
   /**
