@@ -24,6 +24,7 @@ final case class Hand(cards: List[HandCard]) {
     */
   def addCard(card: Card): Hand = {
     require(cards.length < MaxHandSize, "Hand must not be full")
+
     copy(cards = HandCard(card, nextId()) :: cards)
   } ensuring(_.cards.length == cards.length + 1, "Hand length must be increased by 1")
 
@@ -46,6 +47,9 @@ final case class Hand(cards: List[HandCard]) {
     copy(cards = removeCardRec(cards))
   } ensuring(_.cards.length == cards.length - 1, "Hand length must be decreased by 1")
 
+  /**
+   * Compute the next id for a card in the hand. 
+   */
   private def nextId(): Int = {
     if (cards.isEmpty) 0 else cards.maxBy(_.id).id + 1
   }

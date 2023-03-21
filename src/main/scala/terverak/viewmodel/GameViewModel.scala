@@ -11,9 +11,7 @@ import terverak.model.*
 /**
   * The view model of the game.
   */
-final case class GameViewModel(currentPlayerViewModel: PlayerViewModel, waitingPlayerViewModel: PlayerViewModel) {
-
-}
+final case class GameViewModel(currentPlayerViewModel: PlayerViewModel, waitingPlayerViewModel: PlayerViewModel)
 
 object GameViewModel {
 

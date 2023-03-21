@@ -27,14 +27,18 @@ final case class MinionBoard(minions: List[Minion]) {
   } ensuring(_.minions.length == minions.length + 1, "Minion board length must be increased by 1")
 
   /**
+    * Refreshes the board.
+    * @return the new board.
+    */
+  def refresh(): MinionBoard = {
+    removeDeadMinions()
+  }
+
+  /**
     * Remove all minions that have 0 or less health points.
     * @return the new board.
     */
-  def removeDeadMinions(): MinionBoard = {
+  private def removeDeadMinions(): MinionBoard = {
     copy(minions = minions.filter(_.healthPoints > 0))
-  }
-
-  def refresh(): MinionBoard = {
-    removeDeadMinions()
   }
 }

@@ -9,18 +9,37 @@ package terverak.utils
 import indigo.*
 import terverak.model.*
 
+/**
+  * The events of the game.
+  */
 object TerverakEvents {
-  
+
+  /**
+    * Triggers when the hand of a player changes.
+    * @param isCurrentPlayer true if the hand belongs to the current player
+    * @param hand the hand
+    */
   final case class HandChanged(isCurrentPlayer: Boolean, hand: Hand) extends GlobalEvent
-  final case class MinionBoardChanged(currentPlayerMinions: MinionBoard, opponentMinions: MinionBoard) extends GlobalEvent
-  final case class LeftClickOnCard(handCard: HandCard) extends GlobalEvent
-  final case class RightClickOnCard(handCard: HandCard) extends GlobalEvent
-  final case class StartDrag(handCard: HandCard, position: Point) extends GlobalEvent
+
+  /**
+    * Triggers when the minion board of a player changes.
+    * @param isCurrentPlayer true if the minion board belongs to the current player
+    * @param minionBoard the minion board
+    */
+  final case class MinionBoardChanged(isCurrentPlayer: Boolean, minionBoard: MinionBoard) extends GlobalEvent
+  
+  /**
+   * Triggers when the drag of a card stops.
+   * @param handCard the card
+   * @param position the position of the card
+   */
   final case class StopDrag(handCard: HandCard, position: Point) extends GlobalEvent
-  final case class KeepDrag(handCard: HandCard, position: Point) extends GlobalEvent
-  final case class ShowDescription(handCard: HandCard) extends GlobalEvent
-  final case class ClearDescription() extends GlobalEvent
-  final case class PlayCard(handCard: HandCard) extends GlobalEvent
-  final case class DiscardCard(handCard: HandCard) extends GlobalEvent
+
+  /**
+   * Triggers when the drag of a card occurs.
+   * @param handCard the card
+   * @param position the position of the card
+   */
+  final case class Drag(handCard: HandCard, position: Point) extends GlobalEvent
 
 }

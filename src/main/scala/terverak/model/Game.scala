@@ -8,21 +8,24 @@ package terverak.model
 
 /**
   * A game of Terverak.
-  * @param currentPlayer
-  * @param waitingPlayer
-  * @param winner
+  * @param currentPlayer the current player
+  * @param waitingPlayer the waiting player
   */
 final case class Game(currentPlayer: Player, waitingPlayer: Player) {
   
-  def startTurn(): Game = {
-    val newPlayer = currentPlayer.startTurn()
-    copy(currentPlayer = newPlayer)
+  /**
+  * New turn in Terverak.
+  * @return the new game
+  */
+  def newTurn(): Game = {
+    copy(currentPlayer = waitingPlayer.startTurn(), waitingPlayer = currentPlayer)
   }
 
-  def endTurn(): Game = {
-    copy(currentPlayer = waitingPlayer, waitingPlayer = currentPlayer)
-  }
-
+  /**
+    * Refresh the game.
+    * It will for example remove minions with <= 0 health points from the board.
+    * @return the new game
+    */
   def refresh(): Game = {
     copy(currentPlayer.refresh(), waitingPlayer.refresh())
   }

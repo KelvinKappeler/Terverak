@@ -7,7 +7,6 @@
 package terverak.viewmodel
 
 import indigo.*
-import indigoextras.geometry.LineIntersectionResult.IntersectionVertex
 import indigoextras.geometry.*
 import indigoextras.ui.*
 import terverak.model.*
@@ -18,7 +17,7 @@ import terverak.utils.*
   */
 final case class CardViewModel(
   position: Point,
-  isRevealed: Boolean,
+  isRevealed: Boolean = true,
   isDragged: Boolean = false,
   isDescriptionShown: Boolean = false,
 ) {

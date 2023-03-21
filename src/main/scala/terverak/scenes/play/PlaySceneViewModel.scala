@@ -10,7 +10,7 @@ import indigo.*
 import indigo.scenes.*
 import terverak.data.*
 import terverak.model.*
-import terverak.utils.TerverakEvents
+import terverak.utils.*
 import terverak.viewmodel.*
 
 /**
@@ -27,76 +27,69 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel) {
         val newWaitingPlayerHand = gameViewModel.waitingPlayerViewModel.handViewModel.updateCardsPosition(hand)
         Outcome(copy(gameViewModel = gameViewModel.copy(waitingPlayerViewModel = gameViewModel.waitingPlayerViewModel.copy(handViewModel = newWaitingPlayerHand))))
       }
-    case TerverakEvents.MinionBoardChanged(currentPlayerBoard, waitingPlayerBoard) =>
-        val newCurrentPlayerMinionBoard = gameViewModel.currentPlayerViewModel.minionBoardViewModel.updateMinionsPosition(currentPlayerBoard)
-        val newWaitingPlayerMinionBoard = gameViewModel.waitingPlayerViewModel.minionBoardViewModel.updateMinionsPosition(waitingPlayerBoard)
+
+    case TerverakEvents.MinionBoardChanged(isCurrentPlayer, playerBoard) =>
+      if (isCurrentPlayer) {
+        val newCurrentPlayerMinionBoard = gameViewModel.currentPlayerViewModel.minionBoardViewModel.updateMinionsPosition(playerBoard)
         Outcome(copy(gameViewModel = gameViewModel.copy(
-          currentPlayerViewModel = gameViewModel.currentPlayerViewModel.copy(minionBoardViewModel = newCurrentPlayerMinionBoard),
-          waitingPlayerViewModel = gameViewModel.waitingPlayerViewModel.copy(minionBoardViewModel = newWaitingPlayerMinionBoard)
-        )))
-    case TerverakEvents.RightClickOnCard(handCard) =>
-      logger.consoleLog("name: " + handCard.card.name + ", id: " + handCard.id)
-      Outcome(this)
-    
-    case TerverakEvents.StartDrag(handCard, pos) =>
-      Outcome(this).addGlobalEvents(TerverakEvents.KeepDrag(handCard, pos))
-    case TerverakEvents.KeepDrag(handCard, pos) =>
+          currentPlayerViewModel = gameViewModel.currentPlayerViewModel.copy(minionBoardViewModel = newCurrentPlayerMinionBoard))))
+      } else {
+        val newWaitingPlayerMinionBoard = gameViewModel.waitingPlayerViewModel.minionBoardViewModel.updateMinionsPosition(playerBoard)
+        Outcome(copy(gameViewModel = gameViewModel.copy(
+          waitingPlayerViewModel = gameViewModel.waitingPlayerViewModel.copy(minionBoardViewModel = newWaitingPlayerMinionBoard))))
+      }
+
+    case TerverakEvents.Drag(handCard, pos) =>
       if (context.mouse.isLeftDown) {
         val newPos = Point(context.mouse.position.x - CardViewModel.CardSize.width / 2, context.mouse.position.y - CardViewModel.CardSize.height / 2)
         Outcome(copy(
           gameViewModel = gameViewModel.copy(
             currentPlayerViewModel = gameViewModel.currentPlayerViewModel.copy(
-              handViewModel = gameViewModel.currentPlayerViewModel.handViewModel.updateUniqueCardPosition(model.currentGame.currentPlayer.hand, handCard, newPos)
+              handViewModel = gameViewModel.currentPlayerViewModel.handViewModel.moveUniqueCard(model.currentGame.currentPlayer.hand, handCard, newPos)
             )
           )
-        )).addGlobalEvents(TerverakEvents.KeepDrag(handCard, context.mouse.position))
+        )).addGlobalEvents(TerverakEvents.Drag(handCard, context.mouse.position))
       } else {
         val refreshHand = gameViewModel.currentPlayerViewModel.handViewModel.updateCardsPosition(model.currentGame.currentPlayer.hand)
         Outcome(copy(gameViewModel = gameViewModel.copy(currentPlayerViewModel = gameViewModel.currentPlayerViewModel.copy(handViewModel = refreshHand))))
           .addGlobalEvents(TerverakEvents.StopDrag(handCard, context.mouse.position))
       }
+
     case TerverakEvents.StopDrag(handCard, pos) =>
       if (gameViewModel.currentPlayerViewModel.minionBoardViewModel.checkMouseOverMinionBoard(context.mouse)
         || gameViewModel.waitingPlayerViewModel.minionBoardViewModel.checkMouseOverMinionBoard(context.mouse)) {
-        Outcome(this).addGlobalEvents(TerverakEvents.PlayCard(handCard))
+        Outcome(this).addGlobalEvents(FutureEvents.PlayCard(handCard))
       } else if (gameViewModel.currentPlayerViewModel.discardZoneViewModel.checkMouseOverDiscardZone(context.mouse)
         || gameViewModel.waitingPlayerViewModel.discardZoneViewModel.checkMouseOverDiscardZone(context.mouse)) {
-        Outcome(this).addGlobalEvents(TerverakEvents.DiscardCard(handCard))      
+        Outcome(this).addGlobalEvents(FutureEvents.DiscardCard(handCard))      
       } else {
         Outcome(this)
       }
 
-    case TerverakEvents.ShowDescription(newCard) =>
+    case FutureEvents.ShowDescription(newCard) =>
       val newHandViewModel = gameViewModel.currentPlayerViewModel.handViewModel.showDescription(model.currentGame.currentPlayer.hand, newCard)
       Outcome(copy(gameViewModel = gameViewModel.copy(currentPlayerViewModel = gameViewModel.currentPlayerViewModel.copy(handViewModel = newHandViewModel))))
 
-    case TerverakEvents.ClearDescription() =>
+    case FutureEvents.ClearDescription() =>
       val newHandViewModel = gameViewModel.currentPlayerViewModel.handViewModel.clearDescription(model.currentGame.currentPlayer.hand)
       Outcome(copy(gameViewModel = gameViewModel.copy(currentPlayerViewModel = gameViewModel.currentPlayerViewModel.copy(handViewModel = newHandViewModel))))
-      
 
-    case MouseEvent.MouseUp(_, MouseButton.RightMouseButton) =>
-      gameViewModel.currentPlayerViewModel.handViewModel.getCardUnderMouse(context.mouse, model.currentGame.currentPlayer.hand) match {
-        case Some(handCard) =>
-          Outcome(this).addGlobalEvents(TerverakEvents.RightClickOnCard(handCard))
-        case None =>
-          Outcome(this)
-        }
     case MouseEvent.MouseDown(position, MouseButton.LeftMouseButton) =>
       gameViewModel.currentPlayerViewModel.handViewModel.getCardUnderMouse(context.mouse, model.currentGame.currentPlayer.hand) match {
         case Some(handCard) =>
-          Outcome(this).addGlobalEvents(TerverakEvents.StartDrag(handCard, position))
+          Outcome(this).addGlobalEvents(TerverakEvents.Drag(handCard, position))
         case None =>
           Outcome(this)
         }
+
     case MouseEvent.Move(_) =>
       val handViewModel = gameViewModel.currentPlayerViewModel.handViewModel
       if (handViewModel.cardsViewModel.forall(!_.isDragged)) then
         handViewModel.getCardUnderMouse(context.mouse, model.currentGame.currentPlayer.hand) match {
           case Some(handCard) =>
-            Outcome(this).addGlobalEvents(TerverakEvents.ClearDescription()).addGlobalEvents(TerverakEvents.ShowDescription(handCard))
+            Outcome(this).addGlobalEvents(FutureEvents.ShowDescription(handCard))
           case None =>
-            Outcome(this).addGlobalEvents(TerverakEvents.ClearDescription())
+            Outcome(this).addGlobalEvents(FutureEvents.ClearDescription())
           }
       else
         Outcome(this)
