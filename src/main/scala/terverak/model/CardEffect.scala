@@ -54,7 +54,7 @@ object CardEffects {
       game.copy(waitingPlayer = game.waitingPlayer.takeDamage(amount))
     }
 
-    override def toString: String = "Deal " + amount + "damage to the opponent hero"
+    override def toString: String = "Deal " + amount + " damage to the opponent hero"
   }
 
   /**
@@ -70,7 +70,7 @@ object CardEffects {
       game.copy(currentPlayer = game.currentPlayer.addMana(amount))
     }
 
-        override def toString: String = "Add " + amount + "mana to your mana pool"
+        override def toString: String = "Add " + amount + " mana to your mana pool"
   }
 
   /**
