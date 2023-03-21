@@ -33,7 +33,7 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
     * @return the new game
     */
   def discardCard(handCard: HandCard): Game = {
-    val newPlayer = currentPlayer.discardCard(handCard)
+    val newPlayer = currentPlayer.moveHandCardToDiscardZone(handCard)
     val newGame = copy(currentPlayer = newPlayer)
     handCard.card.effectsWhenDiscard.foldLeft(newGame)((game, effect) => effect.activateEffect(game)).refresh()
   }
@@ -45,7 +45,7 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
     */
   def playCard(handCard: HandCard): (Game, Boolean) = {
     if (isCardPlayable(handCard)) {
-      val newPlayer = currentPlayer.playCard(handCard)
+      val newPlayer = currentPlayer.moveHandCardToDiscardZone(handCard).removeMana(handCard.card.manaCost)
       val newGame = copy(currentPlayer = newPlayer)
       handCard.card match {
         case minion: Card.MinionCard => 
@@ -59,9 +59,6 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
     } else {
       (this, false)
     }
-    //Remove comment when it will working
-    //handCard.card.effectsWhenPlayed.foreach(_.activateEffect(newnewGame))
-    //newGame.refresh();
   }
 
   def isCardPlayable(handCard: HandCard): Boolean = {

@@ -13,7 +13,7 @@ import indigo.*
   */
 object GameAssets {
   
-  private val assetsDirectory: String = "assets/"
+  private val AssetsDirectory: String = "assets/"
 
   val assets: Set[AssetType] = Cards.assets ++ Fonts.assets ++ Backgrounds.assets ++ Heroes.assets ++ Audio.assets
 
@@ -22,15 +22,17 @@ object GameAssets {
     */
   object Cards {
 
+    private val AssetCardsDirectory: String = AssetsDirectory + "cards/"
+
     val bato: AssetName = AssetName("batoCard")
     val shinyBato: AssetName = AssetName("shinyBatoCard")
     val cardBack: AssetName = AssetName("cardBack")
 
     val assets: Set[AssetType] =
       Set(
-        AssetType.Image(bato, AssetPath("assets/bato.png")),
-        AssetType.Image(cardBack, AssetPath("assets/card_back.png")),
-        AssetType.Image(shinyBato, AssetPath("assets/shiny_bato.png"))
+        AssetType.Image(bato, AssetPath(AssetCardsDirectory + "bato.png")),
+        AssetType.Image(cardBack, AssetPath(AssetCardsDirectory + "card_back.png")),
+        AssetType.Image(shinyBato, AssetPath(AssetCardsDirectory + "shiny_bato.png"))
       )
   }
 
@@ -43,7 +45,7 @@ object GameAssets {
 
     val assets: Set[AssetType] =
       Set(
-        AssetType.Image(discardZone, AssetPath("assets/discard_zone.png"))
+        AssetType.Image(discardZone, AssetPath(AssetsDirectory + "discard_zone.png"))
       )
   }
 
@@ -57,8 +59,8 @@ object GameAssets {
 
     val assets: Set[AssetType] =
       Set(
-        AssetType.Image(human, AssetPath("assets/hero_human.png")),
-        AssetType.Image(troll, AssetPath("assets/hero_troll.png"))
+        AssetType.Image(human, AssetPath(AssetsDirectory + "hero_human.png")),
+        AssetType.Image(troll, AssetPath(AssetsDirectory + "hero_troll.png"))
       )
   }
 
@@ -67,11 +69,13 @@ object GameAssets {
     */
   object Audio {
 
+    private val AssetAudioDirectory: String = AssetsDirectory + "audio/"
+
     val batoNoise: AssetName = AssetName("batoNoise")
     
     val assets: Set[AssetType] =
       Set(
-        AssetType.Audio(batoNoise, AssetPath("assets/bato_noise.mp3"))
+        AssetType.Audio(batoNoise, AssetPath(AssetAudioDirectory + "bato_noise.mp3"))
       )
   }
 
@@ -79,6 +83,8 @@ object GameAssets {
     * Fonts assets.
     */
   object Fonts {
+
+    private val AssetFontsDirectory: String = AssetsDirectory + "fonts/"
 
     private val numbersFontName16: AssetName = AssetName("NumbersFont16")
     private val normalFont8Name: AssetName = AssetName("NumbersFont8")
@@ -147,8 +153,8 @@ object GameAssets {
 
     val assets: Set[AssetType] =
       Set(
-        AssetType.Image(Fonts.numbersFontName16, AssetPath(assetsDirectory + "font_numbers16.png")),
-        AssetType.Image(Fonts.normalFont8Name, AssetPath(assetsDirectory + "font_normal8.png")),
+        AssetType.Image(Fonts.numbersFontName16, AssetPath(AssetFontsDirectory + "font_numbers16.png")),
+        AssetType.Image(Fonts.normalFont8Name, AssetPath(AssetFontsDirectory + "font_normal8.png")),
       )
   }
 }

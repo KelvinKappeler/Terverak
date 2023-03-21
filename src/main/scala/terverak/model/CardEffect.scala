@@ -52,7 +52,7 @@ object CardEffects {
   }
 
   /**
-   * A card effect that add mana to the hero.
+   * A card effect that add mana to the current player.
    * @param amount the amount of mana added
    */
   final case class AddManaEffect (

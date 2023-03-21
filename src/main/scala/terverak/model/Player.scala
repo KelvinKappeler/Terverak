@@ -21,7 +21,7 @@ final case class Player(
 ) {
 
   /**
-    * Takes damage for the player.
+    * The player takes an amount of damage.
     * @param amount the amount of damage to take.
     * @return the new player.
     */
@@ -42,12 +42,22 @@ final case class Player(
     copy(healthPoints = Math.min(healthPoints + amount, maxHealthPoints))
   } ensuring(player => player.healthPoints == Math.min(healthPoints + amount, player.maxHealthPoints), "Player health points must be increased by the healing amount")
 
+  /**
+    * Adds mana to the player.
+    * @param amount the amount of mana to add.
+    * @return the new player.
+    */
   def addMana(amount: Int): Player = {
     require(amount >= 0, "Mana amount must be equal or greater than 0")
 
     copy(mana = mana + amount)
   } ensuring(_.mana == mana + amount, "Player mana must be increased by the mana amount")
 
+  /**
+    * Removes mana from the player.
+    * @param amount the amount of mana to remove.
+    * @return the new player.
+    */
   def removeMana(amount: Int): Player = {
     require(amount >= 0, "Mana amount must be equal or greater than 0")
     require(mana - amount >= 0, "Player must not have negative mana")
@@ -67,45 +77,32 @@ final case class Player(
     else
       val (newDeck, drawnCard) = deck.removeTopCard()
       val newHand = hand.addCard(drawnCard)
-      copy(deck = newDeck, hand = newHand)
+      copy(deck = newDeck, hand = newHand).drawCards(amount - 1)
   }
 
   /**
-    * Discards a card from the hand.
-    * @param card the card to discard.
-    * @return the new player
+    * Move a card from the hand to the discard zone.
+    * @param handCard the card to move.
+    * @return the new player.
     */
-  def discardCard(handCard: HandCard): Player = {
+  def moveHandCardToDiscardZone(handCard: HandCard): Player = {
     require(hand.cards.contains(handCard), "Card must be in the hand")
 
-    val newHand = hand.removeCard(handCard)
-    val newDiscardZone = discardZone.addCard(handCard.card)
-
-
-    copy(hand = newHand, discardZone = newDiscardZone)
+    copy(hand = hand.removeCard(handCard), discardZone = discardZone.addCard(handCard.card))
   }
 
   /**
-    * Plays a card from the hand.
-    *
-    * @param card The card to play.
-    * @return The new player and the effects of the played card.
+    * Begins the player's turn.
+    * @return the new player.
     */
-  def playCard(handCard: HandCard): Player = {
-    require(hand.cards.contains(handCard), "Card must be in the hand")
-    require(mana >= handCard.card.manaCost, "Player must have enough mana to play the card")
-
-    val newHand = hand.removeCard(handCard)
-    val newMana = mana - handCard.card.manaCost
-    val newDiscardZone = discardZone.addCard(handCard.card)
-    
-    copy(hand = newHand, mana = newMana, discardZone = newDiscardZone)
-  }
-
   def startTurn(): Player = {
-    drawCards(1)
+    drawCards(2)
   }
 
+  /**
+    * Refreshes the player's board.
+    * @return the new player.
+    */
   def refresh(): Player = {
     copy(minionBoard = minionBoard.refresh())
   }
