@@ -26,13 +26,16 @@ object GameAssets {
 
     val bato: AssetName = AssetName("batoCard")
     val shinyBato: AssetName = AssetName("shinyBatoCard")
+    val planet1: AssetName = AssetName("planet1")
+
     val cardBack: AssetName = AssetName("cardBack")
 
     val assets: Set[AssetType] =
       Set(
         AssetType.Image(bato, AssetPath(AssetCardsDirectory + "bato.png")),
         AssetType.Image(cardBack, AssetPath(AssetCardsDirectory + "card_back.png")),
-        AssetType.Image(shinyBato, AssetPath(AssetCardsDirectory + "shiny_bato.png"))
+        AssetType.Image(shinyBato, AssetPath(AssetCardsDirectory + "shiny_bato.png")),
+        AssetType.Image(planet1, AssetPath(AssetCardsDirectory + "planet1.png"))
       )
   }
 

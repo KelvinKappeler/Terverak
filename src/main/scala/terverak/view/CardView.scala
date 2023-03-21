@@ -16,6 +16,10 @@ import terverak.viewmodel.*
   */
 object CardView {
   
+  private val description_x = HandViewModel.HandSize.width + PlayerViewModel.HeroSize.width
+  private val description_y = HandViewModel.HandSize.height
+  private val textOffset = 12
+
   /**
     * Draws a card.
     * @param card the card to draw
@@ -30,11 +34,6 @@ object CardView {
     val cardHeight = CardViewModel.CardSize.height
     val isCardDragged = cardViewModel.isDragged
 
-    val description_x = HandViewModel.HandSize.width + PlayerViewModel.HeroSize.width
-    val description_y = HandViewModel.HandSize.height
-    val textOffset = 12
-    val desc = card.description
-
     if (cardViewModel.isRevealed) {
       val batch: Batch[Graphic[_]] = 
         if (isCardDragged) then
@@ -46,12 +45,12 @@ object CardView {
         if (cardViewModel.isDescriptionShown || cardViewModel.isDragged) then
           Batch(
             Text(card.name + ":", description_x, description_y, 100, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Orange)),
-            Text(desc._1, description_x, description_y + textOffset, 100, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Orange)),
+            Text(card.description, description_x, description_y + textOffset, 100, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Orange)),
             Text("Effect when played:", description_x, description_y + CardViewModel.DescriptionOffset + textOffset, 100, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Purple)),
-            Text(desc._2, description_x, description_y + CardViewModel.DescriptionOffset + 2*textOffset, 100, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.White)),
+            //Text(desc._2, description_x, description_y + CardViewModel.DescriptionOffset + 2*textOffset, 100, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.White)),
             Text("Effect when discard:", description_x, description_y + 2*CardViewModel.DescriptionOffset + 2*textOffset, 100, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Purple)),
-            Text(desc._3, description_x, description_y + 2*CardViewModel.DescriptionOffset + 3*textOffset, 100, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.White))
-            )
+            //Text(desc._3, description_x, description_y + 2*CardViewModel.DescriptionOffset + 3*textOffset, 100, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.White))
+            ) ++ computeBatchForEffectsDescription(card.effectsWhenPlayed)
         else
           Batch.empty
 
@@ -72,5 +71,19 @@ object CardView {
     } else {
       Batch(Graphic(x, y, cardWidth, cardHeight, depth, Material.Bitmap(GameAssets.Cards.cardBack)))
     }
+  }
+
+  private def computeBatchForEffectsDescription(effects: List[CardEffect]): Batch[Text[_]] = {
+    def rec(effects: List[CardEffect], index: Int): Batch[Text[_]] = {
+      effects match {
+        case Nil => Batch()
+        case head :: tail => 
+          Batch(
+            Text(head.toString(), description_x, description_y + CardViewModel.DescriptionOffset + index * textOffset, 100, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.White)),
+          ) ++ rec(tail, index + 1)
+      }
+    }
+    
+    rec(effects, 0)
   }
 }

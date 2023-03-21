@@ -32,7 +32,6 @@ final case class CardViewModel(
   def checkMouseOverCard(mouse: Mouse): Boolean = {
     mouse.wasMousePositionWithin(bounds)
   }
-
 }
 
 object CardViewModel {

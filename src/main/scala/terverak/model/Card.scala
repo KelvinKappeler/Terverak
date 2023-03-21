@@ -13,7 +13,7 @@ import indigo.AssetName
   */
 sealed trait Card {
   def name: String
-  def description: (String, String, String)
+  def description: String
   def imageName: AssetName
   def manaCost: Int
   def effectsWhenPlayed: List[CardEffect]
@@ -33,7 +33,7 @@ object Card {
     */
   final case class MinionCard (
     name: String = "Unknown",
-    description: (String, String, String) = ("", "", ""),
+    description: String = "",
     imageName: AssetName,
     manaCost: Int = 1,
     effectsWhenPlayed: List[CardEffect] = Nil,
@@ -50,7 +50,7 @@ object Card {
     */
   final case class SpellCard (
     name: String = "Unknown",
-    description: (String, String, String) = ("", "", ""),
+    description: String = "",
     imageName: AssetName,
     manaCost: Int = 1,
     effectsWhenPlayed: List[CardEffect] = Nil,

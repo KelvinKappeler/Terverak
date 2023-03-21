@@ -16,6 +16,8 @@ trait CardEffect {
     * Activates the effect of the card
     */
   def activateEffect(game: Game): Game
+
+  override def toString: String = "Unknown effect"
 }
 
 /**
@@ -35,10 +37,12 @@ object CardEffects {
     override def activateEffect(game: Game): Game = {
       game.copy(currentPlayer = game.currentPlayer.heal(amount))
     }
+
+    override def toString: String = "Heal your hero for " + amount + " health points"
   }
 
   /**
-  * A card effect that damages the hero.
+  * A card effect that damages the opponent hero.
   * @param amount the amount of damage healed
   */
   final case class DamageHeroEffect (
@@ -49,6 +53,8 @@ object CardEffects {
     override def activateEffect(game: Game): Game = {
       game.copy(waitingPlayer = game.waitingPlayer.takeDamage(amount))
     }
+
+    override def toString: String = "Deal " + amount + "damage to the opponent hero"
   }
 
   /**
@@ -63,6 +69,8 @@ object CardEffects {
     override def activateEffect(game: Game): Game = {
       game.copy(currentPlayer = game.currentPlayer.addMana(amount))
     }
+
+        override def toString: String = "Add " + amount + "mana to your mana pool"
   }
 
   /**
@@ -84,5 +92,7 @@ object CardEffects {
         )
       )
     }
+
+    override def toString: String = "Invoke a minion on the board"
   }
 }
