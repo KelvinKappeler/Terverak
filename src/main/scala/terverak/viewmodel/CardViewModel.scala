@@ -35,6 +35,5 @@ final case class CardViewModel(
 }
 
 object CardViewModel {
-  val DescriptionOffset = 30
   val CardSize: Size = Size(32, 64)
 }

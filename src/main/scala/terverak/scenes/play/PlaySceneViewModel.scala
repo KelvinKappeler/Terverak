@@ -87,7 +87,7 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel) {
       if (handViewModel.cardsViewModel.forall(!_.isDragged)) then
         handViewModel.getCardUnderMouse(context.mouse, model.currentGame.currentPlayer.hand) match {
           case Some(handCard) =>
-            Outcome(this).addGlobalEvents(FutureEvents.ShowDescription(handCard))
+            Outcome(this).addGlobalEvents(FutureEvents.ClearDescription()).addGlobalEvents(FutureEvents.ShowDescription(handCard))
           case None =>
             Outcome(this).addGlobalEvents(FutureEvents.ClearDescription())
           }

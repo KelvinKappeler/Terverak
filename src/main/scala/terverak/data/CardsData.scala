@@ -29,7 +29,7 @@ object CardsData {
       )
 
     val shinyBato: Card.MinionCard = Card.MinionCard(
-      "Shiny Bato", "An expensive boat", GameAssets.Cards.shinyBato, 2, List(CardEffects.DamageHeroEffect(1)), List(CardEffects.AddManaEffect(2)), 3, 5
+      "Shiny Bato", "An expensive boat", GameAssets.Cards.shinyBato, 2, List(CardEffects.DamageHeroEffect(1), CardEffects.DamageHeroEffect(1)), List(CardEffects.AddManaEffect(2)), 3, 5
       )
 
     val planet1: Card.MinionCard = Card.MinionCard(
