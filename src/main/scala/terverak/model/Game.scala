@@ -18,7 +18,8 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
   * @return the new game
   */
   def newTurn(): Game = {
-    copy(currentPlayer = waitingPlayer.startTurn(), waitingPlayer = currentPlayer)
+    val newCurrentPlayer = currentPlayer.removeMana(currentPlayer.mana)
+    copy(currentPlayer = waitingPlayer.startTurn(), waitingPlayer = newCurrentPlayer)
   }
 
   /**

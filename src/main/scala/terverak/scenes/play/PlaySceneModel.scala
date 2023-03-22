@@ -30,6 +30,14 @@ final case class PlaySceneModel(currentGame: Game) {
       val newGame = copy(currentGame = currentGame.copy(waitingPlayer = newWaitingPlayer))
       Outcome(copy(currentGame = currentGame.copy(waitingPlayer = newWaitingPlayer)))
         .addGlobalEvents(TerverakEvents.HandChanged(false, newGame.currentGame.waitingPlayer.hand))
+    case KeyboardEvent.KeyDown(Key.ENTER) =>
+      // End the turn
+      val newGame = currentGame.newTurn()
+      Outcome(copy(currentGame = newGame))
+        .addGlobalEvents(TerverakEvents.HandChanged(true, newGame.currentPlayer.hand))
+        .addGlobalEvents(TerverakEvents.MinionBoardChanged(true, newGame.currentPlayer.minionBoard))
+        .addGlobalEvents(TerverakEvents.HandChanged(false, newGame.waitingPlayer.hand))
+        .addGlobalEvents(TerverakEvents.MinionBoardChanged(false, newGame.waitingPlayer.minionBoard))
     case FutureEvents.PlayCard(handCard) =>
       // Play a card from the hand
       val (newGame, wasCardPlayed) = currentGame.playCard(handCard)
