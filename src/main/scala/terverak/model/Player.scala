@@ -6,11 +6,14 @@
 
 package terverak.model
 
+import indigo.*
+
 /**
   * A player.
   */
 final case class Player(
   name: String,
+  heroPicture: AssetName,
   maxHealthPoints: Int,
   healthPoints: Int,
   mana: Int,

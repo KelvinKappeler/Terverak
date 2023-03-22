@@ -14,7 +14,7 @@ import terverak.utils.*
 /**
   * The view model of the player.
   */
-final case class PlayerViewModel(position: Point, handViewModel: HandViewModel, minionBoardViewModel: MinionBoardViewModel, discardZoneViewModel: DiscardZoneViewModel, heroPicture: AssetName) {
+final case class PlayerViewModel(position: Point, handViewModel: HandViewModel, minionBoardViewModel: MinionBoardViewModel, discardZoneViewModel: DiscardZoneViewModel) {
   private val bounds = Rectangle(position.x, position.y, PlayerViewModel.HeroSize.width, PlayerViewModel.HeroSize.height)
 
 }
@@ -23,7 +23,7 @@ final case class PlayerViewModel(position: Point, handViewModel: HandViewModel, 
 object PlayerViewModel {
   val HeroSize = Size(72, 72)
 
-  val initialCurrentPlayer: PlayerViewModel = PlayerViewModel(Point(HandViewModel.HandSize.width, HandViewModel.HandSize.height + MinionBoardViewModel.MinionBoardSize.height), HandViewModel.initialCurrentPlayerHand, MinionBoardViewModel.initialCurrentPlayerMinionBoard, DiscardZoneViewModel.initialCurrentPlayerDiscardZone, GameAssets.Heroes.human)
-  val initialWaitingPlayer: PlayerViewModel = PlayerViewModel(Point(HandViewModel.HandSize.width, HandViewModel.HandSize.height), HandViewModel.initialWaitingPlayerHand, MinionBoardViewModel.initialWaitingPlayerMinionBoard, DiscardZoneViewModel.initialWaitingPlayerDiscardZone, GameAssets.Heroes.troll)
+  val initialCurrentPlayer: PlayerViewModel = PlayerViewModel(Point(HandViewModel.HandSize.width, HandViewModel.HandSize.height + MinionBoardViewModel.MinionBoardSize.height), HandViewModel.initialCurrentPlayerHand, MinionBoardViewModel.initialCurrentPlayerMinionBoard, DiscardZoneViewModel.initialCurrentPlayerDiscardZone)
+  val initialWaitingPlayer: PlayerViewModel = PlayerViewModel(Point(HandViewModel.HandSize.width, HandViewModel.HandSize.height), HandViewModel.initialWaitingPlayerHand, MinionBoardViewModel.initialWaitingPlayerMinionBoard, DiscardZoneViewModel.initialWaitingPlayerDiscardZone)
 
 }
