@@ -7,6 +7,7 @@
 package terverak.viewmodel
 
 import indigo.*
+import terverak.model.IdObject.*
 import terverak.model.*
 import terverak.view.DiscardZoneView
 
@@ -47,7 +48,7 @@ final case class HandViewModel(
     */
   def moveUniqueCard(hand: Hand, card: HandCard, newPos: Point): HandViewModel = {
     val index = hand.cards.indexOf(card)
-    val cardViewModel = CardViewModel(newPos, isRevealed, true)
+    val cardViewModel = CardViewModel(newPos, isRevealed, isDragged = true)
     copy(cardsViewModel = cardsViewModel.updated(index, cardViewModel))
   }
 

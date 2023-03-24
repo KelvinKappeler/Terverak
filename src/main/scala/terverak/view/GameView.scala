@@ -27,8 +27,8 @@ object GameView {
       DeckView.draw(game.waitingPlayer.deck, Point(40 * 7 + 7, 4)) ++
       HandView.draw(game.currentPlayer.hand, gameViewModel.currentPlayerViewModel.handViewModel, 40) ++
       HandView.draw(game.waitingPlayer.hand, gameViewModel.waitingPlayerViewModel.handViewModel, 40) ++
-      MinionBoardView.draw(game.currentPlayer.minionBoard, gameViewModel.currentPlayerViewModel.minionBoardViewModel, 40) ++
-      MinionBoardView.draw(game.waitingPlayer.minionBoard, gameViewModel.waitingPlayerViewModel.minionBoardViewModel, 40) ++
+      MinionBoardView.draw(game.currentPlayer.minionBoard, gameViewModel.currentPlayerViewModel.minionBoardViewModel, true, 40) ++
+      MinionBoardView.draw(game.waitingPlayer.minionBoard, gameViewModel.waitingPlayerViewModel.minionBoardViewModel, false, 40) ++
       PlayerView.draw(game.currentPlayer, gameViewModel.currentPlayerViewModel) ++
       PlayerView.draw(game.waitingPlayer, gameViewModel.waitingPlayerViewModel) ++
       DiscardZoneView.draw(game.currentPlayer.discardZone, gameViewModel.currentPlayerViewModel.discardZoneViewModel) ++

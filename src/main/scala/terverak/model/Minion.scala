@@ -12,7 +12,7 @@ package terverak.model
   * @param healthPoints the current health points of the minion.
   * @param attackPoints the attack points of the minion.
   */
-final case class Minion(card: Card.MinionCard, maxHP: Int, healthPoints: Int, attackPoints: Int) {
+final case class Minion(card: Card.MinionCard, maxHP: Int, healthPoints: Int, attackPoints: Int, canAttack: Boolean) {
   require(maxHP > 0, "Max HP must be greater than 0")
   require(attackPoints >= 0, "Attack points must be equal or greater than 0")
   require(healthPoints <= maxHP, "Health points must be equal or lower than max HP")

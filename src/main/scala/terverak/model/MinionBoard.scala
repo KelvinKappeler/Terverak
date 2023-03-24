@@ -6,10 +6,12 @@
 
 package terverak.model
 
+import terverak.model.IdObject.*
+
 /**
   * The board of the minions for a player.
   */
-final case class MinionBoard(minions: List[Minion]) {
+final case class MinionBoard(minions: List[MinionWithId]) {
     
   /**
     * The maximum number of minions on the board.
@@ -23,8 +25,16 @@ final case class MinionBoard(minions: List[Minion]) {
    */
   def addMinion(minion: Minion): MinionBoard = {
     require(minions.length < MaxMinionBoardSize, "Minion board must not be full")
-    copy(minions = minion :: minions)
+    copy(minions = MinionWithId(minion, nextId()) :: minions)
   } ensuring(_.minions.length == minions.length + 1, "Minion board length must be increased by 1")
+
+  /**
+   * Wake up all minions on the board.
+   * @return the new board.
+   */
+  def wakeUpMinions(): MinionBoard = {
+    this.copy(minions = minions.map(minionWithId => minionWithId.copy(minion = minionWithId.minion.copy(canAttack = true))))
+  }
 
   /**
     * Refreshes the board.
@@ -39,6 +49,13 @@ final case class MinionBoard(minions: List[Minion]) {
     * @return the new board.
     */
   private def removeDeadMinions(): MinionBoard = {
-    copy(minions = minions.filter(_.healthPoints > 0))
+    copy(minions = minions.filter(_.minion.healthPoints > 0))
+  }
+
+    /**
+   * Compute the next id for a minion on the board. 
+   */
+  private def nextId(): Int = {
+    if (minions.isEmpty) 0 else minions.maxBy(_.id).id + 1
   }
 }

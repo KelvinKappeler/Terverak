@@ -6,6 +6,8 @@
     
 package terverak.model
 
+import terverak.model.IdObject.*
+
 /**
   * A hand of cards.
   * @param cards The cards in the hand.

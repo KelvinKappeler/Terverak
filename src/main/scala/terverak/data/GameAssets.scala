@@ -35,7 +35,7 @@ object GameAssets {
         AssetType.Image(bato, AssetPath(AssetCardsDirectory + "bato.png")),
         AssetType.Image(cardBack, AssetPath(AssetCardsDirectory + "card_back.png")),
         AssetType.Image(shinyBato, AssetPath(AssetCardsDirectory + "shiny_bato.png")),
-        AssetType.Image(planet1, AssetPath(AssetCardsDirectory + "planet1.png"))
+        AssetType.Image(planet1, AssetPath(AssetCardsDirectory + "planet1.png")),
       )
   }
 
@@ -148,11 +148,12 @@ object GameAssets {
         .addChar(FontChar("X", 8, 32, size8, size8))
         .addChar(FontChar("Y", 16, 32, size8, size8))
         .addChar(FontChar("Z", 24, 32, size8, size8))
-        .addChar(FontChar(" ", 24, 56, size8, size8))
+        .addChar(FontChar(" ", 16, 56, size8, size8))
         .addChar(FontChar(":", 32, 56, size8, size8))
         .addChar(FontChar(".", 40, 56, size8, size8))
         .addChar(FontChar("!", 48, 56, size8, size8))
         .addChar(FontChar("?", 56, 56, size8, size8))
+        .addChar(FontChar("/", 24, 56, size8, size8))
 
     val assets: Set[AssetType] =
       Set(

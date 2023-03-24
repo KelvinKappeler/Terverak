@@ -7,6 +7,7 @@
 package terverak.utils
 
 import indigo.*
+import terverak.model.IdObject.*
 import terverak.model.*
 
 /**
@@ -18,7 +19,7 @@ object FutureEvents {
     * You can use this event to show the description of a card.
     * @param handCard the card
     */
-  final case class ShowDescription(handCard: HandCard) extends GlobalEvent
+  final case class ShowDescription(idObject: IdObject) extends GlobalEvent
 
   /**
    * You can use this event to clear the description of a card.

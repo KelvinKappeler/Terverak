@@ -13,7 +13,6 @@ import terverak.model.Minion
   * The view model of a minion.
   */
 final case class MinionViewModel(
-  minion: Minion,
   position: Point, 
   isDragged: Boolean = false, 
   isDescriptionShown: Boolean = false

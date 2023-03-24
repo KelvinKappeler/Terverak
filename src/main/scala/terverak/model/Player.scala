@@ -7,6 +7,7 @@
 package terverak.model
 
 import indigo.*
+import terverak.model.IdObject.*
 
 /**
   * A player.

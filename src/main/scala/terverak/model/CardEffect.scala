@@ -83,7 +83,7 @@ object CardEffects {
 
     override def activateEffect(game: Game): Game = {
       val newMinionBoard = game.currentPlayer.minionBoard.addMinion(
-        Minion(minionCard, minionCard.life, minionCard.life, minionCard.damage)
+        Minion(minionCard, minionCard.life, minionCard.life, minionCard.damage, false)
       )
 
       game.copy(

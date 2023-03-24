@@ -7,6 +7,7 @@
 package terverak.utils
 
 import indigo.*
+import terverak.model.IdObject.*
 import terverak.model.*
 
 /**
@@ -30,16 +31,16 @@ object TerverakEvents {
   
   /**
    * Triggers when the drag of a card stops.
-   * @param handCard the card
-   * @param position the position of the card
+   * @param idObject the object to drag
+   * @param position the position of the object
    */
-  final case class StopDrag(handCard: HandCard, position: Point) extends GlobalEvent
+  final case class StopDrag(idObject: IdObject, position: Point) extends GlobalEvent
 
   /**
-   * Triggers when the drag of a card occurs.
-   * @param handCard the card
-   * @param position the position of the card
+   * Triggers when the drag of a card starts.
+   * @param idObject the object to drag
+   * @param position the position of the object
    */
-  final case class Drag(handCard: HandCard, position: Point) extends GlobalEvent
+  final case class Drag(idObject: IdObject, position: Point) extends GlobalEvent
 
 }

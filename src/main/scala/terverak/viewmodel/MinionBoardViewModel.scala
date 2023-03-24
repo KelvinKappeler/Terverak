@@ -7,6 +7,7 @@
 package terverak.viewmodel
 
 import indigo.*
+import terverak.model.IdObject.*
 import terverak.model.*
 import terverak.view.DiscardZoneView
 
@@ -37,11 +38,10 @@ final case class MinionBoardViewModel(
     * @return the updated minion board view model
     */
   def updateMinionsPosition(minionBoard: MinionBoard): MinionBoardViewModel = {
-    def rec(minions: List[Minion], index: Int): List[MinionViewModel] = {
+    def rec(minions: List[MinionWithId], index: Int): List[MinionViewModel] = {
       minions match {
         case Nil => List.empty
         case (minion :: tail) => MinionViewModel(
-          minion,
           Point(
             position.x + (MinionBoardViewModel.MinionSpacing * index) + MinionBoardViewModel.OffsetX,
             position.y + MinionBoardViewModel.OffsetY
@@ -54,13 +54,50 @@ final case class MinionBoardViewModel(
     copy(minionsViewModel = rec(minionBoard.minions, 0))
   }
 
+  /**
+    * Move a minion to a new position.
+    * @param minionBoard the minion board
+    * @param boardMinion the minion to move
+    * @param newPos the new position
+    * @return the updated minion board view model
+    */
+  def moveUniqueMinion(minionBoard: MinionBoard, boardMinion: MinionWithId, newPos: Point): MinionBoardViewModel =
+    val index = minionBoard.minions.indexOf(boardMinion)
+    val minionViewModel = MinionViewModel(
+      newPos,
+      isDragged = true,
+    )
+    copy(minionsViewModel = minionsViewModel.updated(index, minionViewModel))
+
+  /**
+    * Show the description of a minion.
+    * @param minionBoard the minion board
+    * @param minion the minion
+    * @return
+    */
+  def showDescription(minionBoard: MinionBoard, minion: MinionWithId): MinionBoardViewModel =
+    val index = minionBoard.minions.indexOf(minion)
+    if (index < 0) then
+      this
+    else
+      val minionViewModel = minionsViewModel(index).copy(isDescriptionShown = true)
+      copy(minionsViewModel = minionsViewModel.updated(index, minionViewModel))
+
+  /**
+    * Clear the description of all minions.
+    * @param minionBoard the minion board
+    * @return
+    */
+  def clearDescription(minionBoard: MinionBoard): MinionBoardViewModel =
+    val newMinionsViewModel = minionsViewModel.map(_.copy(isDescriptionShown = false))
+    copy(minionsViewModel = newMinionsViewModel)
 
   /**
     * Check if the mouse is over a minion.
     * @param mouse the mouse
     * @return true if the mouse is over a minion
     */
-  def getMinionUnderMouse(mouse: Mouse, minionBoard: MinionBoard): Option[Minion] = {
+  def getMinionUnderMouse(mouse: Mouse, minionBoard: MinionBoard): Option[MinionWithId] = {
     minionsViewModel.zip(minionBoard.minions).find((minionViewModel, _) => minionViewModel.checkMouseOverMinion(mouse)) match {
       case Some(_, minion) => Some(minion)
       case None => None

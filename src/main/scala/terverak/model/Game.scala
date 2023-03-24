@@ -6,6 +6,8 @@
 
 package terverak.model
 
+import terverak.model.IdObject.*
+
 /**
   * A game of Terverak.
   * @param currentPlayer the current player
@@ -18,7 +20,9 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
   * @return the new game
   */
   def newTurn(): Game = {
-    val newCurrentPlayer = currentPlayer.removeMana(currentPlayer.mana)
+    val wakeUpMinions = currentPlayer.minionBoard.wakeUpMinions()
+    val newCurrentPlayer = currentPlayer.copy(minionBoard = wakeUpMinions).removeMana(currentPlayer.mana)
+
     copy(currentPlayer = waitingPlayer.startTurn(), waitingPlayer = newCurrentPlayer)
   }
 
