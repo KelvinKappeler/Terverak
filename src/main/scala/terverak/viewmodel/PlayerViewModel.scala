@@ -17,6 +17,15 @@ import terverak.utils.*
 final case class PlayerViewModel(position: Point, handViewModel: HandViewModel, minionBoardViewModel: MinionBoardViewModel, discardZoneViewModel: DiscardZoneViewModel) {
   private val bounds = Rectangle(position.x, position.y, PlayerViewModel.HeroSize.width, PlayerViewModel.HeroSize.height)
 
+  /**
+    * Check if the mouse is over the player.
+    * @param mouse the mouse
+    * @return true if the mouse is over the player
+    */
+  def checkMouseOverPlayer(mouse: Mouse): Boolean = {
+    mouse.wasMousePositionWithin(bounds)
+  }
+
 }
 
 

@@ -9,6 +9,7 @@ package terverak.scenes.play
 import indigo.*
 import indigo.scenes.*
 import terverak.data.*
+import terverak.model.IdObject.MinionWithId
 import terverak.model.*
 import terverak.utils.*
 
@@ -53,7 +54,28 @@ final case class PlaySceneModel(currentGame: Game) {
       val newGame = currentGame.discardCard(handCard)
       Outcome(copy(currentGame = newGame))
         .addGlobalEvents(TerverakEvents.HandChanged(true, newGame.currentPlayer.hand))
+    case FutureEvents.AttackOpponent(minionWithId) =>
+      // Attack the opponent
+      val (newWaitingPlayer, newMinion) = minionWithId.minion.attackPlayer(currentGame.waitingPlayer)
+      val index = currentGame.currentPlayer.minionBoard.minions.map(_.id).indexOf(minionWithId.id)
+      val newMinionBoard = currentGame.currentPlayer.minionBoard.copy(minions = currentGame.currentPlayer.minionBoard.minions.updated(index, MinionWithId(newMinion, minionWithId.id)))
+      val newGame = currentGame.copy(waitingPlayer = newWaitingPlayer, currentPlayer = currentGame.currentPlayer.copy(minionBoard = newMinionBoard))
+      Outcome(copy(currentGame = newGame))
+        .addGlobalEvents(TerverakEvents.MinionBoardChanged(true, newGame.currentPlayer.minionBoard))
+        .addGlobalEvents(TerverakEvents.MinionBoardChanged(false, newGame.waitingPlayer.minionBoard))
+    case FutureEvents.AttackMinion(attacker, defender) =>
+      // Attack a minion
+      val (newDefender, newAttacker) = attacker.minion.attackMinion(defender.minion)
+      val attackerIndex = currentGame.currentPlayer.minionBoard.minions.map(_.id).indexOf(attacker.id)
+      val defenderIndex = currentGame.waitingPlayer.minionBoard.minions.map(_.id).indexOf(defender.id)
+      val newAttackerMinionBoard = currentGame.currentPlayer.minionBoard.copy(minions = currentGame.currentPlayer.minionBoard.minions.updated(attackerIndex, MinionWithId(newAttacker, attacker.id))).refresh()
+      val newDefenderMinionBoard = currentGame.waitingPlayer.minionBoard.copy(minions = currentGame.waitingPlayer.minionBoard.minions.updated(defenderIndex, MinionWithId(newDefender, defender.id))).refresh()
+      val newGame = currentGame.copy(currentPlayer = currentGame.currentPlayer.copy(minionBoard = newAttackerMinionBoard), waitingPlayer = currentGame.waitingPlayer.copy(minionBoard = newDefenderMinionBoard))
+      Outcome(copy(currentGame = newGame))
+        .addGlobalEvents(TerverakEvents.MinionBoardChanged(true, newGame.currentPlayer.minionBoard))
+        .addGlobalEvents(TerverakEvents.MinionBoardChanged(false, newGame.waitingPlayer.minionBoard))
     case _ => Outcome(this)
+
 
 }
 
@@ -62,9 +84,9 @@ final case class PlaySceneModel(currentGame: Game) {
   */
 object PlaySceneModel {
 
-  private val deck: Deck = Deck(List.fill(9)(CardsData.MinionCards.bato) ++ List.fill(3)(CardsData.MinionCards.planet1) ++ List.fill(3)(CardsData.MinionCards.shinyBato))
-  private val player1: Player = Player("Player1", GameAssets.Heroes.human, 20, 20, 0, deck.shuffle(), Hand(List.empty), MinionBoard(List.empty), DiscardZone(List.empty))
-  private val player2: Player = Player("Player2", GameAssets.Heroes.troll, 20, 12, 0, deck.shuffle(), Hand(List.empty), MinionBoard(List.empty), DiscardZone(List.empty))
+  private val deck: Deck = Deck(List.fill(20)(CardsData.MinionCards.bato) ++ List.fill(4)(CardsData.MinionCards.planet1) ++ List.fill(4)(CardsData.MinionCards.shinyBato))
+  private val player1: Player = Player("Player1", GameAssets.Heroes.human, 30, 30, 0, deck.shuffle(), Hand(List.empty), MinionBoard(List.empty), DiscardZone(List.empty))
+  private val player2: Player = Player("Player2", GameAssets.Heroes.troll, 30, 30, 0, deck.shuffle(), Hand(List.empty), MinionBoard(List.empty), DiscardZone(List.empty))
 
   val initial: PlaySceneModel = PlaySceneModel(Game(player1, player2))
 }

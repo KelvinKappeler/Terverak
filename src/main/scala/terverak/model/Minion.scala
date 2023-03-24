@@ -43,22 +43,22 @@ final case class Minion(card: Card.MinionCard, maxHP: Int, healthPoints: Int, at
   /**
     * Attacks a player.
     * @param player the player to attack.
-    * @return the new player.
+    * @return the new player and the new minion.
     */
-  def attackPlayer(player: Player): Player = {
+  def attackPlayer(player: Player): (Player, Minion) = {
     require(attackPoints > 0, "Minion must have attack points to attack")
 
-    player.takeDamage(attackPoints)
+    (player.takeDamage(attackPoints), copy(canAttack = false))
   }
 
   /**
     * Attacks a minion.
     * @param minion the minion to attack.
-    * @return the new minion.
+    * @return the updated target minion and attacking minion.
     */
-  def attackMinion(minion: Minion): Minion = {
+  def attackMinion(minion: Minion): (Minion, Minion) = {
     require(attackPoints > 0, "Minion must have attack points to attack")
 
-    minion.takeDamage(attackPoints)
+    (minion.takeDamage(attackPoints), this.takeDamage(minion.attackPoints).copy(canAttack = false))
   }
 }

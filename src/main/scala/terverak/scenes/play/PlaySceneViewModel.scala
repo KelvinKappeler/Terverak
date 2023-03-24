@@ -78,7 +78,14 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel) {
             Outcome(this)
           }
         case minion: MinionWithId =>
-          Outcome(this)
+          if (gameViewModel.waitingPlayerViewModel.checkMouseOverPlayer(context.mouse)) {
+            Outcome(this).addGlobalEvents(FutureEvents.AttackOpponent(minion))
+          } else if (gameViewModel.waitingPlayerViewModel.minionBoardViewModel.getMinionUnderMouse(context.mouse, model.currentGame.waitingPlayer.minionBoard).isDefined) {
+            val attackedMinion = gameViewModel.waitingPlayerViewModel.minionBoardViewModel.getMinionUnderMouse(context.mouse, model.currentGame.waitingPlayer.minionBoard).get
+            Outcome(this).addGlobalEvents(FutureEvents.AttackMinion(minion, attackedMinion))
+          } else {
+            Outcome(this)
+          }
 
     case FutureEvents.ShowDescription(idObject) =>
       idObject match

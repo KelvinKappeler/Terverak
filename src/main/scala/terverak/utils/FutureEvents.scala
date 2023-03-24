@@ -37,4 +37,17 @@ object FutureEvents {
    * @param handCard the card
    */
   final case class DiscardCard(handCard: HandCard) extends GlobalEvent
+
+  /**
+   * You can use this event to attack a minion.
+   * @param attackingMinion the attacking minion
+   * @param attackedMinion the attacked minion
+   */
+  final case class AttackMinion(attackingMinion: MinionWithId, attackedMinion: MinionWithId) extends GlobalEvent
+
+  /**
+   * You can use this event to attack the opponent.
+   * @param attackingMinion the attacking minion
+   */
+  final case class AttackOpponent(attackingMinion: MinionWithId) extends GlobalEvent
 }
