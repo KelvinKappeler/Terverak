@@ -38,7 +38,7 @@ object CardsData {
       )
 
     val alienGreen: Card.MinionCard = Card.MinionCard(
-      "Green Guardian", "A green alien", GameAssets.Cards.alienGreen, 2, List(CardEffects.HealHeroPerAlien()), List(CardEffects.AddManaEffect(2)), List(CardSubtype.Alien), Nil, 1, 3
+      "Green Guardian", "A green alien", GameAssets.Cards.alienGreen, 2, List(CardEffects.HealHeroPerAlien()), List(CardEffects.AddManaEffect(2)), List(CardSubtype.Alien), Nil, 2, 3
       )
 
     val alienYellow: Card.MinionCard = Card.MinionCard(
@@ -55,11 +55,11 @@ object CardsData {
     )
 
     val spell1: Card.SpellCard = Card.SpellCard(
-      "Spell1", "A spell", GameAssets.Cards.spell1, 1, List(CardEffects.DrawCardsForNumberPlanetsInControl()), Nil, Nil
+      "Spell1", "A spell", GameAssets.Cards.spell1, 0, List(CardEffects.DrawCardsForNumberPlanetsInControl()), List(CardEffects.AddManaEffect(1)), Nil
       )
 
     val blackHoleSpell: Card.SpellCard = Card.SpellCard(
-      "Machiavellian Black Hole", "You don't want to meet him", GameAssets.Cards.blackHole, 5,  List(CardEffects.DestroyRandomMinions(2, true)), List(CardEffects.DestroyRandomMinions(1, false)),Nil
+      "Machiavellian Black Hole", "You don't want to meet him", GameAssets.Cards.blackHole, 4,  List(CardEffects.DestroyRandomMinions(2, true)), List(CardEffects.DestroyRandomMinions(1, false)),Nil
       )
   }
 }
