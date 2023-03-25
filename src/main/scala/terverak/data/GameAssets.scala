@@ -148,12 +148,15 @@ object GameAssets {
         .addChar(FontChar("X", 8, 32, size8, size8))
         .addChar(FontChar("Y", 16, 32, size8, size8))
         .addChar(FontChar("Z", 24, 32, size8, size8))
-        .addChar(FontChar(" ", 16, 56, size8, size8))
+        .addChar(FontChar("[", 48, 48, size8, size8))
+        .addChar(FontChar("]", 56, 48, size8, size8))
+        .addChar(FontChar(" ", 8, 56, size8, size8))
+        .addChar(FontChar("'", 20, 56, 4, size8))
+        .addChar(FontChar("/", 24, 56, size8, size8))
         .addChar(FontChar(":", 32, 56, size8, size8))
         .addChar(FontChar(".", 40, 56, size8, size8))
         .addChar(FontChar("!", 48, 56, size8, size8))
         .addChar(FontChar("?", 56, 56, size8, size8))
-        .addChar(FontChar("/", 24, 56, size8, size8))
 
     val assets: Set[AssetType] =
       Set(

@@ -83,7 +83,12 @@ final case class PlaySceneModel(currentGame: Game) {
   */
 object PlaySceneModel {
 
-  private val deck: Deck = Deck(List.fill(20)(CardsData.MinionCards.bato) ++ List.fill(4)(CardsData.MinionCards.planet1) ++ List.fill(4)(CardsData.MinionCards.shinyBato))
+  private val deck: Deck = Deck(
+    List.fill(4)(CardsData.MinionCards.bato)
+    ++ List.fill(4)(CardsData.MinionCards.planet1)
+    ++ List.fill(4)(CardsData.MinionCards.shinyBato)
+    ++ List.fill(4)(CardsData.SpellCards.spell1)
+  )
   private val player1: Player = Player("Player1", GameAssets.Heroes.human, 30, 30, 0, deck.shuffle(), Hand(List.empty), MinionBoard(List.empty), DiscardZone(List.empty))
   private val player2: Player = Player("Player2", GameAssets.Heroes.troll, 30, 30, 0, deck.shuffle(), Hand(List.empty), MinionBoard(List.empty), DiscardZone(List.empty))
 

@@ -24,7 +24,7 @@ object MinionBoardView {
     * @param minionBoard the minionBoard to draw
     * @param minionBoardViewModel the minionBoard view model
     * @param depth the depth of the minionBoard
-    * @return
+    * @return the batch of the minionBoard
     */
   def draw(minionBoard: MinionBoard, minionBoardViewModel: MinionBoardViewModel, isCurrentPlayer: Boolean, depth: Int): Batch[SceneNode] = {
     Batch(

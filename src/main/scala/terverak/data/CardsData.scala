@@ -6,6 +6,7 @@
     
 package terverak.data
 
+import terverak.model.CardSubtype
 import terverak.model.*
 
 /**
@@ -25,15 +26,15 @@ object CardsData {
     )
 
     val bato: Card.MinionCard = Card.MinionCard(
-      "Bato", "Small boat chilling in the water.", GameAssets.Cards.bato, 1, Nil, List(CardEffects.AddManaEffect(1)), 2, 3
+      "Bato", "Small boat chilling in the water.", GameAssets.Cards.bato, 1, Nil, List(CardEffects.AddManaEffect(1)), Nil, Nil, 2, 3
       )
 
     val shinyBato: Card.MinionCard = Card.MinionCard(
-      "Shiny Bato", "An expensive boat", GameAssets.Cards.shinyBato, 2, List(CardEffects.DamageHeroEffect(1), CardEffects.DamageHeroEffect(1)), List(CardEffects.AddManaEffect(2)), 3, 5
+      "Shiny Bato", "An expensive boat", GameAssets.Cards.shinyBato, 2, List(CardEffects.DamageHeroEffect(1)), List(CardEffects.AddManaEffect(2)), Nil, Nil, 3, 5
       )
 
     val planet1: Card.MinionCard = Card.MinionCard(
-      "Planet1", "An old and mysterious planet", GameAssets.Cards.planet1, 3, List(CardEffects.DamageHeroEffect(2)), List(CardEffects.AddManaEffect(3)), 4, 2
+      "Planet1", "An old and mysterious planet", GameAssets.Cards.planet1, 3, List(CardEffects.DamageHeroEffect(2)), List(CardEffects.AddManaEffect(3)), List(CardSubtype.Planet),List(MinionCardAttributesData.defenser), 0, 6
       )
   }
 
@@ -42,7 +43,11 @@ object CardsData {
    */
   object SpellCards {
     val spellCards = Set(
-      // List of spells
+      spell1,
     )
+
+    val spell1: Card.SpellCard = Card.SpellCard(
+      "Spell1", "A spell", GameAssets.Cards.bato, 1, List(CardEffects.DrawCardsForNumberPlanetsInControl()), Nil, Nil
+      )
   }
 }
