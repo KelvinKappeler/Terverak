@@ -47,7 +47,7 @@ object CardsData {
     )
 
     val spell1: Card.SpellCard = Card.SpellCard(
-      "Spell1", "A spell", GameAssets.Cards.bato, 1, List(CardEffects.DrawCardsForNumberPlanetsInControl()), Nil, Nil
+      "Spell1", "A spell", GameAssets.Cards.spell1, 1, List(CardEffects.DrawCardsForNumberPlanetsInControl()), Nil, Nil
       )
   }
 }
