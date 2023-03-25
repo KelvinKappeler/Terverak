@@ -76,8 +76,11 @@ final case class Player(
     */
   def drawCards(amount: Int): Player = {
     require(amount >= 0, "Draw amount must be equal or greater than 0")
-    if (amount == 0 || deck.cards.length == 0 || hand.cards.length == hand.MaxHandSize) then
+    if (amount == 0 || hand.cards.length == hand.MaxHandSize) then
       this
+    else if deck.cards.isEmpty then
+      copy(discardZone = DiscardZone(List.empty), deck = Deck(discardZone.cards).shuffle())
+        .drawCards(amount)
     else
       val (newDeck, drawnCard) = deck.removeTopCard()
       val newHand = hand.addCard(drawnCard)

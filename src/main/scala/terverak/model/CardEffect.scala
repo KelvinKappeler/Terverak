@@ -7,6 +7,9 @@
 package terverak.model
 
 import indigo.*
+import terverak.model.IdObject.MinionWithId
+
+import scala.util.Random
 
 /**
   * A card effect
@@ -125,7 +128,7 @@ object CardEffects {
       AddManaEffect(numberOfAliens).activateEffect(game)
     }
 
-    override def toString: String = "Add 1 mana for each ally and ennemy alien on the board"
+    override def toString: String = "Add 1 mana for each alien on the board"
   }
 
   /**
@@ -136,21 +139,75 @@ object CardEffects {
       val numberOfAliens = 
         game.currentPlayer.minionBoard.minions.filter(_.minion.card.subtypes.contains(CardSubtype.Alien)).size
         + game.waitingPlayer.minionBoard.minions.filter(_.minion.card.subtypes.contains(CardSubtype.Alien)).size
+      val minionToBuff = game.currentPlayer.minionBoard.minions(0)
       game.copy(
         currentPlayer = game.currentPlayer.copy(
           minionBoard = game.currentPlayer.minionBoard.copy(
-            minions = minions.copy(
-              head = minions.head.copy(
-                minion = minions.head.minion.copy(
-                  attack = minions.head.minion.attack + numberOfAliens
-                )
-              )
-            )
-          )
+            minions = game.currentPlayer.minionBoard.minions.updated(0, MinionWithId(minionToBuff.minion.copy(attackPoints = minionToBuff.minion.attackPoints + numberOfAliens), minionToBuff.id))
+          ) 
         )
       )
     }
 
-    override def toString: String = "When played, this minion gains +1 attack for each ally and ennemy alien on the board"
+    override def toString: String = "When played: earn +1 attack for each alien on the board"
+  }
+
+  /**
+   * A card effect that heal the hero for each alien on the board.
+   */
+  final case class HealHeroPerAlien() extends CardEffect {
+    override def activateEffect(game: Game): Game = {
+      val numberOfAliens = 
+        game.currentPlayer.minionBoard.minions.filter(_.minion.card.subtypes.contains(CardSubtype.Alien)).size
+        + game.waitingPlayer.minionBoard.minions.filter(_.minion.card.subtypes.contains(CardSubtype.Alien)).size
+      HealingHeroEffect(numberOfAliens).activateEffect(game)
+    }
+
+    override def toString: String = "Heal your hero for each alien on the board"
+  }
+
+  final case class DestroyRandomMinions(amount: Int, opponentOnly: Boolean) extends CardEffect {
+    require(amount >= 0, "Amount must be equal or greater than 0")
+
+    override def activateEffect(game: Game): Game = {
+      val totalMinions = 
+        if (opponentOnly) {
+          game.waitingPlayer.minionBoard.minions.size
+        } else {
+          game.currentPlayer.minionBoard.minions.size + game.waitingPlayer.minionBoard.minions.size
+        }
+
+      val randomMinions = Random.shuffle((0 until totalMinions).toList).take(amount)
+
+      if (opponentOnly) {
+        val newWaitingPlayerMinionsBoard = game.waitingPlayer.minionBoard.copy(
+          minions = game.waitingPlayer.minionBoard.minions.zipWithIndex.filterNot(minion => randomMinions.contains(minion._2)).map(_._1))
+        game.copy(
+          waitingPlayer = game.waitingPlayer.copy(
+            minionBoard = newWaitingPlayerMinionsBoard
+          )
+        )
+      } else {
+        val newCurrentPlayerMinionsBoard = game.currentPlayer.minionBoard.copy(
+          minions = game.currentPlayer.minionBoard.minions.zipWithIndex.filterNot(minion => randomMinions.contains(minion._2)).map(_._1))
+        val newWaitingPlayerMinionsBoard = game.waitingPlayer.minionBoard.copy(
+          minions = game.waitingPlayer.minionBoard.minions.zipWithIndex.filterNot(minion => randomMinions.contains(minion._2 + game.currentPlayer.minionBoard.minions.size)).map(_._1))
+        game.copy(
+          currentPlayer = game.currentPlayer.copy(
+            minionBoard = newCurrentPlayerMinionsBoard
+          ),
+          waitingPlayer = game.waitingPlayer.copy(
+            minionBoard = newWaitingPlayerMinionsBoard
+          )
+        )
+      }
+    }
+
+    override def toString: String = 
+      if (opponentOnly) {
+        "Destroy " + amount + " random ennemy minions"
+      } else {
+        "Destroy " + amount + " random ally or ennemy minions"
+      }
   }
 }

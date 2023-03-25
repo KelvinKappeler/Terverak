@@ -18,7 +18,7 @@ import terverak.utils.*
 final case class PlaySceneModel(currentGame: Game) {
 
   def updateModel(context: SceneContext[Unit]): GlobalEvent => Outcome[PlaySceneModel] =
-    case KeyboardEvent.KeyDown(Key.KEY_W) =>
+    /*case KeyboardEvent.KeyDown(Key.KEY_W) =>
       // Draw a card for the current player
       val newCurrentPlayer = currentGame.currentPlayer.drawCards(1)
       val newGame = copy(currentGame = currentGame.copy(currentPlayer = newCurrentPlayer))
@@ -29,7 +29,7 @@ final case class PlaySceneModel(currentGame: Game) {
       val newWaitingPlayer = currentGame.waitingPlayer.drawCards(1)
       val newGame = copy(currentGame = currentGame.copy(waitingPlayer = newWaitingPlayer))
       Outcome(copy(currentGame = currentGame.copy(waitingPlayer = newWaitingPlayer)))
-        .addGlobalEvents(TerverakEvents.HandChanged(false, newGame.currentGame.waitingPlayer.hand))
+        .addGlobalEvents(TerverakEvents.HandChanged(false, newGame.currentGame.waitingPlayer.hand))*/
     case KeyboardEvent.KeyDown(Key.ENTER) =>
       // End the turn
       val newGame = currentGame.newTurn()
@@ -73,6 +73,9 @@ final case class PlaySceneModel(currentGame: Game) {
       Outcome(copy(currentGame = newGame))
         .addGlobalEvents(TerverakEvents.MinionBoardChanged(true, newGame.currentPlayer.minionBoard))
         .addGlobalEvents(TerverakEvents.MinionBoardChanged(false, newGame.waitingPlayer.minionBoard))
+    case KeyboardEvent.KeyDown(Key.KEY_A) =>
+      Outcome(this).addGlobalEvents(TerverakEvents.HandChanged(true, currentGame.currentPlayer.hand)).addGlobalEvents(TerverakEvents.HandChanged(false, currentGame.waitingPlayer.hand))
+
     case _ => Outcome(this)
 
 
@@ -84,13 +87,20 @@ final case class PlaySceneModel(currentGame: Game) {
 object PlaySceneModel {
 
   private val deck: Deck = Deck(
-    List.fill(4)(CardsData.MinionCards.bato)
-    ++ List.fill(4)(CardsData.MinionCards.planet1)
-    ++ List.fill(4)(CardsData.MinionCards.shinyBato)
-    ++ List.fill(4)(CardsData.SpellCards.spell1)
+    List.fill(8)(CardsData.MinionCards.bato)
+    ++ List.fill(5)(CardsData.MinionCards.planet1)
+    ++ List.fill(3)(CardsData.MinionCards.shinyBato)
+    ++ List.fill(5)(CardsData.MinionCards.alienGreen)
+    ++ List.fill(2)(CardsData.MinionCards.alienYellow)
+    ++ List.fill(3)(CardsData.SpellCards.spell1)
+    ++ List.fill(3)(CardsData.SpellCards.blackHoleSpell)
   )
-  private val player1: Player = Player("Player1", GameAssets.Heroes.human, 30, 30, 0, deck.shuffle(), Hand(List.empty), MinionBoard(List.empty), DiscardZone(List.empty))
-  private val player2: Player = Player("Player2", GameAssets.Heroes.troll, 30, 30, 0, deck.shuffle(), Hand(List.empty), MinionBoard(List.empty), DiscardZone(List.empty))
+
+  val currentPlayerDeck = deck.shuffle()
+  val waitingPlayerDeck = deck.shuffle()
+
+  private val player1: Player = Player("Player1", GameAssets.Heroes.human, 30, 30, 0, currentPlayerDeck, Hand(List.empty), MinionBoard(List.empty), DiscardZone(List.empty)).drawCards(3)
+  private val player2: Player = Player("Player2", GameAssets.Heroes.troll, 30, 30, 0, waitingPlayerDeck, Hand(List.empty), MinionBoard(List.empty), DiscardZone(List.empty)).drawCards(3)
 
   val initial: PlaySceneModel = PlaySceneModel(Game(player1, player2))
 }
