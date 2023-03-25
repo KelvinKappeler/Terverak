@@ -9,7 +9,6 @@ package terverak.scenes.play
 import indigo.*
 import indigo.scenes.*
 import terverak.data.*
-import terverak.model.IdObject.MinionWithId
 import terverak.model.*
 import terverak.utils.*
 
@@ -58,7 +57,7 @@ final case class PlaySceneModel(currentGame: Game) {
       // Attack the opponent
       val (newWaitingPlayer, newMinion) = minionWithId.minion.attackPlayer(currentGame.waitingPlayer)
       val index = currentGame.currentPlayer.minionBoard.minions.map(_.id).indexOf(minionWithId.id)
-      val newMinionBoard = currentGame.currentPlayer.minionBoard.copy(minions = currentGame.currentPlayer.minionBoard.minions.updated(index, MinionWithId(newMinion, minionWithId.id)))
+      val newMinionBoard = currentGame.currentPlayer.minionBoard.copy(minions = currentGame.currentPlayer.minionBoard.minions.updated(index, IdObject.MinionWithId(newMinion, minionWithId.id)))
       val newGame = currentGame.copy(waitingPlayer = newWaitingPlayer, currentPlayer = currentGame.currentPlayer.copy(minionBoard = newMinionBoard))
       Outcome(copy(currentGame = newGame))
         .addGlobalEvents(TerverakEvents.MinionBoardChanged(true, newGame.currentPlayer.minionBoard))
@@ -68,8 +67,8 @@ final case class PlaySceneModel(currentGame: Game) {
       val (newDefender, newAttacker) = attacker.minion.attackMinion(defender.minion)
       val attackerIndex = currentGame.currentPlayer.minionBoard.minions.map(_.id).indexOf(attacker.id)
       val defenderIndex = currentGame.waitingPlayer.minionBoard.minions.map(_.id).indexOf(defender.id)
-      val newAttackerMinionBoard = currentGame.currentPlayer.minionBoard.copy(minions = currentGame.currentPlayer.minionBoard.minions.updated(attackerIndex, MinionWithId(newAttacker, attacker.id))).refresh()
-      val newDefenderMinionBoard = currentGame.waitingPlayer.minionBoard.copy(minions = currentGame.waitingPlayer.minionBoard.minions.updated(defenderIndex, MinionWithId(newDefender, defender.id))).refresh()
+      val newAttackerMinionBoard = currentGame.currentPlayer.minionBoard.copy(minions = currentGame.currentPlayer.minionBoard.minions.updated(attackerIndex, IdObject.MinionWithId(newAttacker, attacker.id))).refresh()
+      val newDefenderMinionBoard = currentGame.waitingPlayer.minionBoard.copy(minions = currentGame.waitingPlayer.minionBoard.minions.updated(defenderIndex, IdObject.MinionWithId(newDefender, defender.id))).refresh()
       val newGame = currentGame.copy(currentPlayer = currentGame.currentPlayer.copy(minionBoard = newAttackerMinionBoard), waitingPlayer = currentGame.waitingPlayer.copy(minionBoard = newDefenderMinionBoard))
       Outcome(copy(currentGame = newGame))
         .addGlobalEvents(TerverakEvents.MinionBoardChanged(true, newGame.currentPlayer.minionBoard))

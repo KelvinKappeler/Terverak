@@ -13,7 +13,7 @@ trait IdObject {
   def id: Int
 
   require(id >= 0, "Id must be positive")
-} 
+}
 
 object IdObject {
   

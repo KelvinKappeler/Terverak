@@ -16,7 +16,7 @@ final case class MinionViewModel(
   position: Point, 
   isDragged: Boolean = false, 
   isDescriptionShown: Boolean = false
-  ) {
+) {
 
   private val bounds = Rectangle(position.x, position.y, MinionViewModel.MinionSize.width, MinionViewModel.MinionSize.height)
 

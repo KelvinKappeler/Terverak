@@ -15,10 +15,6 @@ import terverak.viewmodel.*
   * The view of a card.
   */
 object CardView {
-  
-  private val description_x = HandViewModel.HandSize.width + PlayerViewModel.HeroSize.width
-  private val description_y = HandViewModel.HandSize.height
-  private val textOffset = 12
 
   /**
     * Draws a card.
@@ -42,13 +38,8 @@ object CardView {
           Batch(Graphic(x, y, cardWidth, cardHeight, depth, Material.Bitmap(card.imageName)))
 
       val descriptionBatch = 
-        if (cardViewModel.isDescriptionShown || cardViewModel.isDragged) then
-          Batch(
-            Text(card.name + ":", description_x, description_y, 100, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Orange)),
-            Text(card.description, description_x, description_y + textOffset, 100, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Orange)),
-            Text("Effect when played:", description_x, description_y + 3 * textOffset, 100, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Purple)),
-            Text("Effect when discard:", description_x, description_y + (5 + Math.max(card.effectsWhenPlayed.length, 1)) * textOffset, 100, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Purple)),
-            ) ++ computeBatchForEffectsDescription(card.effectsWhenPlayed, 4) ++ computeBatchForEffectsDescription(card.effectsWhenDiscard, 6 + Math.max(card.effectsWhenPlayed.length, 1))
+        if (cardViewModel.isDescriptionShown || isCardDragged) then
+          CardDescriptionView.draw(card)
         else
           Batch.empty
 
@@ -69,20 +60,5 @@ object CardView {
     } else {
       Batch(Graphic(x, y, cardWidth, cardHeight, depth, Material.Bitmap(GameAssets.Cards.cardBack)))
     }
-  }
-
-  private def computeBatchForEffectsDescription(effects: List[CardEffect], offsetY: Int): Batch[Text[_]] = {
-    def rec(effects: List[CardEffect], index: Int): Batch[Text[_]] = {
-      effects match {
-        case Nil => Batch.empty
-        case head :: tail => 
-          Batch(
-            Text(head.toString(), description_x, description_y + (offsetY + index) * textOffset, 100, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.White)),
-          ) ++ rec(tail, index + 1)
-      }
-    }
-    
-    if (effects.isEmpty) Batch(Text("None", description_x, description_y + offsetY * textOffset, 100, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.White)))
-    else rec(effects, 0)
   }
 }
