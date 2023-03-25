@@ -11,4 +11,5 @@ package terverak.model
   */
 enum CardSubtype {
   case Planet
+  case Alien
 }

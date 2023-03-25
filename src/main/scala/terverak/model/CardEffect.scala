@@ -113,4 +113,44 @@ object CardEffects {
 
     override def toString: String = "Draw a card for each planet you control"
   }
+
+  /**
+    * A card effect that give mana for each alien on the board.
+    */
+  final case class AddManaPerAlien() extends CardEffect {
+    override def activateEffect(game: Game): Game = {
+      val numberOfAliens = 
+        game.currentPlayer.minionBoard.minions.filter(_.minion.card.subtypes.contains(CardSubtype.Alien)).size
+        + game.waitingPlayer.minionBoard.minions.filter(_.minion.card.subtypes.contains(CardSubtype.Alien)).size
+      AddManaEffect(numberOfAliens).activateEffect(game)
+    }
+
+    override def toString: String = "Add 1 mana for each ally and ennemy alien on the board"
+  }
+
+  /**
+   * A card effect that add attack to minion for each alien on the board.
+   */
+  final case class AddAttackPerAlien() extends CardEffect {
+    override def activateEffect(game: Game): Game = {
+      val numberOfAliens = 
+        game.currentPlayer.minionBoard.minions.filter(_.minion.card.subtypes.contains(CardSubtype.Alien)).size
+        + game.waitingPlayer.minionBoard.minions.filter(_.minion.card.subtypes.contains(CardSubtype.Alien)).size
+      game.copy(
+        currentPlayer = game.currentPlayer.copy(
+          minionBoard = game.currentPlayer.minionBoard.copy(
+            minions = minions.copy(
+              head = minions.head.copy(
+                minion = minions.head.minion.copy(
+                  attack = minions.head.minion.attack + numberOfAliens
+                )
+              )
+            )
+          )
+        )
+      )
+    }
+
+    override def toString: String = "When played, this minion gains +1 attack for each ally and ennemy alien on the board"
+  }
 }
