@@ -18,18 +18,6 @@ import terverak.utils.*
 final case class PlaySceneModel(currentGame: Game) {
 
   def updateModel(context: SceneContext[Unit]): GlobalEvent => Outcome[PlaySceneModel] =
-    /*case KeyboardEvent.KeyDown(Key.KEY_W) =>
-      // Draw a card for the current player
-      val newCurrentPlayer = currentGame.currentPlayer.drawCards(1)
-      val newGame = copy(currentGame = currentGame.copy(currentPlayer = newCurrentPlayer))
-      Outcome(copy(currentGame = currentGame.copy(currentPlayer = newCurrentPlayer)))
-        .addGlobalEvents(TerverakEvents.HandChanged(true, newGame.currentGame.currentPlayer.hand))
-    case KeyboardEvent.KeyDown(Key.KEY_S) =>
-      // Draw a card for the waiting player
-      val newWaitingPlayer = currentGame.waitingPlayer.drawCards(1)
-      val newGame = copy(currentGame = currentGame.copy(waitingPlayer = newWaitingPlayer))
-      Outcome(copy(currentGame = currentGame.copy(waitingPlayer = newWaitingPlayer)))
-        .addGlobalEvents(TerverakEvents.HandChanged(false, newGame.currentGame.waitingPlayer.hand))*/
     case KeyboardEvent.KeyDown(Key.ENTER) =>
       // End the turn
       val newGame = currentGame.newTurn()
@@ -77,7 +65,6 @@ final case class PlaySceneModel(currentGame: Game) {
       Outcome(this).addGlobalEvents(TerverakEvents.HandChanged(true, currentGame.currentPlayer.hand)).addGlobalEvents(TerverakEvents.HandChanged(false, currentGame.waitingPlayer.hand))
 
     case _ => Outcome(this)
-
 
 }
 

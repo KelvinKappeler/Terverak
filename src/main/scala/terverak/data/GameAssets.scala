@@ -28,6 +28,9 @@ object GameAssets {
     val bato: AssetName = AssetName("batoCard")
     val shinyBato: AssetName = AssetName("shinyBatoCard")
     val planet1: AssetName = AssetName("planet1")
+    val planet2: AssetName = AssetName("planet2")
+    val planet3: AssetName = AssetName("planet3")
+    val planet4: AssetName = AssetName("planet4")
     val alienYellow: AssetName = AssetName("alienYellow")
     val alienGreen: AssetName = AssetName("alienGreen")
 
@@ -43,6 +46,9 @@ object GameAssets {
         AssetType.Image(cardBack, AssetPath(AssetCardsDirectory + "card_back.png")),
         AssetType.Image(shinyBato, AssetPath(AssetCardsDirectory + "shiny_bato.png")),
         AssetType.Image(planet1, AssetPath(AssetCardsDirectory + "planet1.png")),
+        AssetType.Image(planet2, AssetPath(AssetCardsDirectory + "planet2.png")),
+        AssetType.Image(planet3, AssetPath(AssetCardsDirectory + "planet3.png")),
+        AssetType.Image(planet4, AssetPath(AssetCardsDirectory + "planet4.png")),
         AssetType.Image(alienYellow, AssetPath(AssetCardsDirectory + "yellow_alien.png")),
         AssetType.Image(alienGreen, AssetPath(AssetCardsDirectory + "green_alien.png")),
         AssetType.Image(spell1, AssetPath(AssetCardsDirectory + "spell1.png")),

@@ -6,6 +6,7 @@
 
 package terverak.model
 
+import terverak.data.*
 import terverak.model.IdObject.*
 
 /**
