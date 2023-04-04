@@ -1,10 +1,10 @@
 // =======================================
-// Terverak -> MenuScene.scala
+// Terverak -> DeckCollectionScene.scala
 // Kelvin Kappeler & Bastien Jolidon
 // Bachelor Project EPFL, 2023
 // =======================================
   
-package terverak.scenes.menu
+package terverak.scenes.deckCollection
 
 import indigo.*
 import indigo.scenes.*
@@ -12,29 +12,28 @@ import terverak.TerverakModel
 import terverak.TerverakViewModel
 import terverak.data.*
 import terverak.model.*
-import terverak.scenes.play.*
 import terverak.view.*
 
 /**
-  * The main menu scene.
+  * The deck collection scene. It allows the user to create and edit decks.
   */
-object MenuScene extends Scene[Unit, TerverakModel, TerverakViewModel]:
+object DeckCollectionScene extends Scene[Unit, TerverakModel, TerverakViewModel]:
 
-  type SceneModel = MenuSceneModel
-  type SceneViewModel = MenuSceneViewModel
+  type SceneModel = DeckCollectionSceneModel
+  type SceneViewModel = DeckCollectionSceneViewModel
 
-  val name: SceneName = SceneName("Main Menu")
+  val name: SceneName = SceneName("Deck Collection")
 
-  val modelLens: Lens[TerverakModel, SceneModel] =
+  val modelLens: Lens[TerverakModel, DeckCollectionSceneModel] =
     Lens(
-      model => model.menuSceneModel,
-      (model, updatedModel) => model.copy(menuSceneModel = updatedModel)
+      model => model.deckCollectionSceneModel,
+      (model, updatedModel) => model.copy(deckCollectionSceneModel = updatedModel)
     )
 
-  val viewModelLens: Lens[TerverakViewModel, SceneViewModel] =
+  val viewModelLens: Lens[TerverakViewModel, DeckCollectionSceneViewModel] =
     Lens(
-      viewmodel => viewmodel.menuSceneViewModel,
-      (viewmodel, updatedViewModel) => viewmodel.copy(menuSceneViewModel = updatedViewModel)
+      viewmodel => viewmodel.deckCollectionSceneViewModel,
+      (viewmodel, updatedViewModel) => viewmodel.copy(deckCollectionSceneViewModel = updatedViewModel)
     )
 
   val eventFilters: EventFilters =
@@ -61,5 +60,5 @@ object MenuScene extends Scene[Unit, TerverakModel, TerverakViewModel]:
       model: SceneModel,
       viewModel: SceneViewModel
   ): Outcome[SceneUpdateFragment] =
-    MenuSceneView.updateView(context, model, viewModel)
+    DeckCollectionSceneView.updateView(context, model, viewModel)
   

@@ -10,6 +10,8 @@ import indigo.*
 import indigo.scenes.*
 import terverak.data.*
 import terverak.model.*
+import terverak.scenes.deckCollection.*
+import terverak.scenes.menu.*
 import terverak.scenes.play.*
 
 import scala.scalajs.js.annotation.JSExportTopLevel
@@ -20,13 +22,13 @@ import scala.scalajs.js.annotation.JSExportTopLevel
 @JSExportTopLevel("IndigoGame")
 object Terverak extends IndigoGame[Unit, Unit, TerverakModel, TerverakViewModel]:
 
-  private val magnification = 2
+  private val Magnification = 2
 
   def initialScene(bootData: Unit): Option[SceneName] =
-    Option(PlayScene.name)
+    Option(MenuScene.name)
 
   def scenes(bootData: Unit): NonEmptyList[Scene[Unit, TerverakModel, TerverakViewModel]] =
-    NonEmptyList(PlayScene)
+    NonEmptyList(MenuScene, PlayScene, DeckCollectionScene)
 
   val eventFilters: EventFilters =
     EventFilters.Permissive
@@ -36,7 +38,7 @@ object Terverak extends IndigoGame[Unit, Unit, TerverakModel, TerverakViewModel]
       val assetPath: String = flags.getOrElse("baseUrl", "")
 
       BootResult.noData(
-        GameConfig.default.withViewport(550, 400).withMagnification(magnification)
+        GameConfig.default.withViewport(550, 400).withMagnification(Magnification)
       ).withAssets(GameAssets.assets).withFonts(GameAssets.Fonts.fontInfo16, GameAssets.Fonts.fontInfo8)
     }
 

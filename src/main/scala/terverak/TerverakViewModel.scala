@@ -9,8 +9,9 @@ package terverak
 import indigo.*
 import indigo.scenes.*
 import terverak.scenes.*
-import terverak.scenes.play.*
+import terverak.scenes.deckCollection.*
 import terverak.scenes.menu.*
+import terverak.scenes.play.*
 
 /**
   * The view model of the game.
@@ -20,12 +21,13 @@ final case class TerverakViewModel(
     * The view model of the play scene.
     */
   playSceneViewModel: PlaySceneViewModel,
-  menuSceneViewModel: MenuSceneViewModel
+  menuSceneViewModel: MenuSceneViewModel,
+  deckCollectionSceneViewModel: DeckCollectionSceneViewModel
 )
 
 /**
   * Object containing the initial game view model.
   */
 object TerverakViewModel {
-  def initial: TerverakViewModel = TerverakViewModel(PlaySceneViewModel.initial, MenuSceneViewModel.initial)
+  def initial: TerverakViewModel = TerverakViewModel(PlaySceneViewModel.initial, MenuSceneViewModel.initial, DeckCollectionSceneViewModel.initial)
 }
