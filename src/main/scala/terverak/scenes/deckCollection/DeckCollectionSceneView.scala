@@ -20,7 +20,7 @@ object DeckCollectionSceneView {
       SceneUpdateFragment.empty.addLayer(
         Layer(BindingKey("DeckCollectionLayer"),
         Batch(
-          Text("Deck Collection", 10, 10, 1, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.White)),
+          Group(Text("Deck Collection", 10, 10, 1, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.White))).withDepth(Depth(1)),
         ))
       )
     )

@@ -45,7 +45,7 @@ object CardView {
 
       val manaCostBatch =
         Batch(
-          Text(card.manaCost.toString(), x - 2, y, if isCardDragged then depth - 2 else depth + 1, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Cyan)),
+          Group(Text(card.manaCost.toString(), x - 2, y, if isCardDragged then depth - 5 else depth - 2, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Cyan))).withDepth(Depth(if isCardDragged then depth - 5 else depth - 2)),
           Shape.Box(Rectangle(x - 2, y, 8, 8), Fill.Color(RGBA.Teal)).withDepth(Depth(if isCardDragged then depth - 4 else depth - 1))
         )
 
@@ -53,8 +53,8 @@ object CardView {
         case minion: Card.MinionCard =>
           batch ++ descriptionBatch ++ manaCostBatch
             ++ Batch(
-              Text(minion.damage.toString(), x - 2, y + 56, if isCardDragged then depth - 2 else depth + 1, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Yellow)),
-              Text(minion.life.toString(), x + 26, y + 56, if isCardDragged then depth - 2 else depth + 1, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Red)),
+              Group(Text(minion.damage.toString(), x - 2, y + 56, if isCardDragged then depth - 5 else depth - 2, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Yellow))).withDepth(Depth(if isCardDragged then depth - 5 else depth - 2)),
+              Group(Text(minion.life.toString(), x + 26, y + 56, if isCardDragged then depth - 5 else depth - 2, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Red))).withDepth(Depth(if isCardDragged then depth - 5 else depth - 2)),
               Shape.Box(Rectangle(x - 2, y + 56, 8, 8), Fill.Color(RGBA.Teal)).withDepth(Depth(if isCardDragged then depth - 4 else depth - 1)),
               Shape.Box(Rectangle(x + 26, y + 56, 8, 8), Fill.Color(RGBA.Teal)).withDepth(Depth(if isCardDragged then depth - 4 else depth - 1)),
             )

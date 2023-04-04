@@ -41,8 +41,8 @@ object MinionView {
             Shape.Box(Rectangle(x + 10, y + 56, 24, 8), Fill.Color(RGBA.Teal)).withDepth(Depth(if isCardDragged then depth - 4 else depth - 1)))
     
     val textsBatch =
-      Batch(Text(minion.attackPoints.toString(), x - 2, y + 56, if isCardDragged then depth - 2 else depth + 1, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Yellow)),
-            Text(minion.healthPoints.toString() + "/" + minion.maxHP.toString(), x + 10, y + 56, if isCardDragged then depth - 2 else depth + 1, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Red)))
+      Batch(Group(Text(minion.attackPoints.toString(), x - 2, y + 56, if isCardDragged then depth - 5 else depth - 2, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Yellow))).withDepth(Depth(if isCardDragged then depth - 5 else depth - 2)),
+            Group(Text(minion.healthPoints.toString() + "/" + minion.maxHP.toString(), x + 10, y + 56, if isCardDragged then depth - 5 else depth - 2, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Red))).withDepth(Depth(if isCardDragged then depth - 5 else depth - 2)))
 
     val canAttackBatch =
       if (minion.canAttack && isCurrentPlayer) then

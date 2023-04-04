@@ -30,7 +30,7 @@ object DiscardZoneView {
     val batch = 
       if (!discardZone.cards.isEmpty) {
         Batch(Graphic(x+4, y+4, CardViewModel.CardSize.width, CardViewModel.CardSize.height, 90, Material.Bitmap(GameAssets.Cards.cardBack)),
-        Text(discardZone.cards.length.toString(), x+12, y+28, 80, GameAssets.Fonts.fontKey16, GameAssets.Fonts.fontMaterial16.withTint(RGBA.Yellow)))
+        Group(Text(discardZone.cards.length.toString(), x+12, y+28, 80, GameAssets.Fonts.fontKey16, GameAssets.Fonts.fontMaterial16.withTint(RGBA.Yellow))).withDepth(Depth(80)))
       } else {
         Batch()
       }
