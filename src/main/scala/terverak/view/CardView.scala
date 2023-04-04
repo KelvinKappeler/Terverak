@@ -33,7 +33,7 @@ object CardView {
     if (cardViewModel.isRevealed) {
       val batch: Batch[Graphic[_]] = 
         if (isCardDragged) then
-          Batch(Graphic(x, y, cardWidth, cardHeight, depth-3, Material.Bitmap(card.imageName)))
+          Batch(Graphic(x, y, cardWidth, cardHeight, depth - 3, Material.Bitmap(card.imageName)))
         else
           Batch(Graphic(x, y, cardWidth, cardHeight, depth, Material.Bitmap(card.imageName)))
 

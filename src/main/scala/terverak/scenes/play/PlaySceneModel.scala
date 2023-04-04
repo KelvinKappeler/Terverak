@@ -83,8 +83,8 @@ object PlaySceneModel {
     ++ List.fill(3)(CardsData.SpellCards.blackHoleSpell)
   )
 
-  val currentPlayerDeck = deck.shuffle()
-  val waitingPlayerDeck = deck.shuffle()
+  private val currentPlayerDeck = deck.shuffle()
+  private val waitingPlayerDeck = deck.shuffle()
 
   private val player1: Player = Player("Player1", GameAssets.Heroes.human, 30, 30, 0, currentPlayerDeck, Hand(List.empty), MinionBoard(List.empty), DiscardZone(List.empty)).drawCards(3)
   private val player2: Player = Player("Player2", GameAssets.Heroes.troll, 30, 30, 0, waitingPlayerDeck, Hand(List.empty), MinionBoard(List.empty), DiscardZone(List.empty)).drawCards(3)
