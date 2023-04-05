@@ -6,13 +6,16 @@
     
 package terverak.viewmodel.deckCollection
 
+import indigo.*
 import terverak.model.*
 import terverak.model.deckCollection.*
+import terverak.viewmodel.*
 
 /**
   * The view model of the catalog of cards.
   */
 final case class CardsCatalogViewModel(
+  cardsViewModel: List[CardViewModel] = List.empty, 
   currentPage: Int = 0,
   rows: Int = CardsCatalogViewModel.DefaultRowsPerPage,
   columns: Int = CardsCatalogViewModel.DefaultColumnsPerPage,
@@ -26,6 +29,53 @@ final case class CardsCatalogViewModel(
     * The number of cards that can be displayed on a single page.
     */
   val cardsPerPage: Int = rows * columns
+
+  /**
+    * Updates the position of displayed cards.
+    * @param cardsCatalog the catalog of cards
+    * @return the updated catalog view model
+    */
+  def initCardsPosition(cardsCatalog: CardsCatalog): CardsCatalogViewModel = {
+    val newCardsViewModel = List.range(0, cardsPerPage).map { index =>
+      val row = index / columns
+      val column = index % columns
+      val defaultOffset = CardsCatalogViewModel.DefaultOffset
+      CardViewModel(
+        CardsCatalogViewModel.Position + Point(
+          defaultOffset.x + column * (CardViewModel.CardSize.width + 2 * defaultOffset.x),
+          defaultOffset.y + row * (CardViewModel.CardSize.height + 2 * defaultOffset.y)
+        ))
+    }
+    
+    copy(cardsViewModel = newCardsViewModel)
+  }
+
+  /**
+    * refresh the description of the cards.
+    * @param mouse the mouse
+    * @param cardsCatalog the catalog of cards
+    * @return the updated catalog view model
+    */
+  def refreshDescription(mouse: Mouse, cardsCatalog: CardsCatalog): CardsCatalogViewModel = {
+    val cardsToDisplay = cardsForPage(cardsCatalog)
+    val cardUnderMouse = 
+      cardsToDisplay.zip(cardsViewModel).find { case (card, cardViewModel) => 
+        cardViewModel.checkMouseOverCard(mouse)
+      }
+
+    val newCardsViewModel = cardUnderMouse match 
+      case Some((_, cardViewModelToCompare)) => 
+        cardsViewModel.map { cardViewModel =>
+          if cardViewModel == cardViewModelToCompare then cardViewModel.copy(isDescriptionShown = true)
+          else cardViewModel.copy(isDescriptionShown = false)
+        }
+      case None => 
+        cardsViewModel.map { cardViewModel =>
+          cardViewModel.copy(isDescriptionShown = false)
+        }
+
+    copy(cardsViewModel = newCardsViewModel)
+  } 
 
   /**
     * The next page of the catalog.
@@ -91,7 +141,9 @@ final case class CardsCatalogViewModel(
 
 object CardsCatalogViewModel {
   val DefaultRowsPerPage = 2
-  val DefaultColumnsPerPage = 2
+  val DefaultColumnsPerPage = 3
+  val Position = Point(10, 10)
+  val DefaultOffset = Point(5, 5)
 
-  val initial = CardsCatalogViewModel()
+  val initial = CardsCatalogViewModel().initCardsPosition(CardsCatalog.initial)
 }

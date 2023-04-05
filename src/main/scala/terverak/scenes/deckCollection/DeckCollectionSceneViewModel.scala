@@ -9,6 +9,7 @@ package terverak.scenes.deckCollection
 import indigo.*
 import indigo.scenes.*
 import terverak.model.*
+import terverak.utils.CardsCatalogEvents
 import terverak.viewmodel.deckCollection.*
 
 /**
@@ -27,7 +28,10 @@ final case class DeckCollectionSceneViewModel(val cardsCatalogViewModel: CardsCa
       Outcome(copy(cardsCatalogViewModel = cardsCatalogViewModel.filter(_.subtypes.contains(CardSubtype.Planet))))
     case KeyboardEvent.KeyDown(Key.ESCAPE) =>
       Outcome(copy(cardsCatalogViewModel = cardsCatalogViewModel.filter(_ => true)))
+    case MouseEvent.Move(_) =>
+      Outcome(copy(cardsCatalogViewModel.refreshDescription(context.mouse, model.cardsCatalog)))
     case _ => Outcome(this)
+
   }
 
 }
