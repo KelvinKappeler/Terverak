@@ -10,6 +10,8 @@ import indigo.*
 import terverak.model.*
 import terverak.model.deckCollection.*
 import terverak.viewmodel.*
+import terverak.viewmodel.ui.*
+import indigo.*
 
 /**
   * The view model of the catalog of cards.
@@ -29,6 +31,8 @@ final case class CardsCatalogViewModel(
     * The number of cards that can be displayed on a single page.
     */
   val cardsPerPage: Int = rows * columns
+
+  val buttonFilterPlanet: Button = Button(Rectangle(0, 0, 32, 32))
 
   /**
     * Updates the position of displayed cards.
