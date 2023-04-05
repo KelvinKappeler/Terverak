@@ -30,6 +30,8 @@ final case class DeckCollectionSceneViewModel(val cardsCatalogViewModel: CardsCa
       Outcome(copy(cardsCatalogViewModel = cardsCatalogViewModel.filter(_ => true)))
     case MouseEvent.Move(_) =>
       Outcome(copy(cardsCatalogViewModel.refreshDescription(context.mouse, model.cardsCatalog)))
+    case MouseEvent.Click(_) =>
+      Outcome(copy(cardsCatalogViewModel.checkButtons(context.mouse, model.cardsCatalog)))
     case _ => Outcome(this)
 
   }

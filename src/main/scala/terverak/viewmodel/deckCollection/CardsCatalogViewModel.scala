@@ -7,11 +7,11 @@
 package terverak.viewmodel.deckCollection
 
 import indigo.*
+import indigo.*
 import terverak.model.*
 import terverak.model.deckCollection.*
 import terverak.viewmodel.*
 import terverak.viewmodel.ui.*
-import indigo.*
 
 /**
   * The view model of the catalog of cards.
@@ -32,7 +32,14 @@ final case class CardsCatalogViewModel(
     */
   val cardsPerPage: Int = rows * columns
 
-  val buttonFilterPlanet: Button = Button(Rectangle(0, 0, 32, 32))
+  val (buttonFilterPlanet, buttonFilterPlanetEffect): (Button, Card => Boolean) = 
+    (Button(Rectangle(200, 200, 32, 32)), (c: Card) => c.subtypes.contains(CardSubtype.Planet))
+
+  val (buttonFilterAlien, buttonFilterAlienEffect): (Button, Card => Boolean) = 
+    (Button(Rectangle(200, 100, 32, 32)), (c: Card) => c.subtypes.contains(CardSubtype.Alien))
+
+  val (buttonClearFilter, buttonClearFilterEffect): (Button, Card => Boolean) = 
+    (Button(Rectangle(200, 0, 32, 32)), (c: Card) => true)
 
   /**
     * Updates the position of displayed cards.
@@ -81,6 +88,22 @@ final case class CardsCatalogViewModel(
     copy(cardsViewModel = newCardsViewModel)
   } 
 
+  /**
+    * check if the mouse is over a button and applies the corresponding effect
+    * @param mouse the mouse
+    * @param model the catalog of cards
+    * @return the updated catalog view model
+    */
+  def checkButtons(mouse: Mouse, model: CardsCatalog): CardsCatalogViewModel = {
+    if buttonFilterPlanet.checkMouseOverButton(mouse) then
+      copy(filter = buttonFilterPlanetEffect)
+    else if buttonFilterAlien.checkMouseOverButton(mouse) then
+      copy(filter = buttonFilterAlienEffect)
+    else if buttonClearFilter.checkMouseOverButton(mouse) then
+      copy(filter = buttonClearFilterEffect)
+    else
+      this
+  }
   /**
     * The next page of the catalog.
     * @param model The model of the catalog.

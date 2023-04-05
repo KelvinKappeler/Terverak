@@ -6,7 +6,7 @@
     
 package terverak.view.ui
 
-import indigo.* 
+import indigo.*
 import terverak.viewmodel.ui.*
 
 /**

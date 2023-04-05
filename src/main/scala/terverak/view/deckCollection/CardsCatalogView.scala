@@ -9,6 +9,7 @@ package terverak.view.deckCollection
 import indigo.*
 import terverak.model.deckCollection.*
 import terverak.view.*
+import terverak.view.ui.*
 import terverak.viewmodel.*
 import terverak.viewmodel.deckCollection.*
 
@@ -37,7 +38,17 @@ object CardsCatalogView {
         batch ++ CardView.draw(card, cardViewModel, defaultDepth)
       }
 
-    backgroundBatch ++ cardsBatch
+    val filterPlanetButtonBatch =
+      ButtonView.draw(viewmodel.buttonFilterPlanet)
+
+    val filterAlienButtonBatch =
+      ButtonView.draw(viewmodel.buttonFilterAlien)
+
+    val clearButtonBatch =
+      ButtonView.draw(viewmodel.buttonClearFilter)
+    
+
+    backgroundBatch ++ cardsBatch ++ filterPlanetButtonBatch ++ filterAlienButtonBatch ++ clearButtonBatch
   }
 
 }
