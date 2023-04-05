@@ -15,7 +15,7 @@ object GameAssets {
   
   private val AssetsDirectory: String = "assets/"
 
-  val assets: Set[AssetType] = Cards.assets ++ Fonts.assets ++ Backgrounds.assets ++ Heroes.assets ++ Audio.assets
+  val assets: Set[AssetType] = Cards.assets ++ Fonts.assets ++ Backgrounds.assets ++ Heroes.assets ++ Audio.assets ++ Buttons.assets
 
   /**
     * Cards assets.
@@ -59,6 +59,37 @@ object GameAssets {
         AssetType.Image(spell1, AssetPath(AssetCardsDirectory + "spell1.png")),
         AssetType.Image(blackHole, AssetPath(AssetCardsDirectory + "black_hole.png")),
         AssetType.Image(meteor, AssetPath(AssetCardsDirectory + "spell2.png"))
+      )
+  }
+
+  /**
+    * Buttons assets.
+    */
+  object Buttons {
+    private val AssetCardsDirectory: String = AssetsDirectory + "buttons/"
+
+    val minionButton = AssetName("minionButton")
+    val spellButton = AssetName("spellButton")
+
+    val alienButton = AssetName("alienButton")
+    val planetButton = AssetName("planetButton")
+    
+    val manaCostButton = AssetName("manaCostButton")
+    val attackPointsButton = AssetName("attackPointsButton")
+    val healthPointsButton = AssetName("healthPointsButton")
+
+    val clearButton = AssetName("clearButton")
+
+    val assets: Set[AssetType] =
+      Set(
+        AssetType.Image(alienButton, AssetPath(AssetCardsDirectory + "alien_button.png")),
+        AssetType.Image(planetButton, AssetPath(AssetCardsDirectory + "planet_button.png")),
+        AssetType.Image(clearButton, AssetPath(AssetCardsDirectory + "clear_button.png")),
+        AssetType.Image(minionButton, AssetPath(AssetCardsDirectory + "minion_button.png")),
+        AssetType.Image(spellButton, AssetPath(AssetCardsDirectory + "spell_button.png")),
+        AssetType.Image(manaCostButton, AssetPath(AssetCardsDirectory + "manacost_button.png")),
+        AssetType.Image(attackPointsButton, AssetPath(AssetCardsDirectory + "attackpoints_button.png")),
+        AssetType.Image(healthPointsButton, AssetPath(AssetCardsDirectory + "healthpoints_button.png"))
       )
   }
 

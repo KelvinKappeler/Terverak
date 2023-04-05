@@ -7,18 +7,30 @@
 package terverak.viewmodel.ui
 
 import indigo.*
+import terverak.model.*
 
 /**
   * A button.
   */
-final case class Button(bounds: Rectangle) {
+sealed trait Button {
+    def bounds: Rectangle
+    def asset: AssetName
+    def checkMouseOverButton(mouse: Mouse): Boolean = 
+        mouse.wasMousePositionWithin(bounds)
+}
 
-  /**
-    * Check if the mouse is over the button.
-    * @param mouse the mouse
-    * @return true if the mouse is over the card
-    */
-  def checkMouseOverButton(mouse: Mouse): Boolean = {
-    mouse.wasMousePositionWithin(bounds)
-  }
+object Buttons {
+
+  final case class FilterButton(
+    bounds: Rectangle,
+    asset: AssetName,
+    filter: Card => Boolean
+  ) extends Button
+
+  final case class SortButton(
+    bounds: Rectangle,
+    asset: AssetName,
+    sort: (Card, Card) => Boolean
+  ) extends Button
+
 }

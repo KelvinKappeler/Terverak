@@ -21,7 +21,7 @@ object DeckCollectionSceneView {
       SceneUpdateFragment(
         Layer(BindingKey("DeckCollectionLayer"),
         Batch(
-          Group(Text("Deck Collection", 0, 0, 1, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.White))).withDepth(Depth(1)),
+          Group(Text("Deck Collection", 10, 5, 1, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.White))).withDepth(Depth(1)),
         ) ++ CardsCatalogView.draw(model.cardsCatalog, viewModel.cardsCatalogViewModel))
       )
     )

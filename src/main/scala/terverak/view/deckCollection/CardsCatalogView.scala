@@ -7,11 +7,13 @@
 package terverak.view.deckCollection
 
 import indigo.*
+import terverak.data.*
 import terverak.model.deckCollection.*
 import terverak.view.*
 import terverak.view.ui.*
 import terverak.viewmodel.*
 import terverak.viewmodel.deckCollection.*
+import terverak.viewmodel.ui.*
 
 /**
   * The view of the catalog of cards.
@@ -38,17 +40,21 @@ object CardsCatalogView {
         batch ++ CardView.draw(card, cardViewModel, defaultDepth)
       }
 
-    val filterPlanetButtonBatch =
-      ButtonView.draw(viewmodel.buttonFilterPlanet)
+    val buttonsBatch =
+      viewmodel.buttons.foldLeft(Batch.empty[SceneNode]) { case (batch, button) =>
+        batch ++ ButtonView.draw(button)
+      }
 
-    val filterAlienButtonBatch =
-      ButtonView.draw(viewmodel.buttonFilterAlien)
+    val filterAndSortText =
+      Batch(
+        Group(
+          Text("Filter by:", 10, 5 + CardsCatalogViewModel.Position.y + CardsCatalogViewModel.DefaultRowsPerPage * (CardViewModel.CardSize.height + 2 * (CardsCatalogViewModel.DefaultOffset.y+1)), 1, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.White)),
+          Text("Sort by:", 10, 31 + CardsCatalogViewModel.Position.y + CardsCatalogViewModel.DefaultRowsPerPage * (CardViewModel.CardSize.height + 2 * (CardsCatalogViewModel.DefaultOffset.y+1)), 1, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.White))
+          ) 
+        .withDepth(Depth(1))
+      )
 
-    val clearButtonBatch =
-      ButtonView.draw(viewmodel.buttonClearFilter)
-    
-
-    backgroundBatch ++ cardsBatch ++ filterPlanetButtonBatch ++ filterAlienButtonBatch ++ clearButtonBatch
+    backgroundBatch ++ cardsBatch ++ buttonsBatch ++ filterAndSortText
   }
 
 }

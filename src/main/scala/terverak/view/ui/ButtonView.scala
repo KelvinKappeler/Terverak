@@ -23,11 +23,7 @@ object ButtonView {
     */  
   def draw(button: Button): Batch[SceneNode] = {
     Batch(
-      Shape.Box(
-        Rectangle(button.bounds.x, button.bounds.y, button.bounds.width, button.bounds.height),
-        Fill.Color(RGBA.Indigo)
-      ).withDepth(defaultDepth)
+      Graphic(button.bounds.x, button.bounds.y, button.bounds.width, button.bounds.height, Material.Bitmap(button.asset)).withDepth(defaultDepth)
     )
   }
-
 }

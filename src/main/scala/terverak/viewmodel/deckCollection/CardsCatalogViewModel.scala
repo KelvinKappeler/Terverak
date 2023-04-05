@@ -8,6 +8,7 @@ package terverak.viewmodel.deckCollection
 
 import indigo.*
 import indigo.*
+import terverak.data.GameAssets
 import terverak.model.*
 import terverak.model.deckCollection.*
 import terverak.viewmodel.*
@@ -32,14 +33,46 @@ final case class CardsCatalogViewModel(
     */
   val cardsPerPage: Int = rows * columns
 
-  val (buttonFilterPlanet, buttonFilterPlanetEffect): (Button, Card => Boolean) = 
-    (Button(Rectangle(200, 200, 32, 32)), (c: Card) => c.subtypes.contains(CardSubtype.Planet))
+  private val filterButtonsOffsetY = 18 + CardsCatalogViewModel.Position.y + CardsCatalogViewModel.DefaultRowsPerPage * (CardViewModel.CardSize.height + 2 * (CardsCatalogViewModel.DefaultOffset.y+1))
+  private val sortButtonsOffsetY = 26 + filterButtonsOffsetY
+  /**
+    * The list of filter buttons.
+    */
+  val buttons: List[Button] = List(
+    //clear filter
+    Buttons.FilterButton(Rectangle(10, filterButtonsOffsetY, 8, 8), GameAssets.Buttons.clearButton, (c: Card) => true),
+    //filter by alien
+    Buttons.FilterButton(Rectangle(22, filterButtonsOffsetY, 30, 8), GameAssets.Buttons.alienButton, (c: Card) => c.subtypes.contains(CardSubtype.Alien)),
+    //filter by planet
+    Buttons.FilterButton(Rectangle(56, filterButtonsOffsetY, 36, 8), GameAssets.Buttons.planetButton, (c: Card) => c.subtypes.contains(CardSubtype.Planet)),
+    //filter minions
+    Buttons.FilterButton(Rectangle(96, filterButtonsOffsetY, 37, 8), GameAssets.Buttons.minionButton,
+     (c: Card) => c match
+      case minion: Card.MinionCard => true
+      case _ => false),
+    //filter spells
+    Buttons.FilterButton(Rectangle(137, filterButtonsOffsetY, 29, 8), GameAssets.Buttons.spellButton,
+     (c: Card) => c match
+      case spell: Card.SpellCard => true
+      case _ => false),
 
-  val (buttonFilterAlien, buttonFilterAlienEffect): (Button, Card => Boolean) = 
-    (Button(Rectangle(200, 100, 32, 32)), (c: Card) => c.subtypes.contains(CardSubtype.Alien))
-
-  val (buttonClearFilter, buttonClearFilterEffect): (Button, Card => Boolean) = 
-    (Button(Rectangle(200, 0, 32, 32)), (c: Card) => true)
+    //sort by mana cost
+    Buttons.SortButton(Rectangle(10, sortButtonsOffsetY, 48, 8), GameAssets.Buttons.manaCostButton, (c1: Card, c2: Card) => c1.manaCost < c2.manaCost),
+    //sort by attack
+    Buttons.SortButton(Rectangle(62, sortButtonsOffsetY, 73, 8), GameAssets.Buttons.attackPointsButton,
+     (c1: Card, c2: Card) => c1 match
+      case minion1: Card.MinionCard => c2 match
+        case minion2: Card.MinionCard => minion1.damage < minion2.damage
+        case _ => true
+      case _ => false),
+    //sort by health
+    Buttons.SortButton(Rectangle(139, sortButtonsOffsetY, 71, 8), GameAssets.Buttons.healthPointsButton,
+     (c1: Card, c2: Card) => c1 match
+      case minion1: Card.MinionCard => c2 match
+        case minion2: Card.MinionCard => minion1.life < minion2.life
+        case _ => true
+      case _ => false)
+  )
 
   /**
     * Updates the position of displayed cards.
@@ -95,15 +128,15 @@ final case class CardsCatalogViewModel(
     * @return the updated catalog view model
     */
   def checkButtons(mouse: Mouse, model: CardsCatalog): CardsCatalogViewModel = {
-    if buttonFilterPlanet.checkMouseOverButton(mouse) then
-      copy(filter = buttonFilterPlanetEffect)
-    else if buttonFilterAlien.checkMouseOverButton(mouse) then
-      copy(filter = buttonFilterAlienEffect)
-    else if buttonClearFilter.checkMouseOverButton(mouse) then
-      copy(filter = buttonClearFilterEffect)
-    else
-      this
+    buttons.foldLeft(this) { (viewModel, button) =>
+      if button.checkMouseOverButton(mouse) then
+        button match
+          case Buttons.FilterButton(_, _, filter) => viewModel.copy(filter = filter)
+          case Buttons.SortButton(_, _, sort) => viewModel.copy(sort = sort)
+      else viewModel
+    }
   }
+
   /**
     * The next page of the catalog.
     * @param model The model of the catalog.
@@ -142,7 +175,7 @@ final case class CardsCatalogViewModel(
     */
   def cardsForPage(model: CardsCatalog): List[Card] = {
     val start = currentPage * cardsPerPage
-    val filterCards = model.cards.filter(filter)
+    val filterCards = model.cards.filter(filter).sortWith(sort)
     val end = Math.min(start + cardsPerPage, filterCards.length)
     filterCards.slice(start, end)
   }
@@ -167,9 +200,9 @@ final case class CardsCatalogViewModel(
 }
 
 object CardsCatalogViewModel {
-  val DefaultRowsPerPage = 2
-  val DefaultColumnsPerPage = 3
-  val Position = Point(10, 10)
+  val DefaultRowsPerPage = 3
+  val DefaultColumnsPerPage = 5
+  val Position = Point(10, 20)
   val DefaultOffset = Point(5, 5)
 
   val initial = CardsCatalogViewModel().initCardsPosition(CardsCatalog.initial)
