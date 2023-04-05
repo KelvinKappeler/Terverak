@@ -16,6 +16,7 @@ lazy val mygame =
       name         := "terverak",
       version      := "0.0.1",
       scalaVersion := "3.2.0",
+      scalacOptions ++= Seq("-Ysafe-init"),
       organization := "epfl",
       libraryDependencies ++= Seq(
         "org.scalameta" %%% "munit" % "0.7.29" % Test

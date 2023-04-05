@@ -22,7 +22,7 @@ import scala.scalajs.js.annotation.JSExportTopLevel
 @JSExportTopLevel("IndigoGame")
 object Terverak extends IndigoGame[Unit, Unit, TerverakModel, TerverakViewModel]:
 
-  private val Magnification = 2
+  private val Magnification = 3
 
   def initialScene(bootData: Unit): Option[SceneName] =
     Option(MenuScene.name)

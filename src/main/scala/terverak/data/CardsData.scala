@@ -19,10 +19,6 @@ object CardsData {
     * The minion cards of the game.
     */
   object MinionCards {
-    val minionCards = Set(
-      bato,
-      shinyBato
-    )
 
     val bato: Card.MinionCard = Card.MinionCard(
       "Bato", "Small boat chilling in the water.", GameAssets.Cards.bato, 1, Nil, List(CardEffectsMana.AddMana(1)), Nil, Nil, 2, 1
@@ -55,15 +51,33 @@ object CardsData {
     val alienYellow: Card.MinionCard = Card.MinionCard(
       "Yellow Champion", "A yellow alien", GameAssets.Cards.alienYellow, 4, List(CardEffects.AddAttackPerSubtype(1, CardSubtype.Alien, CardEffectTarget.CurrentPlayerMinionsBoard)), List(CardEffectsMana.AddManaPerSubtype(1, CardSubtype.Alien, CardEffectTarget.BothPlayersMinionsBoard), CardEffectsDraw.DrawCard(1)), List(CardSubtype.Alien), Nil, 1, 4
       )
+
+    val alienBlue: Card.MinionCard = Card.MinionCard(
+      "Blue Champion", "A yellow alien", GameAssets.Cards.alienBlue, 4, List(CardEffects.AddAttackPerSubtype(1, CardSubtype.Alien, CardEffectTarget.CurrentPlayerMinionsBoard)), List(CardEffectsMana.AddManaPerSubtype(1, CardSubtype.Alien, CardEffectTarget.BothPlayersMinionsBoard), CardEffectsDraw.DrawCard(1)), List(CardSubtype.Alien), Nil, 1, 4
+      )
+
+    val alienRed: Card.MinionCard = Card.MinionCard(
+      "Red Champion", "A yellow alien", GameAssets.Cards.alienRed, 4, List(CardEffects.AddAttackPerSubtype(1, CardSubtype.Alien, CardEffectTarget.CurrentPlayerMinionsBoard)), List(CardEffectsMana.AddManaPerSubtype(1, CardSubtype.Alien, CardEffectTarget.BothPlayersMinionsBoard), CardEffectsDraw.DrawCard(1)), List(CardSubtype.Alien), Nil, 1, 4
+      )
+
+    val minionCards = Set(
+      bato,
+      shinyBato,
+      planet1,
+      planet2,
+      planet3,
+      planet4,
+      alienGreen,
+      alienYellow,
+      alienBlue,
+      alienRed
+    )
   }
 
   /**
    * The spell cards of the game.
    */
   object SpellCards {
-    val spellCards = Set(
-      spell1,
-    )
 
     val spell1: Card.SpellCard = Card.SpellCard(
       "Spell1", "A spell", GameAssets.Cards.spell1, 0, List(CardEffectsDraw.DrawCardPerSubtype(1, CardSubtype.Planet, CardEffectTarget.CurrentPlayerMinionsBoard)), List(CardEffectsMana.AddMana(1)), Nil
@@ -72,5 +86,15 @@ object CardsData {
     val blackHoleSpell: Card.SpellCard = Card.SpellCard(
       "Machiavellian Black Hole", "You don't want to meet him", GameAssets.Cards.blackHole, 4,  List(CardEffects.DestroyRandomMinions(2, true)), List(CardEffects.DestroyRandomMinions(1, false)),Nil
       )
+
+    val meteor: Card.SpellCard = Card.SpellCard(
+      "METEOR", "You don't want to meet him", GameAssets.Cards.meteor, 4,  List(CardEffects.DestroyRandomMinions(2, true)), List(CardEffects.DestroyRandomMinions(1, false)),Nil
+      )
+
+    val spellCards = Set(
+      spell1,
+      blackHoleSpell,
+      meteor
+    )
   }
 }

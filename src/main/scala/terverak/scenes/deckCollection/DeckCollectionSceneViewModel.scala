@@ -8,13 +8,25 @@ package terverak.scenes.deckCollection
 
 import indigo.*
 import indigo.scenes.*
+import terverak.model.*
+import terverak.viewmodel.deckCollection.*
 
 /**
   * The viewmodel of the deck collection scene.
   */
-final class DeckCollectionSceneViewModel {
+final case class DeckCollectionSceneViewModel(val cardsCatalogViewModel: CardsCatalogViewModel) {
 
   def updateViewModel(context: SceneContext[Unit], model: DeckCollectionSceneModel): GlobalEvent => Outcome[DeckCollectionSceneViewModel] = {
+    case KeyboardEvent.KeyDown(Key.RIGHT_ARROW) =>
+      Outcome(copy(cardsCatalogViewModel = cardsCatalogViewModel.nextPage(model.cardsCatalog)))
+    case KeyboardEvent.KeyDown(Key.LEFT_ARROW) =>
+      Outcome(copy(cardsCatalogViewModel = cardsCatalogViewModel.previousPage(model.cardsCatalog)))
+    case KeyboardEvent.KeyDown(Key.UP_ARROW) =>
+      Outcome(copy(cardsCatalogViewModel = cardsCatalogViewModel.filter(_.subtypes.contains(CardSubtype.Alien))))
+    case KeyboardEvent.KeyDown(Key.DOWN_ARROW) =>
+      Outcome(copy(cardsCatalogViewModel = cardsCatalogViewModel.filter(_.subtypes.contains(CardSubtype.Planet))))
+    case KeyboardEvent.KeyDown(Key.ESCAPE) =>
+      Outcome(copy(cardsCatalogViewModel = cardsCatalogViewModel.filter(_ => true)))
     case _ => Outcome(this)
   }
 
@@ -25,6 +37,6 @@ final class DeckCollectionSceneViewModel {
   */
 object DeckCollectionSceneViewModel {
 
-  val initial: DeckCollectionSceneViewModel = DeckCollectionSceneViewModel()
+  val initial: DeckCollectionSceneViewModel = DeckCollectionSceneViewModel(CardsCatalogViewModel.initial)
   
 }
