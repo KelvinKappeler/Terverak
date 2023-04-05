@@ -12,6 +12,7 @@ import terverak.data.GameAssets
 import terverak.model.*
 import terverak.model.deckCollection.*
 import terverak.viewmodel.*
+import terverak.viewmodel.ui.Buttons.CardsCatalogViewModelModifierButton
 import terverak.viewmodel.ui.*
 
 /**
@@ -33,45 +34,48 @@ final case class CardsCatalogViewModel(
     */
   val cardsPerPage: Int = rows * columns
 
-  private val filterButtonsOffsetY = 18 + CardsCatalogViewModel.Position.y + CardsCatalogViewModel.DefaultRowsPerPage * (CardViewModel.CardSize.height + 2 * (CardsCatalogViewModel.DefaultOffset.y+1))
-  private val sortButtonsOffsetY = 26 + filterButtonsOffsetY
   /**
     * The list of filter buttons.
     */
   val buttons: List[Button] = List(
     //clear filter
-    Buttons.FilterButton(Rectangle(10, filterButtonsOffsetY, 8, 8), GameAssets.Buttons.clearButton, (c: Card) => true),
+    Buttons.FilterButton(Rectangle(10, CardsCatalogViewModel.FilterButtonsOffsetY, 8, 8), GameAssets.Buttons.clearButton, (c: Card) => true),
     //filter by alien
-    Buttons.FilterButton(Rectangle(22, filterButtonsOffsetY, 30, 8), GameAssets.Buttons.alienButton, (c: Card) => c.subtypes.contains(CardSubtype.Alien)),
+    Buttons.FilterButton(Rectangle(22, CardsCatalogViewModel.FilterButtonsOffsetY, 30, 8), GameAssets.Buttons.alienButton, (c: Card) => c.subtypes.contains(CardSubtype.Alien)),
     //filter by planet
-    Buttons.FilterButton(Rectangle(56, filterButtonsOffsetY, 36, 8), GameAssets.Buttons.planetButton, (c: Card) => c.subtypes.contains(CardSubtype.Planet)),
+    Buttons.FilterButton(Rectangle(56, CardsCatalogViewModel.FilterButtonsOffsetY, 36, 8), GameAssets.Buttons.planetButton, (c: Card) => c.subtypes.contains(CardSubtype.Planet)),
     //filter minions
-    Buttons.FilterButton(Rectangle(96, filterButtonsOffsetY, 37, 8), GameAssets.Buttons.minionButton,
+    Buttons.FilterButton(Rectangle(96, CardsCatalogViewModel.FilterButtonsOffsetY, 37, 8), GameAssets.Buttons.minionButton,
      (c: Card) => c match
       case minion: Card.MinionCard => true
       case _ => false),
     //filter spells
-    Buttons.FilterButton(Rectangle(137, filterButtonsOffsetY, 29, 8), GameAssets.Buttons.spellButton,
+    Buttons.FilterButton(Rectangle(137, CardsCatalogViewModel.FilterButtonsOffsetY, 29, 8), GameAssets.Buttons.spellButton,
      (c: Card) => c match
       case spell: Card.SpellCard => true
       case _ => false),
 
     //sort by mana cost
-    Buttons.SortButton(Rectangle(10, sortButtonsOffsetY, 48, 8), GameAssets.Buttons.manaCostButton, (c1: Card, c2: Card) => c1.manaCost < c2.manaCost),
+    Buttons.SortButton(Rectangle(10, CardsCatalogViewModel.SortButtonsOffsetY, 48, 8), GameAssets.Buttons.manaCostButton, (c1: Card, c2: Card) => c1.manaCost < c2.manaCost),
     //sort by attack
-    Buttons.SortButton(Rectangle(62, sortButtonsOffsetY, 73, 8), GameAssets.Buttons.attackPointsButton,
+    Buttons.SortButton(Rectangle(62, CardsCatalogViewModel.SortButtonsOffsetY, 73, 8), GameAssets.Buttons.attackPointsButton,
      (c1: Card, c2: Card) => c1 match
       case minion1: Card.MinionCard => c2 match
         case minion2: Card.MinionCard => minion1.damage < minion2.damage
         case _ => true
       case _ => false),
     //sort by health
-    Buttons.SortButton(Rectangle(139, sortButtonsOffsetY, 71, 8), GameAssets.Buttons.healthPointsButton,
+    Buttons.SortButton(Rectangle(139, CardsCatalogViewModel.SortButtonsOffsetY, 71, 8), GameAssets.Buttons.healthPointsButton,
      (c1: Card, c2: Card) => c1 match
       case minion1: Card.MinionCard => c2 match
         case minion2: Card.MinionCard => minion1.life < minion2.life
         case _ => true
-      case _ => false)
+      case _ => false),
+
+    //go to next page
+    Buttons.CardsCatalogViewModelModifierButton(Rectangle(97, CardsCatalogViewModel.PagesButtonsOffsetY, 15, 13), GameAssets.Buttons.nextPageButton, (model: CardsCatalog) => nextPage(model)),
+    //go to previous page
+    Buttons.CardsCatalogViewModelModifierButton(Rectangle(10, CardsCatalogViewModel.PagesButtonsOffsetY, 15, 13), GameAssets.Buttons.previousPageButton, (model: CardsCatalog) => previousPage(model))
   )
 
   /**
@@ -131,8 +135,9 @@ final case class CardsCatalogViewModel(
     buttons.foldLeft(this) { (viewModel, button) =>
       if button.checkMouseOverButton(mouse) then
         button match
-          case Buttons.FilterButton(_, _, filter) => viewModel.copy(filter = filter)
-          case Buttons.SortButton(_, _, sort) => viewModel.copy(sort = sort)
+          case Buttons.FilterButton(_, _, filter) => viewModel.copy(currentPage = 0, filter = filter)
+          case Buttons.SortButton(_, _, sort) => viewModel.copy(currentPage = 0, sort = sort)
+          case CardsCatalogViewModelModifierButton(_, _, modifier) => modifier(model)
       else viewModel
     }
   }
@@ -180,30 +185,17 @@ final case class CardsCatalogViewModel(
     filterCards.slice(start, end)
   }
 
-  /**
-    * Filters the cards in the catalog.
-    * @param filter The filter to apply.
-    * @return A catalog view model with the filtered cards.
-    */
-  def filter(filter: Card => Boolean): CardsCatalogViewModel = {
-    copy(currentPage = 0, filter = filter)
-  }
-
-  /**
-    * Sorts the cards in the catalog.
-    * @param sort The sort to apply.
-    * @return A catalog view model with the sorted cards.
-    */
-  def sort(sort: (Card, Card) => Boolean): CardsCatalogViewModel = {
-    copy(currentPage = 0, sort = sort)
-  }
 }
 
 object CardsCatalogViewModel {
-  val DefaultRowsPerPage = 3
-  val DefaultColumnsPerPage = 5
+  val DefaultRowsPerPage = 2
+  val DefaultColumnsPerPage = 3
   val Position = Point(10, 20)
   val DefaultOffset = Point(5, 5)
+
+  val PagesButtonsOffsetY = 4 + CardsCatalogViewModel.Position.y + CardsCatalogViewModel.DefaultRowsPerPage * (CardViewModel.CardSize.height + 2 * (CardsCatalogViewModel.DefaultOffset.y + 1))
+  val FilterButtonsOffsetY = 33 + PagesButtonsOffsetY
+  val SortButtonsOffsetY = 24 + FilterButtonsOffsetY
 
   val initial = CardsCatalogViewModel().initCardsPosition(CardsCatalog.initial)
 }

@@ -80,6 +80,9 @@ object GameAssets {
 
     val clearButton = AssetName("clearButton")
 
+    val nextPageButton = AssetName("nextPageButton")
+    val previousPageButton = AssetName("previousPageButton")
+
     val assets: Set[AssetType] =
       Set(
         AssetType.Image(alienButton, AssetPath(AssetCardsDirectory + "alien_button.png")),
@@ -89,7 +92,9 @@ object GameAssets {
         AssetType.Image(spellButton, AssetPath(AssetCardsDirectory + "spell_button.png")),
         AssetType.Image(manaCostButton, AssetPath(AssetCardsDirectory + "manacost_button.png")),
         AssetType.Image(attackPointsButton, AssetPath(AssetCardsDirectory + "attackpoints_button.png")),
-        AssetType.Image(healthPointsButton, AssetPath(AssetCardsDirectory + "healthpoints_button.png"))
+        AssetType.Image(healthPointsButton, AssetPath(AssetCardsDirectory + "healthpoints_button.png")),
+        AssetType.Image(nextPageButton, AssetPath(AssetCardsDirectory + "next_page_button.png")),
+        AssetType.Image(previousPageButton, AssetPath(AssetCardsDirectory + "previous_page_button.png"))
       )
   }
 

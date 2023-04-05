@@ -8,6 +8,10 @@ package terverak.viewmodel.ui
 
 import indigo.*
 import terverak.model.*
+import terverak.model.deckCollection.CardsCatalog
+import terverak.utils.*
+import terverak.viewmodel.*
+import terverak.viewmodel.deckCollection.CardsCatalogViewModel
 
 /**
   * A button.
@@ -31,6 +35,12 @@ object Buttons {
     bounds: Rectangle,
     asset: AssetName,
     sort: (Card, Card) => Boolean
+  ) extends Button
+
+  final case class CardsCatalogViewModelModifierButton(
+    bounds: Rectangle,
+    asset: AssetName,
+    modifier: CardsCatalog => CardsCatalogViewModel
   ) extends Button
 
 }

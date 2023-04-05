@@ -24,32 +24,33 @@ object CardsCatalogView {
   private val defaultOffset = CardsCatalogViewModel.DefaultOffset
   private val defaultDepth = 30
 
-  def draw(model: CardsCatalog, viewmodel: CardsCatalogViewModel): Batch[SceneNode] = {
+  def draw(model: CardsCatalog, viewModel: CardsCatalogViewModel): Batch[SceneNode] = {
     
     val backgroundBatch = Batch(
       Shape.Box(Rectangle(
         initialPoint.x,
         initialPoint.y,
-        viewmodel.columns * (CardViewModel.CardSize.width + 2 * defaultOffset.x),
-        viewmodel.rows * (CardViewModel.CardSize.height + 2 * defaultOffset.y)
+        viewModel.columns * (CardViewModel.CardSize.width + 2 * defaultOffset.x),
+        viewModel.rows * (CardViewModel.CardSize.height + 2 * defaultOffset.y)
       ), Fill.Color(RGBA.Purple)).withDepth(Depth(defaultDepth))
     )
 
     val cardsBatch =
-      viewmodel.cardsForPage(model).zip(viewmodel.cardsViewModel).foldLeft(Batch.empty[SceneNode]) { case (batch, (card, cardViewModel)) =>
+      viewModel.cardsForPage(model).zip(viewModel.cardsViewModel).foldLeft(Batch.empty[SceneNode]) { case (batch, (card, cardViewModel)) =>
         batch ++ CardView.draw(card, cardViewModel, defaultDepth)
       }
 
     val buttonsBatch =
-      viewmodel.buttons.foldLeft(Batch.empty[SceneNode]) { case (batch, button) =>
+      viewModel.buttons.foldLeft(Batch.empty[SceneNode]) { case (batch, button) =>
         batch ++ ButtonView.draw(button)
       }
 
     val filterAndSortText =
       Batch(
         Group(
-          Text("Filter by:", 10, 5 + CardsCatalogViewModel.Position.y + CardsCatalogViewModel.DefaultRowsPerPage * (CardViewModel.CardSize.height + 2 * (CardsCatalogViewModel.DefaultOffset.y+1)), 1, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.White)),
-          Text("Sort by:", 10, 31 + CardsCatalogViewModel.Position.y + CardsCatalogViewModel.DefaultRowsPerPage * (CardViewModel.CardSize.height + 2 * (CardsCatalogViewModel.DefaultOffset.y+1)), 1, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.White))
+          Text("Filter by:", 10, CardsCatalogViewModel.FilterButtonsOffsetY - 12, 1, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.White)),
+          Text("Sort by:", 10, CardsCatalogViewModel.SortButtonsOffsetY - 12, 1, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.White)),
+          Text("Page " + (viewModel.currentPage + 1) + "/" + viewModel.maxPages(model), 29, CardsCatalogViewModel.PagesButtonsOffsetY + 3, 1, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.White)),
           ) 
         .withDepth(Depth(1))
       )
