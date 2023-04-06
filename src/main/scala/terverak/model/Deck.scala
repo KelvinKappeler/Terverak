@@ -41,6 +41,21 @@ final case class Deck(cards: List[Card]) {
     } ensuring(_._1.cards.length == cards.length - 1, "Deck length must be decreased by 1")
 
     /**
+     * Removes a given card from the deck.
+     * @param card the card to remove.
+     * @return the new deck.
+     */
+    def removeOneCard(card: Card): Deck = {
+      def rec(cardsList: List[Card]): List[Card] = cardsList match {
+        case Nil => Nil
+        case c :: cs if c == card => cardsList.tail
+        case c :: cs => c :: rec(cs)
+      }
+      Deck(rec(cards))
+    }
+
+
+    /**
      * Shuffles the deck.
      * @return the shuffled deck.
      */

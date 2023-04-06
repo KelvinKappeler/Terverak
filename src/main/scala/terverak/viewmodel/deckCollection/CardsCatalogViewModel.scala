@@ -188,7 +188,7 @@ final case class CardsCatalogViewModel(
 }
 
 object CardsCatalogViewModel {
-  val DefaultRowsPerPage = 2
+  val DefaultRowsPerPage = 3
   val DefaultColumnsPerPage = 3
   val Position = Point(10, 20)
   val DefaultOffset = Point(5, 5)
