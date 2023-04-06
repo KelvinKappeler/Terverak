@@ -137,7 +137,7 @@ final case class CardsCatalogViewModel(
         button match
           case Buttons.FilterButton(_, _, filter) => viewModel.copy(currentPage = 0, filter = filter)
           case Buttons.SortButton(_, _, sort) => viewModel.copy(currentPage = 0, sort = sort)
-          case CardsCatalogViewModelModifierButton(_, _, modifier) => modifier(model)
+          case Buttons.CardsCatalogViewModelModifierButton(_, _, modifier) => modifier(model)
       else viewModel
     }
   }

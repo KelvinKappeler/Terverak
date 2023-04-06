@@ -8,6 +8,7 @@ package terverak.model
 
 import indigo.*
 import terverak.model.IdObject.*
+import terverak.model.*
 
 /**
   * A player.
@@ -18,7 +19,7 @@ final case class Player(
   maxHealthPoints: Int,
   healthPoints: Int,
   mana: Int,
-  deck: Deck,
+  deck: DeckZone,
   hand: Hand,
   minionBoard: MinionBoard,
   discardZone: DiscardZone
@@ -79,7 +80,7 @@ final case class Player(
     if (amount == 0 || hand.cards.length == hand.MaxHandSize) then
       this
     else if deck.cards.isEmpty then
-      copy(discardZone = DiscardZone(List.empty), deck = Deck(discardZone.cards).shuffle())
+      copy(discardZone = DiscardZone(List.empty), deck = DeckZone(discardZone.cards).shuffle())
         .drawCards(amount)
     else
       val (newDeck, drawnCard) = deck.removeTopCard()
