@@ -73,7 +73,7 @@ final case class PlaySceneModel(currentGame: Game) {
   */
 object PlaySceneModel {
 
-  private val deck: Deck = Deck(
+  private val deck: DeckZone = DeckZone(
     List.fill(8)(CardsData.MinionCards.bato)
     ++ List.fill(5)(CardsData.MinionCards.planet1)
     ++ List.fill(3)(CardsData.MinionCards.shinyBato)

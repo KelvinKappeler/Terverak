@@ -8,6 +8,7 @@ package terverak.view
 
 import indigo.*
 import terverak.model.*
+import terverak.view.*
 import terverak.viewmodel.*
 
 /**
@@ -23,8 +24,8 @@ object GameView {
     */
   def draw(game: Game, gameViewModel: GameViewModel): Batch[SceneNode] = {
     Batch.empty ++
-      DeckView.draw(game.currentPlayer.deck, Point(40 * 7 + 7, 3 * 72 + 4)) ++
-      DeckView.draw(game.waitingPlayer.deck, Point(40 * 7 + 7, 4)) ++
+      DeckZoneView.draw(game.currentPlayer.deck, Point(40 * 7 + 7, 3 * 72 + 4)) ++
+      DeckZoneView.draw(game.waitingPlayer.deck, Point(40 * 7 + 7, 4)) ++
       HandView.draw(game.currentPlayer.hand, gameViewModel.currentPlayerViewModel.handViewModel, 40) ++
       HandView.draw(game.waitingPlayer.hand, gameViewModel.waitingPlayerViewModel.handViewModel, 40) ++
       MinionBoardView.draw(game.currentPlayer.minionBoard, gameViewModel.currentPlayerViewModel.minionBoardViewModel, true, 40) ++
