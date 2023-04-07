@@ -20,9 +20,12 @@ final case class CardViewModel(
   isRevealed: Boolean = true,
   isDragged: Boolean = false,
   isDescriptionShown: Boolean = false,
+  isSmallVersion: Boolean = false,
 ) {
 
-  private val bounds = Rectangle(position.x, position.y, CardViewModel.CardSize.width, CardViewModel.CardSize.height)
+  private val bounds =
+    if (isSmallVersion) Rectangle(position.x, position.y, (CardViewModel.CardSize.width * CardViewModel.SmallVersionScale.x).toInt, (CardViewModel.CardSize.height * CardViewModel.SmallVersionScale.y).toInt)
+    else Rectangle(position.x, position.y, CardViewModel.CardSize.width, CardViewModel.CardSize.height)
 
   /**
     * Check if the mouse is over the card.
@@ -35,5 +38,6 @@ final case class CardViewModel(
 }
 
 object CardViewModel {
+  val SmallVersionScale = Vector2(0.4, 0.4)
   val CardSize: Size = Size(32, 64)
 }

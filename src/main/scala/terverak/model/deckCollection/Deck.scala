@@ -21,7 +21,7 @@ final case class Deck(val cardsWithQuantity: Map[Card, Int]) {
     */
   def addCard(card: Card): Deck = {
     if (cardsWithQuantity.contains(card)) {
-      if (cardsWithQuantity(card) == 2) {
+      if (cardsWithQuantity(card) >= 2) {
         this
       } else {
         copy(cardsWithQuantity = cardsWithQuantity.updated(card, cardsWithQuantity(card) + 1))
