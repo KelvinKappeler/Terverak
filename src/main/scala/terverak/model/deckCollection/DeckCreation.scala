@@ -10,7 +10,7 @@ import indigo.*
 import terverak.data.*
 import terverak.model.*
 
-final case class DeckCreation()
+final case class DeckCreation(deck: Deck = Deck(Map.empty))
 
 object DeckCreation {
 

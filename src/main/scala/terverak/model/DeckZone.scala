@@ -45,13 +45,13 @@ final case class DeckZone(cards: List[Card]) {
      * @param card the card to remove.
      * @return the new deck.
      */
-    def removeOneCard(card: Card): Deck = {
+    def removeOneCard(card: Card): DeckZone = {
       def rec(cardsList: List[Card]): List[Card] = cardsList match {
         case Nil => Nil
         case c :: cs if c == card => cardsList.tail
         case c :: cs => c :: rec(cs)
       }
-      Deck(rec(cards))
+      DeckZone(rec(cards))
     }
 
 

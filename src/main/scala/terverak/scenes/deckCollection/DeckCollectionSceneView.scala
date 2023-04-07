@@ -22,7 +22,9 @@ object DeckCollectionSceneView {
         Layer(BindingKey("DeckCollectionLayer"),
         Batch(
           Group(Text("Deck Collection", 10, 5, 1, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.White))).withDepth(Depth(1)),
-        ) ++ CardsCatalogView.draw(model.cardsCatalog, viewModel.cardsCatalogViewModel))
+        ) 
+        ++ CardsCatalogView.draw(model.cardsCatalog, viewModel.cardsCatalogViewModel))
+        ++ DeckCreationView.draw(model.deckCreation, viewModel.deckCreationViewModel)
       )
     )
   }

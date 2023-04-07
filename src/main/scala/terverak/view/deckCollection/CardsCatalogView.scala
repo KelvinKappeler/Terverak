@@ -30,8 +30,8 @@ object CardsCatalogView {
       Shape.Box(Rectangle(
         initialPoint.x,
         initialPoint.y,
-        viewModel.columns * (CardViewModel.CardSize.width + 2 * defaultOffset.x),
-        viewModel.rows * (CardViewModel.CardSize.height + 2 * defaultOffset.y)
+        CardsCatalogViewModel.DefaultWidth,
+        CardsCatalogViewModel.DefaultHeight
       ), Fill.Color(RGBA.Purple)).withDepth(Depth(defaultDepth))
     )
 
@@ -41,9 +41,14 @@ object CardsCatalogView {
       }
 
     val buttonsBatch =
-      viewModel.buttons.foldLeft(Batch.empty[SceneNode]) { case (batch, button) =>
+      (viewModel.buttons ::: viewModel.cardsButtons).foldLeft(Batch.empty[SceneNode]) { case (batch, button) =>
         batch ++ ButtonView.draw(button)
       }
+
+      /*val cardsButtonBatch = 
+      viewModel.cardsButtons.foldLeft(Batch.empty[SceneNode]) {
+        case (batch, button: Button) => batch ++ ButtonView.draw(button)        
+      }*/
 
     val filterAndSortText =
       Batch(
