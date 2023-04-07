@@ -13,13 +13,17 @@ import terverak.model.*
 import terverak.model.deckCollection.*
 import terverak.viewmodel.*
 import terverak.viewmodel.ui.Buttons.CardsCatalogViewModelModifierButton
+import terverak.viewmodel.ui.Buttons.DeckCreationModifierButton
 import terverak.viewmodel.ui.*
+
+import scala.scalajs.js.`new`
 
 /**
   * The view model of the catalog of cards.
   */
 final case class CardsCatalogViewModel(
   cardsViewModel: List[CardViewModel] = List.empty, 
+  cardsButtons: List[DeckCreationModifierButton] = List.empty,
   currentPage: Int = 0,
   rows: Int = CardsCatalogViewModel.DefaultRowsPerPage,
   columns: Int = CardsCatalogViewModel.DefaultColumnsPerPage,
@@ -78,6 +82,36 @@ final case class CardsCatalogViewModel(
     Buttons.CardsCatalogViewModelModifierButton(Rectangle(10, CardsCatalogViewModel.PagesButtonsOffsetY, 15, 13), GameAssets.Buttons.previousPageButton, (model: CardsCatalog) => previousPage(model))
   )
 
+
+
+  def refreshCardsButtons(model: CardsCatalog): CardsCatalogViewModel = {
+    val buttons = cardsForPage(model).zip(cardsViewModel).foldLeft(List.empty[DeckCreationModifierButton]) { 
+      case (list, (card, cardViewModel)) =>
+        val cardPos = cardViewModel.position
+        val buttonsDecrement = 
+          Buttons.DeckCreationModifierButton(
+            Rectangle(cardPos.x - 4, cardPos.y + CardViewModel.CardSize.height/2 - 4, 8, 8), 
+            GameAssets.Buttons.minusButton,
+            (deckCreation: DeckCreation) =>
+              deckCreation.copy(
+                deck = deckCreation.deck.removeCard(card)
+              )
+          )
+        val buttonsIncrement =
+          Buttons.DeckCreationModifierButton(
+            Rectangle(cardPos.x + CardViewModel.CardSize.width - 4, cardPos.y + CardViewModel.CardSize.height/2 - 4, 8, 8), 
+            GameAssets.Buttons.plusButton,
+            (deckCreation: DeckCreation) =>
+              deckCreation.copy(
+                deck = deckCreation.deck.addCard(card)
+              )
+          )
+        buttonsIncrement :: buttonsDecrement :: list
+    }
+
+    copy(cardsButtons = buttons)
+  }
+
   /**
     * Updates the position of displayed cards.
     * @param cardsCatalog the catalog of cards
@@ -95,7 +129,7 @@ final case class CardsCatalogViewModel(
         ), isSmallVersion = true)
     }
     
-    copy(cardsViewModel = newCardsViewModel)
+    copy(cardsViewModel = newCardsViewModel).refreshCardsButtons(cardsCatalog)
   }
 
   /**
@@ -131,15 +165,23 @@ final case class CardsCatalogViewModel(
     * @param model the catalog of cards
     * @return the updated catalog view model
     */
-  def checkButtons(mouse: Mouse, model: CardsCatalog): CardsCatalogViewModel = {
-    buttons.foldLeft(this) { (viewModel, button) =>
+  def checkButtons(mouse: Mouse, model: CardsCatalog, deckCreation: DeckCreation): (CardsCatalogViewModel, DeckCreation) = {
+    val newCardsCatalogViewModel = buttons.foldLeft(this) { (viewModel, button) =>
       if button.checkMouseOverButton(mouse) then
         button match
           case Buttons.FilterButton(_, _, filter) => viewModel.copy(currentPage = 0, filter = filter)
           case Buttons.SortButton(_, _, sort) => viewModel.copy(currentPage = 0, sort = sort)
           case Buttons.CardsCatalogViewModelModifierButton(_, _, modifier) => modifier(model)
+          case _ => viewModel
       else viewModel
     }
+
+    val newDeckCreation = cardsButtons.foldLeft(deckCreation) { (dc, button) =>
+      if button.checkMouseOverButton(mouse) then button.modifier(dc)
+      else dc
+    }
+
+    (newCardsCatalogViewModel.refreshCardsButtons(model), newDeckCreation)
   }
 
   /**
@@ -192,6 +234,8 @@ object CardsCatalogViewModel {
   val DefaultColumnsPerPage = 3
   val Position = Point(10, 20)
   val DefaultOffset = Point(5, 5)
+  val DefaultWidth = DefaultColumnsPerPage * (CardViewModel.CardSize.width + 2 * (DefaultOffset.x))
+  val DefaultHeight = DefaultRowsPerPage * (CardViewModel.CardSize.height + 2 * (DefaultOffset.y))
 
   val PagesButtonsOffsetY = 4 + CardsCatalogViewModel.Position.y + CardsCatalogViewModel.DefaultRowsPerPage * (CardViewModel.CardSize.height + 2 * (CardsCatalogViewModel.DefaultOffset.y + 1))
   val FilterButtonsOffsetY = 33 + PagesButtonsOffsetY

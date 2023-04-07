@@ -15,13 +15,14 @@ import terverak.viewmodel.deckCollection.*
 /**
   * The viewmodel of the deck collection scene.
   */
-final case class DeckCollectionSceneViewModel(val cardsCatalogViewModel: CardsCatalogViewModel) {
+final case class DeckCollectionSceneViewModel(cardsCatalogViewModel: CardsCatalogViewModel, deckCreationViewModel: DeckCreationViewModel) {
 
   def updateViewModel(context: SceneContext[Unit], model: DeckCollectionSceneModel): GlobalEvent => Outcome[DeckCollectionSceneViewModel] = {
     case MouseEvent.Move(_) =>
       Outcome(copy(cardsCatalogViewModel.refreshDescription(context.mouse, model.cardsCatalog)))
     case MouseEvent.Click(_) =>
-      Outcome(copy(cardsCatalogViewModel.checkButtons(context.mouse, model.cardsCatalog)))
+      val (newCatalog, newDeckCreation) = cardsCatalogViewModel.checkButtons(context.mouse, model.cardsCatalog, model.deckCreation)
+      Outcome(copy(cardsCatalogViewModel = newCatalog)).addGlobalEvents(CardsCatalogEvents.UpdateDeck(newDeckCreation))
     case _ => Outcome(this)
 
   }
@@ -33,6 +34,6 @@ final case class DeckCollectionSceneViewModel(val cardsCatalogViewModel: CardsCa
   */
 object DeckCollectionSceneViewModel {
 
-  val initial: DeckCollectionSceneViewModel = DeckCollectionSceneViewModel(CardsCatalogViewModel.initial)
+  val initial: DeckCollectionSceneViewModel = DeckCollectionSceneViewModel(CardsCatalogViewModel.initial, DeckCreationViewModel.initial)
   
 }

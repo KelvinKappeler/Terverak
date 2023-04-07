@@ -9,6 +9,7 @@ package terverak.viewmodel.ui
 import indigo.*
 import terverak.model.*
 import terverak.model.deckCollection.CardsCatalog
+import terverak.model.deckCollection.DeckCreation
 import terverak.utils.*
 import terverak.viewmodel.*
 import terverak.viewmodel.deckCollection.CardsCatalogViewModel
@@ -67,4 +68,15 @@ object Buttons {
     modifier: CardsCatalog => CardsCatalogViewModel
   ) extends Button
 
+  /**
+   * A button that modifies the deck creation view model.
+   */
+  final case class DeckCreationModifierButton(
+    bounds: Rectangle,
+    asset: AssetName,
+
+
+    modifier: DeckCreation => DeckCreation
+  ) extends Button
+  
 }

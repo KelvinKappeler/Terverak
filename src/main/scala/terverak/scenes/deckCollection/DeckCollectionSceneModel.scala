@@ -10,15 +10,18 @@ import indigo.*
 import indigo.scenes.*
 import terverak.model.deckCollection.*
 import terverak.scenes.menu.*
+import terverak.utils.CardsCatalogEvents
 
 /**
   * The model of the deck collection scene.
   */
-final case class DeckCollectionSceneModel(val cardsCatalog: CardsCatalog) {
+final case class DeckCollectionSceneModel(cardsCatalog: CardsCatalog, deckCreation: DeckCreation) {
 
   def updateModel(context: SceneContext[Unit]): GlobalEvent => Outcome[DeckCollectionSceneModel] = {
     case KeyboardEvent.KeyDown(Key.ESCAPE) =>
       Outcome(this).addGlobalEvents(SceneEvent.JumpTo(MenuScene.name))
+    case CardsCatalogEvents.UpdateDeck(newDeckCreation) =>
+      Outcome(this.copy(deckCreation = newDeckCreation))
     case _ => Outcome(this)
   }
 
@@ -29,6 +32,6 @@ final case class DeckCollectionSceneModel(val cardsCatalog: CardsCatalog) {
   */
 object DeckCollectionSceneModel {
 
-  val initial: DeckCollectionSceneModel = DeckCollectionSceneModel(CardsCatalog.initial)
+  val initial: DeckCollectionSceneModel = DeckCollectionSceneModel(CardsCatalog.initial, DeckCreation.initial)
 
 }
