@@ -5,6 +5,7 @@ target/*
 .bsp/*
 .metals/*
 .vscode/*
+.idea/*
 null/*
 project/.bloop/*
 project/project/*
