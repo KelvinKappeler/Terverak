@@ -126,7 +126,7 @@ final case class CardsCatalogViewModel(
         CardsCatalogViewModel.Position + Point(
           defaultOffset.x + column * (CardViewModel.CardSize.width + 2 * defaultOffset.x),
           defaultOffset.y + row * (CardViewModel.CardSize.height + 2 * defaultOffset.y)
-        ), isSmallVersion = true)
+        ), isSmallVersion = false)
     }
     
     copy(cardsViewModel = newCardsViewModel).refreshCardsButtons(cardsCatalog)

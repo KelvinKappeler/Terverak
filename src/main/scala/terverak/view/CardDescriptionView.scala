@@ -43,7 +43,7 @@ object CardDescriptionView {
       Group(Text(card.name + subtypesList, description_x, description_y, baseDepth, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Orange))).withDepth(Depth(baseDepth)),
       Group(Text(card.description, description_x, description_y + textOffset, baseDepth, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Orange))).withDepth(Depth(baseDepth)),
       Group(Text("Effect when played:", description_x, description_y + 3 * textOffset, baseDepth, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Purple))).withDepth(Depth(baseDepth)),
-      Group(Text("Effect when discard:", description_x, description_y + (5 + Math.max(card.effectsWhenPlayed.length, 1)) * textOffset, baseDepth, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Purple))).withDepth(Depth(baseDepth)),
+      Group(Text("Effect when discarded:", description_x, description_y + (5 + Math.max(card.effectsWhenPlayed.length, 1)) * textOffset, baseDepth, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Purple))).withDepth(Depth(baseDepth)),
       ) ++ computeBatchForEffectsAttributesDescription(card.effectsWhenPlayed, 4) ++ computeBatchForEffectsAttributesDescription(card.effectsWhenDiscard, 6 + Math.max(card.effectsWhenPlayed.length, 1)) ++ descriptionOnlyMinion
   }
 

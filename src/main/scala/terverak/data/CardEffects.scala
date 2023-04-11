@@ -113,10 +113,11 @@ object CardEffects {
     }
 
     override def toString: String = 
+      val pluralMinion = if (amount > 1) "minions" else "minion"
       if (opponentOnly) {
-        "Destroy " + amount + " random ennemy minions"
+        "Destroy " + amount + " random " + pluralMinion
       } else {
-        "Destroy " + amount + " random ally or ennemy minions"
+        "Destroy " + amount + " random ally or ennemy " + pluralMinion
       }
   }
 }
