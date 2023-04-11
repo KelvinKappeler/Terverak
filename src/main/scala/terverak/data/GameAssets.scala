@@ -68,22 +68,22 @@ object GameAssets {
   object Buttons {
     private val AssetCardsDirectory: String = AssetsDirectory + "buttons/"
 
-    val minionButton = AssetName("minionButton")
-    val spellButton = AssetName("spellButton")
+    val minionButton: AssetName = AssetName("minionButton")
+    val spellButton: AssetName = AssetName("spellButton")
 
-    val alienButton = AssetName("alienButton")
-    val planetButton = AssetName("planetButton")
+    val alienButton: AssetName = AssetName("alienButton")
+    val planetButton: AssetName = AssetName("planetButton")
     
-    val manaCostButton = AssetName("manaCostButton")
-    val attackPointsButton = AssetName("attackPointsButton")
-    val healthPointsButton = AssetName("healthPointsButton")
+    val manaCostButton: AssetName = AssetName("manaCostButton")
+    val attackPointsButton: AssetName = AssetName("attackPointsButton")
+    val healthPointsButton: AssetName = AssetName("healthPointsButton")
 
-    val clearButton = AssetName("clearButton")
-    val plusButton = AssetName("plusButton")
-    val minusButton = AssetName("minusButton")
+    val clearButton: AssetName = AssetName("clearButton")
+    val plusButton: AssetName = AssetName("plusButton")
+    val minusButton: AssetName = AssetName("minusButton")
 
-    val nextPageButton = AssetName("nextPageButton")
-    val previousPageButton = AssetName("previousPageButton")
+    val nextPageButton: AssetName = AssetName("nextPageButton")
+    val previousPageButton: AssetName = AssetName("previousPageButton")
 
     val assets: Set[AssetType] =
       Set(
@@ -120,8 +120,8 @@ object GameAssets {
     */
   object Heroes {
 
-    val human = AssetName("human")
-    val troll = AssetName("troll")
+    val human: AssetName = AssetName("human")
+    val troll: AssetName = AssetName("troll")
 
     val assets: Set[AssetType] =
       Set(

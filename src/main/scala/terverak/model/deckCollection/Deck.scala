@@ -1,5 +1,5 @@
 // =======================================
-// Terverak -> DeckZone.scala
+// Terverak -> Deck.scala
 // Kelvin Kappeler & Bastien Jolidon
 // Bachelor Project EPFL, 2023
 // =======================================
@@ -11,7 +11,7 @@ import terverak.model.*
 /**
   * A deck of cards.
   */
-final case class Deck(val cardsWithQuantity: Map[Card, Int]) {
+final case class Deck(cardsWithQuantity: Map[Card, Int]) {
   require(cardsWithQuantity.forall((_, quantity) => quantity == 1 || quantity == 2), "Quantity must be between 1 and 2")
 
   /**

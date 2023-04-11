@@ -1,5 +1,5 @@
 // =======================================
-// Terverak -> CardsAttributesData.scala
+// Terverak -> MinionCardAttributesData.scala
 // Kelvin Kappeler & Bastien Jolidon
 // Bachelor Project EPFL, 2023
 // =======================================
@@ -16,6 +16,6 @@ object MinionCardAttributesData {
   /**
     * Defenser attribute. This minion can't attack.
     */
-  val defenser = MinionCardAttribute("Defenser", "This minion can't attack")
+  val defenser: MinionCardAttribute = MinionCardAttribute("Defenser", "This minion can't attack")
 
 }

@@ -22,10 +22,10 @@ object CardEffectHelper {
    */
   def countMinionsWithSubtype(game: Game, cardSubtype: CardSubtype, target: CardEffectTarget): Int = {
     target match {
-      case CardEffectTarget.CurrentPlayerMinionsBoard => game.currentPlayer.minionBoard.minions.filter(_.minion.card.subtypes.contains(cardSubtype)).size
-      case CardEffectTarget.WaitingPlayerMinionsBoard => game.waitingPlayer.minionBoard.minions.filter(_.minion.card.subtypes.contains(cardSubtype)).size
-      case _ => game.currentPlayer.minionBoard.minions.filter(_.minion.card.subtypes.contains(cardSubtype)).size
-        + game.waitingPlayer.minionBoard.minions.filter(_.minion.card.subtypes.contains(cardSubtype)).size
+      case CardEffectTarget.CurrentPlayerMinionsBoard => game.currentPlayer.minionBoard.minions.count(_.minion.card.subtypes.contains(cardSubtype))
+      case CardEffectTarget.WaitingPlayerMinionsBoard => game.waitingPlayer.minionBoard.minions.count(_.minion.card.subtypes.contains(cardSubtype))
+      case _ => game.currentPlayer.minionBoard.minions.count(_.minion.card.subtypes.contains(cardSubtype))
+        + game.waitingPlayer.minionBoard.minions.count(_.minion.card.subtypes.contains(cardSubtype))
     }
   }
 }

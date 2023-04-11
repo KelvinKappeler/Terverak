@@ -52,5 +52,5 @@ final case class DeckCreation(user: User, deckNumber: Int = 1) {
 }
 
 object DeckCreation {
-  val initial = DeckCreation(User.initial)
+  val initial: DeckCreation = DeckCreation(User.initial)
 }

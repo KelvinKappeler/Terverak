@@ -13,9 +13,9 @@ package terverak.model.deckCollection
   * @param deck3 the third deck.
   */
 final case class User(
-  val deck1: Deck,
-  val deck2: Deck,
-  val deck3: Deck,
+  deck1: Deck,
+  deck2: Deck,
+  deck3: Deck,
 )
 
 object User {

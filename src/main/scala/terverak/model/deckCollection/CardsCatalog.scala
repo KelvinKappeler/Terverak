@@ -13,10 +13,10 @@ import terverak.model.*
 /**
   * The catalog of all the cards inside the DeckCollectionScene.
   */
-final case class CardsCatalog(val cards: List[Card])
+final case class CardsCatalog(cards: List[Card])
 
 object CardsCatalog {
 
-  val initial = CardsCatalog(CardsData.cards.toList.sortBy(_.manaCost))
+  val initial: CardsCatalog = CardsCatalog(CardsData.cards.toList.sortBy(_.manaCost))
 
 }

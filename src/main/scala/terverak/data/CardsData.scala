@@ -21,8 +21,7 @@ object CardsData {
   object MinionCards {
 
     val bato: Card.MinionCard = Card.MinionCard(
-      "Bato", "Small boat chilling in the water.", GameAssets.Cards.bato, 1, Nil, List(CardEffectsMana.AddMana(1)), Nil, Nil, 2, 1
-      )
+      "Bato", "Small boat chilling in the water.", GameAssets.Cards.bato, 1, Nil, List(CardEffectsMana.AddMana(1)), Nil, Nil, 2)
 
     val shinyBato: Card.MinionCard = Card.MinionCard(
       "Shiny Bato", "An expensive boat", GameAssets.Cards.shinyBato, 2, List(CardEffects.DamageHero(1)), List(CardEffectsMana.AddMana(2)), Nil, Nil, 3, 2
@@ -60,7 +59,7 @@ object CardsData {
       "Red Champion", "A yellow alien", GameAssets.Cards.alienRed, 4, List(CardEffects.AddAttackPerSubtype(1, CardSubtype.Alien, CardEffectTarget.CurrentPlayerMinionsBoard)), List(CardEffectsMana.AddManaPerSubtype(1, CardSubtype.Alien, CardEffectTarget.BothPlayersMinionsBoard), CardEffectsDraw.DrawCard(1)), List(CardSubtype.Alien), Nil, 1, 4
       )
 
-    val minionCards = Set(
+    val minionCards: Set[Card.MinionCard] = Set(
       bato,
       shinyBato,
       planet1,
@@ -91,7 +90,7 @@ object CardsData {
       "METEOR", "You don't want to meet him", GameAssets.Cards.meteor, 4,  List(CardEffects.DestroyRandomMinions(2, true)), List(CardEffects.DestroyRandomMinions(1, false)),Nil
       )
 
-    val spellCards = Set(
+    val spellCards: Set[Card.SpellCard] = Set(
       spell1,
       blackHoleSpell,
       meteor

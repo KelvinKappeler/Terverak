@@ -59,7 +59,7 @@ object CardEffects {
 
     override def activateEffect(game: Game): Game = {
       val number = CardEffectHelper.countMinionsWithSubtype(game, subtype, target) * amount
-      val minionToBuff = game.currentPlayer.minionBoard.minions(0)
+      val minionToBuff = game.currentPlayer.minionBoard.minions.head
       game.copy(
         currentPlayer = game.currentPlayer.copy(
           minionBoard = game.currentPlayer.minionBoard.copy(
@@ -117,7 +117,7 @@ object CardEffects {
       if (opponentOnly) {
         "Destroy " + amount + " random " + pluralMinion
       } else {
-        "Destroy " + amount + " random ally or ennemy " + pluralMinion
+        "Destroy " + amount + " random ally or enemy " + pluralMinion
       }
   }
 }
