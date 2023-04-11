@@ -38,7 +38,7 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
 
   /**
     * Activate the effect of a discard card.
-    * @param card the card to discard.
+    * @param handCard the card to discard.
     * @return the new game
     */
   def discardCard(handCard: HandCard): Game = {
@@ -49,7 +49,7 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
 
   /**
     * Activate the effect of a playing card.
-    * @param card the card to play.
+    * @param handCard the card to play.
     * @return the new game and a boolean that indicates if the card could be played
     */
   def playCard(handCard: HandCard): (Game, Boolean) = {
@@ -70,6 +70,11 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
     }
   }
 
+  /**
+   * Check if a card can be played.
+   * @param handCard the card to check
+   * @return true if the card can be played, false otherwise
+   */
   def isCardPlayable(handCard: HandCard): Boolean = {
     handCard.card match
       case minion: Card.MinionCard =>

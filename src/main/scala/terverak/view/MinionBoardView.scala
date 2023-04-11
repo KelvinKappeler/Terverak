@@ -13,9 +13,6 @@ import terverak.viewmodel.*
 
 /**
   * The view of a minionBoard.
-  * @param minionBoard the minionBoard to draw
-  * @param minionBoardViewModel the minionBoard view model
-  * @return the batch of the minionBoard
   */
 object MinionBoardView {
 

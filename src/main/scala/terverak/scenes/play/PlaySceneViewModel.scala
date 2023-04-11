@@ -116,7 +116,7 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel) {
             case handCard: HandCard =>
               Outcome(this).addGlobalEvents(TerverakEvents.Drag(idObject, position))
             case minion: MinionWithId =>
-              if (minion.minion.canAttack && minion.minion.attackPoints != 0) then
+              if minion.minion.canAttack && minion.minion.attackPoints != 0 then
                 Outcome(this).addGlobalEvents(TerverakEvents.Drag(idObject, position))
               else
                 Outcome(this)
@@ -128,10 +128,9 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel) {
       val handViewModel = gameViewModel.currentPlayerViewModel.handViewModel
       val currentPlayerBoardViewModel = gameViewModel.currentPlayerViewModel.minionBoardViewModel
       val waitingPlayerBoardViewModel = gameViewModel.waitingPlayerViewModel.minionBoardViewModel
-      if (handViewModel.cardsViewModel.forall(!_.isDragged) && 
+      if handViewModel.cardsViewModel.forall(!_.isDragged) &&
           currentPlayerBoardViewModel.minionsViewModel.forall(!_.isDragged) &&
-          waitingPlayerBoardViewModel.minionsViewModel.forall(!_.isDragged)
-      ) then
+          waitingPlayerBoardViewModel.minionsViewModel.forall(!_.isDragged) then
         gameViewModel.getObjectUnderMouse(context.mouse, model.currentGame, false) match {
           case Some(idObject) =>
             Outcome(this).addGlobalEvents(FutureEvents.ClearDescription()).addGlobalEvents(FutureEvents.ShowDescription(idObject))

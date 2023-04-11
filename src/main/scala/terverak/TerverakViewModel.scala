@@ -29,5 +29,5 @@ final case class TerverakViewModel(
   * Object containing the initial game view model.
   */
 object TerverakViewModel {
-  def initial: TerverakViewModel = TerverakViewModel(PlaySceneViewModel.initial, MenuSceneViewModel.initial, DeckCollectionSceneViewModel.initial)
+  val initial: TerverakViewModel = TerverakViewModel(PlaySceneViewModel.initial, MenuSceneViewModel.initial, DeckCollectionSceneViewModel.initial)
 }

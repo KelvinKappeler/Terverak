@@ -39,7 +39,7 @@ sealed trait Button {
 /**
   * Object containing the different types of buttons.
   */
-object Buttons {
+object Button {
 
   /**
     * A button that filters.

@@ -41,14 +41,11 @@ final case class MinionBoardViewModel(
     def rec(minions: List[MinionWithId], index: Int): List[MinionViewModel] = {
       minions match {
         case Nil => List.empty
-        case (minion :: tail) => MinionViewModel(
+        case _ :: tail => MinionViewModel(
           Point(
             position.x + (MinionBoardViewModel.MinionSpacing * index) + MinionBoardViewModel.OffsetX,
             position.y + MinionBoardViewModel.OffsetY
-          ),
-          isDragged = false,
-          isDescriptionShown = false
-        ) :: rec(tail, index + 1)
+          )) :: rec(tail, index + 1)
       }  
     }
     copy(minionsViewModel = rec(minionBoard.minions, 0))
@@ -77,7 +74,7 @@ final case class MinionBoardViewModel(
     */
   def showDescription(minionBoard: MinionBoard, minion: MinionWithId): MinionBoardViewModel =
     val index = minionBoard.minions.indexOf(minion)
-    if (index < 0) then
+    if index < 0 then
       this
     else
       val minionViewModel = minionsViewModel(index).copy(isDescriptionShown = true)

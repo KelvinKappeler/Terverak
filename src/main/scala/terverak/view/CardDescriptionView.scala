@@ -53,7 +53,7 @@ object CardDescriptionView {
         case Nil => Batch.empty
         case head :: tail =>
           Batch(
-            Group(Text(head.toString(), description_x, description_y + (offsetY + index) * textOffset, baseDepth, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.White))).withDepth(Depth(baseDepth))
+            Group(Text(head.toString, description_x, description_y + (offsetY + index) * textOffset, baseDepth, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.White))).withDepth(Depth(baseDepth))
           ) ++ rec(tail, index + 1)
       }
     }

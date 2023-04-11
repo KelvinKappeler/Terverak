@@ -14,9 +14,8 @@ import indigo.scenes.*
   */
 final class MenuSceneViewModel {
 
-  def updateViewModel(context: SceneContext[Unit], model: MenuSceneModel): GlobalEvent => Outcome[MenuSceneViewModel] = {
-    case _ => Outcome(this)
-  }
+  def updateViewModel(context: SceneContext[Unit], model: MenuSceneModel): GlobalEvent => Outcome[MenuSceneViewModel] =
+    _ => Outcome(this)
 
 }
 

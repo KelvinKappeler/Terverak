@@ -10,6 +10,8 @@ import indigo.*
 import terverak.model.IdObject.*
 import terverak.model.*
 
+import scala.annotation.tailrec
+
 /**
   * A player.
   */
@@ -72,12 +74,14 @@ final case class Player(
 
   /**
     * Draws a card from the deck.
+ *
     * @param amount the amount of cards to draw.
     * @return the new player.
-    */
+   */
+  @tailrec
   def drawCards(amount: Int): Player = {
     require(amount >= 0, "Draw amount must be equal or greater than 0")
-    if (amount == 0 || hand.cards.length == hand.MaxHandSize) then
+    if amount == 0 || hand.cards.length == hand.MaxHandSize then
       this
     else if deck.cards.isEmpty then
       copy(discardZone = DiscardZone(List.empty), deck = DeckZone(discardZone.cards).shuffle())

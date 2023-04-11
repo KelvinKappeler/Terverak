@@ -31,7 +31,7 @@ object MinionView {
     val isCardDragged = minionViewModel.isDragged
 
     val batch: Batch[Graphic[_]] =
-      if (isCardDragged) then
+      if isCardDragged then
         Batch(Graphic(x,y,minionWidth,minionHeight,depth-3,Material.Bitmap(minion.card.imageName)))
       else
         Batch(Graphic(x,y,minionWidth,minionHeight,depth,Material.Bitmap(minion.card.imageName)))
@@ -41,17 +41,17 @@ object MinionView {
             Shape.Box(Rectangle(x + 10, y + 56, 24, 8), Fill.Color(RGBA.Teal)).withDepth(Depth(if isCardDragged then depth - 4 else depth - 1)))
     
     val textsBatch =
-      Batch(Group(Text(minion.attackPoints.toString(), x - 2, y + 56, if isCardDragged then depth - 5 else depth - 2, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Yellow))).withDepth(Depth(if isCardDragged then depth - 5 else depth - 2)),
-            Group(Text(minion.healthPoints.toString() + "/" + minion.maxHP.toString(), x + 10, y + 56, if isCardDragged then depth - 5 else depth - 2, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Red))).withDepth(Depth(if isCardDragged then depth - 5 else depth - 2)))
+      Batch(Group(Text(minion.attackPoints.toString, x - 2, y + 56, if isCardDragged then depth - 5 else depth - 2, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Yellow))).withDepth(Depth(if isCardDragged then depth - 5 else depth - 2)),
+            Group(Text(minion.healthPoints.toString + "/" + minion.maxHP.toString, x + 10, y + 56, if isCardDragged then depth - 5 else depth - 2, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Red))).withDepth(Depth(if isCardDragged then depth - 5 else depth - 2)))
 
     val canAttackBatch =
-      if (minion.canAttack && isCurrentPlayer) then
+      if minion.canAttack && isCurrentPlayer then
         Batch(Shape.Box(Rectangle(x - 1, y - 1, CardViewModel.CardSize.width + 2, CardViewModel.CardSize.height + 2), Fill.Color(RGBA.Red)).withDepth(Depth(if isCardDragged then depth - 2 else depth + 1)))
       else
         Batch.empty
 
     val descriptionBatch = 
-        if (minionViewModel.isDescriptionShown || minionViewModel.isDragged) then
+        if minionViewModel.isDescriptionShown || minionViewModel.isDragged then
           CardDescriptionView.draw(minion.card)
         else
           Batch.empty

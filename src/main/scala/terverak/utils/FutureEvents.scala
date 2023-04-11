@@ -17,7 +17,7 @@ object FutureEvents {
 
   /**
     * You can use this event to show the description of a card.
-    * @param handCard the card
+    * @param idObject the object id
     */
   final case class ShowDescription(idObject: IdObject) extends GlobalEvent
 

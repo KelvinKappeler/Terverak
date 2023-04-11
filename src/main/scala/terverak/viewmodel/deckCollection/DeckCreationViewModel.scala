@@ -16,10 +16,10 @@ final case class DeckCreationViewModel(
   require(deckNumber >= 0 && deckNumber <= 2, "Deck number must be between 0 and 2")
 
   val buttons : List[Button] = List(
-    Buttons.DeckCreationModifierButton(
+    Button.DeckCreationModifierButton(
       Rectangle(200, 70, 15, 13),
       GameAssets.Buttons.nextPageButton,
-      (model) => model.nextDeck()
+      model => model.nextDeck()
     ),
   )
 
@@ -44,7 +44,7 @@ object DeckCreationViewModel {
   val DefaultOffsetX = 10
   val DefaultOffsetY = 10
   val DefaultWidth = 100
-  val DefaultHeight = CardsCatalogViewModel.DefaultHeight
+  val DefaultHeight: Int = CardsCatalogViewModel.DefaultHeight
 
   val initial: DeckCreationViewModel = DeckCreationViewModel()
 

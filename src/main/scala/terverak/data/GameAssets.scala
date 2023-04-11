@@ -63,7 +63,7 @@ object GameAssets {
   }
 
   /**
-    * Buttons assets.
+    * Button assets.
     */
   object Buttons {
     private val AssetCardsDirectory: String = AssetsDirectory + "buttons/"

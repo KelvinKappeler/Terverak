@@ -29,11 +29,11 @@ final case class HandViewModel(
     def rec(cards: List[HandCard], index: Int): List[CardViewModel] = {
       cards match {
         case Nil => List.empty
-        case (card :: tail) => CardViewModel(
+        case _ :: tail => CardViewModel(
           Point(
             position.x + (HandViewModel.CardSpacing * index) + HandViewModel.OffsetX,
             position.y + HandViewModel.OffsetY
-          ), isRevealed, false) :: rec(tail, index + 1)
+          ), isRevealed) :: rec(tail, index + 1)
       }
     }
     copy(cardsViewModel = rec(hand.cards, 0))

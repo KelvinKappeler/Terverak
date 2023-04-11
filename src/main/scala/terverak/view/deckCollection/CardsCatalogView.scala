@@ -21,7 +21,6 @@ import terverak.viewmodel.ui.*
 object CardsCatalogView {
   
   private val initialPoint = CardsCatalogViewModel.Position
-  private val defaultOffset = CardsCatalogViewModel.DefaultOffset
   private val defaultDepth = 30
 
   def draw(model: CardsCatalog, viewModel: CardsCatalogViewModel): Batch[SceneNode] = {

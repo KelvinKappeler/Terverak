@@ -30,5 +30,5 @@ final case class TerverakModel(
   * Object containing the initial game model.
   */
 object TerverakModel {
-  def initial: TerverakModel = TerverakModel(PlaySceneModel.initial, MenuSceneModel.initial, DeckCollectionSceneModel.initial)
+  val initial: TerverakModel = TerverakModel(PlaySceneModel.initial, MenuSceneModel.initial, DeckCollectionSceneModel.initial)
 }

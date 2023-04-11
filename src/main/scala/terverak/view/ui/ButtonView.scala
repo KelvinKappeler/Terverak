@@ -14,7 +14,7 @@ import terverak.viewmodel.ui.*
   */
 object ButtonView {
 
-  val defaultDepth = Depth(0)
+  val defaultDepth: Depth = Depth(0)
 
   /**
     * Draw a button.
