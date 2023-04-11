@@ -17,3 +17,7 @@ final case class User(
   val deck2: Deck,
   val deck3: Deck,
 )
+
+object User {
+  val initial: User = User(Deck.initial, Deck.initial, Deck.initial)
+}

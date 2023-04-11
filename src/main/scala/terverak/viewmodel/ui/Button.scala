@@ -12,7 +12,7 @@ import terverak.model.deckCollection.CardsCatalog
 import terverak.model.deckCollection.DeckCreation
 import terverak.utils.*
 import terverak.viewmodel.*
-import terverak.viewmodel.deckCollection.CardsCatalogViewModel
+import terverak.viewmodel.deckCollection.*
 
 /**
   * A button.
@@ -69,13 +69,11 @@ object Buttons {
   ) extends Button
 
   /**
-   * A button that modifies the deck creation view model.
+   * A button that modifies the deck creation.
    */
   final case class DeckCreationModifierButton(
     bounds: Rectangle,
     asset: AssetName,
-
-
     modifier: DeckCreation => DeckCreation
   ) extends Button
   

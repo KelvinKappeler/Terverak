@@ -40,4 +40,5 @@ final case class CardViewModel(
 object CardViewModel {
   val SmallVersionScale = Vector2(0.4, 0.4)
   val CardSize: Size = Size(32, 64)
+  val SmallVersionCardSize = Size((CardSize.width * SmallVersionScale.x).toInt, (CardSize.height * SmallVersionScale.y).toInt)
 }

@@ -7,8 +7,10 @@
 package terverak.view.deckCollection
 
 import indigo.*
+import terverak.data.*
 import terverak.model.*
 import terverak.model.deckCollection.*
+import terverak.view.*
 import terverak.viewmodel.*
 import terverak.viewmodel.deckCollection.*
 
@@ -31,6 +33,17 @@ object DeckCreationView {
       ), Fill.Color(RGBA.Salmon)).withDepth(Depth(30))
     )
 
-    backgroundBatch
+    val cardsBatch = model.deck.cardsWithQuantity.zipWithIndex.foldLeft(Batch.empty[SceneNode]) { case (batch, (cardWithQuantity, index)) =>
+      batch
+      ++ CardView.draw(
+        cardWithQuantity._1,
+        CardViewModel(
+          initialPoint + Point(0, DeckCreationViewModel.DefaultOffsetY + (DeckCreationViewModel.DefaultOffsetY + CardViewModel.SmallVersionCardSize.height) * index),
+          isSmallVersion = true)
+        , 30)
+      ++ Batch(Group(Text("x" + cardWithQuantity._2, initialPoint.x + 2 * DeckCreationViewModel.DefaultOffsetX, initialPoint.y + 2 * DeckCreationViewModel.DefaultOffsetY + (DeckCreationViewModel.DefaultOffsetY + CardViewModel.SmallVersionCardSize.height) * index, 30, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Yellow))).withDepth(Depth(30)))
+    }
+
+    backgroundBatch ++ cardsBatch
   }
 }

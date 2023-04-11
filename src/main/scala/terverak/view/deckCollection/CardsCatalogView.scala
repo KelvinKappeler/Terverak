@@ -45,11 +45,6 @@ object CardsCatalogView {
         batch ++ ButtonView.draw(button)
       }
 
-      /*val cardsButtonBatch = 
-      viewModel.cardsButtons.foldLeft(Batch.empty[SceneNode]) {
-        case (batch, button: Button) => batch ++ ButtonView.draw(button)        
-      }*/
-
     val filterAndSortText =
       Batch(
         Group(

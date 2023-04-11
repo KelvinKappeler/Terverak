@@ -48,3 +48,7 @@ final case class Deck(val cardsWithQuantity: Map[Card, Int]) {
     }
   }
 }
+
+object Deck {
+  val initial: Deck = Deck(Map.empty)
+}

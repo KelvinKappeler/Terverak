@@ -82,8 +82,6 @@ final case class CardsCatalogViewModel(
     Buttons.CardsCatalogViewModelModifierButton(Rectangle(10, CardsCatalogViewModel.PagesButtonsOffsetY, 15, 13), GameAssets.Buttons.previousPageButton, (model: CardsCatalog) => previousPage(model))
   )
 
-
-
   def refreshCardsButtons(model: CardsCatalog): CardsCatalogViewModel = {
     val buttons = cardsForPage(model).zip(cardsViewModel).foldLeft(List.empty[DeckCreationModifierButton]) { 
       case (list, (card, cardViewModel)) =>
@@ -93,18 +91,14 @@ final case class CardsCatalogViewModel(
             Rectangle(cardPos.x - 4, cardPos.y + CardViewModel.CardSize.height/2 - 4, 8, 8), 
             GameAssets.Buttons.minusButton,
             (deckCreation: DeckCreation) =>
-              deckCreation.copy(
-                deck = deckCreation.deck.removeCard(card)
-              )
+              deckCreation.setCurrentDeck(deckCreation.deck.removeCard(card))
           )
         val buttonsIncrement =
           Buttons.DeckCreationModifierButton(
             Rectangle(cardPos.x + CardViewModel.CardSize.width - 4, cardPos.y + CardViewModel.CardSize.height/2 - 4, 8, 8), 
             GameAssets.Buttons.plusButton,
             (deckCreation: DeckCreation) =>
-              deckCreation.copy(
-                deck = deckCreation.deck.addCard(card)
-              )
+              deckCreation.setCurrentDeck(deckCreation.deck.addCard(card))
           )
         buttonsIncrement :: buttonsDecrement :: list
     }
