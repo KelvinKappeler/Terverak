@@ -7,13 +7,10 @@
 package terverak.viewmodel.deckCollection
 
 import indigo.*
-import indigo.*
 import terverak.data.GameAssets
 import terverak.model.*
 import terverak.model.deckCollection.*
 import terverak.viewmodel.*
-import terverak.viewmodel.ui.Button.CardsCatalogViewModelModifierButton
-import terverak.viewmodel.ui.Button.DeckCreationModifierButton
 import terverak.viewmodel.ui.*
 
 import scala.scalajs.js.`new`
@@ -23,7 +20,7 @@ import scala.scalajs.js.`new`
   */
 final case class CardsCatalogViewModel(
   cardsViewModel: List[CardViewModel] = List.empty, 
-  cardsButtons: List[DeckCreationModifierButton] = List.empty,
+  cardsButtons: List[Button[DeckCreation, DeckCreation]] = List.empty,
   currentPage: Int = 0,
   rows: Int = CardsCatalogViewModel.DefaultRowsPerPage,
   columns: Int = CardsCatalogViewModel.DefaultColumnsPerPage,
@@ -36,65 +33,83 @@ final case class CardsCatalogViewModel(
   /**
     * The number of cards that can be displayed on a single page.
     */
-  val cardsPerPage: Int = rows * columns
+  private val cardsPerPage: Int = rows * columns
 
   /**
     * The list of filter buttons.
     */
-  val buttons: List[Button] = List(
+  private val filterButtons: List[Button[Card, Boolean]] = List(
     //clear filter
-    Button.FilterButton(Rectangle(10, CardsCatalogViewModel.FilterButtonsOffsetY, 8, 8), GameAssets.Buttons.clearButton, _ => true),
+    Button[Card, Boolean](Rectangle(10, CardsCatalogViewModel.FilterButtonsOffsetY, 8, 8), GameAssets.Buttons.clearButton, _ => true),
     //filter by alien
-    Button.FilterButton(Rectangle(22, CardsCatalogViewModel.FilterButtonsOffsetY, 30, 8), GameAssets.Buttons.alienButton, (c: Card) => c.subtypes.contains(CardSubtype.Alien)),
+    Button[Card, Boolean](Rectangle(22, CardsCatalogViewModel.FilterButtonsOffsetY, 30, 8), GameAssets.Buttons.alienButton, (c: Card) => c.subtypes.contains(CardSubtype.Alien)),
     //filter by planet
-    Button.FilterButton(Rectangle(56, CardsCatalogViewModel.FilterButtonsOffsetY, 36, 8), GameAssets.Buttons.planetButton, (c: Card) => c.subtypes.contains(CardSubtype.Planet)),
+    Button[Card, Boolean](Rectangle(56, CardsCatalogViewModel.FilterButtonsOffsetY, 36, 8), GameAssets.Buttons.planetButton, (c: Card) => c.subtypes.contains(CardSubtype.Planet)),
     //filter minions
-    Button.FilterButton(Rectangle(96, CardsCatalogViewModel.FilterButtonsOffsetY, 37, 8), GameAssets.Buttons.minionButton,
-     (c: Card) => c match
-      case _: Card.MinionCard => true
-      case _ => false),
+    Button[Card, Boolean](Rectangle(96, CardsCatalogViewModel.FilterButtonsOffsetY, 37, 8), GameAssets.Buttons.minionButton,
+     {
+       case _: Card.MinionCard => true
+       case _ => false
+     }),
     //filter spells
-    Button.FilterButton(Rectangle(137, CardsCatalogViewModel.FilterButtonsOffsetY, 29, 8), GameAssets.Buttons.spellButton,
-     (c: Card) => c match
-      case _: Card.SpellCard => true
-      case _ => false),
+    Button[Card, Boolean](Rectangle(137, CardsCatalogViewModel.FilterButtonsOffsetY, 29, 8), GameAssets.Buttons.spellButton,
+     {
+       case _: Card.SpellCard => true
+       case _ => false
+     })
+  )
 
+  /**
+    * The list of sort buttons.
+    */
+  private val sortButtons: List[Button[(Card, Card), Boolean]] = List(
     //sort by mana cost
-    Button.SortButton(Rectangle(10, CardsCatalogViewModel.SortButtonsOffsetY, 48, 8), GameAssets.Buttons.manaCostButton, (c1: Card, c2: Card) => c1.manaCost < c2.manaCost),
+    Button[(Card, Card), Boolean](Rectangle(10, CardsCatalogViewModel.SortButtonsOffsetY, 48, 8), GameAssets.Buttons.manaCostButton,
+      (c1: Card, c2: Card) => c1.manaCost < c2.manaCost),
     //sort by attack
-    Button.SortButton(Rectangle(62, CardsCatalogViewModel.SortButtonsOffsetY, 73, 8), GameAssets.Buttons.attackPointsButton,
+    Button[(Card, Card), Boolean](Rectangle(62, CardsCatalogViewModel.SortButtonsOffsetY, 73, 8), GameAssets.Buttons.attackPointsButton,
      (c1: Card, c2: Card) => c1 match
       case minion1: Card.MinionCard => c2 match
         case minion2: Card.MinionCard => minion1.damage < minion2.damage
         case _ => true
       case _ => false),
     //sort by health
-    Button.SortButton(Rectangle(139, CardsCatalogViewModel.SortButtonsOffsetY, 71, 8), GameAssets.Buttons.healthPointsButton,
+    Button[(Card, Card), Boolean](Rectangle(139, CardsCatalogViewModel.SortButtonsOffsetY, 71, 8), GameAssets.Buttons.healthPointsButton,
      (c1: Card, c2: Card) => c1 match
       case minion1: Card.MinionCard => c2 match
         case minion2: Card.MinionCard => minion1.life < minion2.life
         case _ => true
-      case _ => false),
-
-    //go to next page
-    Button.CardsCatalogViewModelModifierButton(Rectangle(97, CardsCatalogViewModel.PagesButtonsOffsetY, 15, 13), GameAssets.Buttons.nextPageButton, (model: CardsCatalog) => nextPage(model)),
-    //go to previous page
-    Button.CardsCatalogViewModelModifierButton(Rectangle(10, CardsCatalogViewModel.PagesButtonsOffsetY, 15, 13), GameAssets.Buttons.previousPageButton, (model: CardsCatalog) => previousPage(model))
+      case _ => false)
   )
 
-  def refreshCardsButtons(model: CardsCatalog): CardsCatalogViewModel = {
-    val buttons = cardsForPage(model).zip(cardsViewModel).foldLeft(List.empty[DeckCreationModifierButton]) { 
+  /**
+    * The list of page buttons.
+    */
+  private val pagesButtons: List[Button[CardsCatalog, CardsCatalogViewModel]] = List(
+    //go to next page
+    Button[CardsCatalog, CardsCatalogViewModel](Rectangle(97, CardsCatalogViewModel.PagesButtonsOffsetY, 15, 13), GameAssets.Buttons.nextPageButton, (model: CardsCatalog) => nextPage(model)),
+    //go to previous page
+    Button[CardsCatalog, CardsCatalogViewModel](Rectangle(10, CardsCatalogViewModel.PagesButtonsOffsetY, 15, 13), GameAssets.Buttons.previousPageButton, (model: CardsCatalog) => previousPage(model))
+  )
+
+  /**
+    * The list of all buttons.
+    */
+  val buttons: List[Button[_, _]] = filterButtons ++ sortButtons ++ cardsButtons
+
+  private def refreshCardsButtons(model: CardsCatalog): CardsCatalogViewModel = {
+    val buttons = cardsForPage(model).zip(cardsViewModel).foldLeft(List.empty[Button[DeckCreation, DeckCreation]]) { 
       case (list, (card, cardViewModel)) =>
         val cardPos = cardViewModel.position
         val buttonsDecrement = 
-          Button.DeckCreationModifierButton(
+          Button[DeckCreation, DeckCreation](
             Rectangle(cardPos.x - 4, cardPos.y + CardViewModel.CardSize.height/2 - 4, 8, 8), 
             GameAssets.Buttons.minusButton,
             (deckCreation: DeckCreation) =>
               deckCreation.setCurrentDeck(deckCreation.deck.removeCard(card))
           )
         val buttonsIncrement =
-          Button.DeckCreationModifierButton(
+          Button[DeckCreation, DeckCreation](
             Rectangle(cardPos.x + CardViewModel.CardSize.width - 4, cardPos.y + CardViewModel.CardSize.height/2 - 4, 8, 8), 
             GameAssets.Buttons.plusButton,
             (deckCreation: DeckCreation) =>
@@ -111,7 +126,7 @@ final case class CardsCatalogViewModel(
     * @param cardsCatalog the catalog of cards
     * @return the updated catalog view model
     */
-  def initCardsPosition(cardsCatalog: CardsCatalog): CardsCatalogViewModel = {
+  private def initCardsPosition(cardsCatalog: CardsCatalog): CardsCatalogViewModel = {
     val newCardsViewModel = List.range(0, cardsPerPage).map { index =>
       val row = index / columns
       val column = index % columns
@@ -151,7 +166,7 @@ final case class CardsCatalogViewModel(
         }
 
     copy(cardsViewModel = newCardsViewModel)
-  } 
+  }
 
   /**
     * check if the mouse is over a button and applies the corresponding effect
@@ -160,22 +175,20 @@ final case class CardsCatalogViewModel(
     * @return the updated catalog view model
     */
   def checkButtons(mouse: Mouse, model: CardsCatalog, deckCreation: DeckCreation): (CardsCatalogViewModel, DeckCreation) = {
-    val newCardsCatalogViewModel = buttons.foldLeft(this) { (viewModel, button) =>
-      if button.checkMouseOverButton(mouse) then
+    val newViewModels = buttons.foldLeft((this, deckCreation)) { (viewModels, button) =>
+      if button.checkIfButtonClicked(mouse) then
         button match
-          case Button.FilterButton(_, _, filter) => viewModel.copy(currentPage = 0, filter = filter)
-          case Button.SortButton(_, _, sort) => viewModel.copy(currentPage = 0, sort = sort)
-          case Button.CardsCatalogViewModelModifierButton(_, _, modifier) => modifier(model)
-          case _ => viewModel
-      else viewModel
+          case Button[Card, Boolean](_, _, filter) => (viewModels._1.copy(currentPage = 0, filter = filter), viewModels._2)
+          case Button[(Card, Card), Boolean](_, _, sort) =>
+            val newSortFunc = (c1: Card, c2: Card) => sort((c1, c2))
+            (viewModels._1.copy(currentPage = 0, sort = newSortFunc), viewModels._2)
+          case Button[CardsCatalog, CardsCatalogViewModel](_, _, modifier) => (modifier(model), viewModels._2)
+          case Button[DeckCreation, DeckCreation](_, _, modifier) => (viewModels._1, modifier(viewModels._2))
+          case _ => viewModels
+      else viewModels
     }
 
-    val newDeckCreation = cardsButtons.foldLeft(deckCreation) { (dc, button) =>
-      if button.checkMouseOverButton(mouse) then button.modifier(dc)
-      else dc
-    }
-
-    (newCardsCatalogViewModel.refreshCardsButtons(model), newDeckCreation)
+    (newViewModels._1.refreshCardsButtons(model), newViewModels._2)
   }
 
   /**
@@ -183,7 +196,7 @@ final case class CardsCatalogViewModel(
     * @param model The model of the catalog.
     * @return A catalog view model with the next page.
     */
-  def nextPage(model: CardsCatalog): CardsCatalogViewModel = {
+  private def nextPage(model: CardsCatalog): CardsCatalogViewModel = {
     val newPage = currentPage + 1
     if (newPage < maxPages(model)) copy(currentPage = newPage) else this
   }
@@ -193,7 +206,7 @@ final case class CardsCatalogViewModel(
     * @param model The model of the catalog.
     * @return A catalog view model with the previous page.
     */
-  def previousPage(model: CardsCatalog): CardsCatalogViewModel = {
+  private def previousPage(model: CardsCatalog): CardsCatalogViewModel = {
     val newPage = currentPage - 1
     if (newPage >= 0) copy(currentPage = newPage) else this
   }

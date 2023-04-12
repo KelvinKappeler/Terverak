@@ -17,64 +17,31 @@ import terverak.viewmodel.deckCollection.*
 /**
   * A button.
   */
-sealed trait Button {
-
-    /**
-      * The bounds of the button.
-      */
-    def bounds: Rectangle
-
-    /**
-     * The asset of the button.
-     */
-    def asset: AssetName
-
-    /**
-      * Checks if the mouse is over the button.
-      */
-    def checkMouseOverButton(mouse: Mouse): Boolean = 
-        mouse.wasMousePositionWithin(bounds)
-}
-
-/**
-  * Object containing the different types of buttons.
-  */
-object Button {
+final case class Button[A, B](
 
   /**
-    * A button that filters.
-    */
-  final case class FilterButton(
-    bounds: Rectangle,
-    asset: AssetName,
-    filter: Card => Boolean
-  ) extends Button
-
-  /**
-    * A button that sorts.
-    */
-  final case class SortButton(
-    bounds: Rectangle,
-    asset: AssetName,
-    sort: (Card, Card) => Boolean
-  ) extends Button
-
-  /**
-   * A button that modifies the cards catalog view model.
+   * The bounds of the button.
    */
-  final case class CardsCatalogViewModelModifierButton(
-    bounds: Rectangle,
-    asset: AssetName,
-    modifier: CardsCatalog => CardsCatalogViewModel
-  ) extends Button
+  bounds: Rectangle,
 
   /**
-   * A button that modifies the deck creation.
+   * The asset of the button.
    */
-  final case class DeckCreationModifierButton(
-    bounds: Rectangle,
-    asset: AssetName,
-    modifier: DeckCreation => DeckCreation
-  ) extends Button
-  
+  asset: AssetName,
+
+  /**
+   * The action of the button when clicked.
+   */
+  actionWhenClicked: A => B
+
+) {
+
+  /**
+    * Check if the button was clicked.
+    * @param mouse The mouse.
+    * @return True if the button was clicked, false otherwise.
+    */
+  def checkIfButtonClicked(mouse: Mouse): Boolean = {
+    mouse.wasMouseClickedWithin(bounds)
+  }
 }
