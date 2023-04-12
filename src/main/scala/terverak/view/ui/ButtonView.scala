@@ -21,7 +21,7 @@ object ButtonView {
     * @param button The button to draw.
     * @return The batch of nodes to draw.
     */  
-  def draw(button: Button[_, _]): Batch[SceneNode] = {
+  def draw(button: Button): Batch[SceneNode] = {
     Batch(
       Graphic(button.bounds.x, button.bounds.y, button.bounds.width, button.bounds.height, Material.Bitmap(button.asset)).withDepth(defaultDepth)
     )
