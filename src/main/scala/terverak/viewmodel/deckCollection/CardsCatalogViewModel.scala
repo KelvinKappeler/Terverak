@@ -20,14 +20,14 @@ import scala.scalajs.js.`new`
   * The view model of the catalog of cards.
   */
 final case class CardsCatalogViewModel(
-  cardsViewModel: List[CardViewModel] = List.empty, 
+  cardsViewModel: List[CardViewModel] = List.empty,
   //cardsButtons: List[DeckCreationModifierButton] = List.empty,
   currentPage: Int = 0,
   rows: Int = CardsCatalogViewModel.DefaultRowsPerPage,
   columns: Int = CardsCatalogViewModel.DefaultColumnsPerPage,
   filter: Card => Boolean = _ => true,
   sort: (Card, Card) => Boolean = (c1, c2) => c1.manaCost < c2.manaCost,
-  buttons: List[indigoextras.ui.Button] = List.empty
+  buttons: List[Button] = List.empty
 ) {
   require(rows > 0)
   require(columns > 0)
@@ -36,47 +36,6 @@ final case class CardsCatalogViewModel(
     * The number of cards that can be displayed on a single page.
     */
   val cardsPerPage: Int = rows * columns
-
-  /**
-    * The list of filter buttons.
-    */
-  /*
-  val buttons: List[Button] = List(
-    //clear filter
-    Button.FilterButton(Rectangle(10, CardsCatalogViewModel.FilterButtonsOffsetY, 8, 8), GameAssets.Buttons.clearButton, _ => true),
-    //filter by alien
-    Button.FilterButton(Rectangle(22, CardsCatalogViewModel.FilterButtonsOffsetY, 30, 8), GameAssets.Buttons.alienButton, (c: Card) => c.subtypes.contains(CardSubtype.Alien)),
-    //filter by planet
-    Button.FilterButton(Rectangle(56, CardsCatalogViewModel.FilterButtonsOffsetY, 36, 8), GameAssets.Buttons.planetButton, (c: Card) => c.subtypes.contains(CardSubtype.Planet)),
-    //filter minions
-    Button.FilterButton(Rectangle(96, CardsCatalogViewModel.FilterButtonsOffsetY, 37, 8), GameAssets.Buttons.minionButton,
-     (c: Card) => c match
-      case _: Card.MinionCard => true
-      case _ => false),
-    //filter spells
-    Button.FilterButton(Rectangle(137, CardsCatalogViewModel.FilterButtonsOffsetY, 29, 8), GameAssets.Buttons.spellButton,
-     (c: Card) => c match
-      case _: Card.SpellCard => true
-      case _ => false),
-
-    //sort by mana cost
-    Button.SortButton(Rectangle(10, CardsCatalogViewModel.SortButtonsOffsetY, 48, 8), GameAssets.Buttons.manaCostButton, (c1: Card, c2: Card) => c1.manaCost < c2.manaCost),
-    //sort by attack
-    Button.SortButton(Rectangle(62, CardsCatalogViewModel.SortButtonsOffsetY, 73, 8), GameAssets.Buttons.attackPointsButton,
-     (c1: Card, c2: Card) => c1 match
-      case minion1: Card.MinionCard => c2 match
-        case minion2: Card.MinionCard => minion1.damage < minion2.damage
-        case _ => true
-      case _ => false),
-    //sort by health
-    Button.SortButton(Rectangle(139, CardsCatalogViewModel.SortButtonsOffsetY, 71, 8), GameAssets.Buttons.healthPointsButton,
-     (c1: Card, c2: Card) => c1 match
-      case minion1: Card.MinionCard => c2 match
-        case minion2: Card.MinionCard => minion1.life < minion2.life
-        case _ => true
-      case _ => false),
-  )
-  */
 
   /*
   def refreshCardsButtons(model: CardsCatalog): CardsCatalogViewModel = {
@@ -219,7 +178,7 @@ object CardsCatalogViewModel {
   val FilterButtonsOffsetY: Int = 33 + PagesButtonsOffsetY
   val SortButtonsOffsetY: Int = 24 + FilterButtonsOffsetY
 
-  private val buttons: List[indigoextras.ui.Button] = List(
+  private val buttons: List[Button] = List(
     Button(
       ButtonAssets(
         up = Graphic(0, 0, 15, 13, 2, Material.Bitmap(GameAssets.Buttons.leftArrow)),
@@ -256,6 +215,72 @@ object CardsCatalogViewModel {
       Rectangle(22, CardsCatalogViewModel.FilterButtonsOffsetY, 30, 8),
       Depth(2),
     ).withUpActions(CardsCatalogEvents.FilterCards((c: Card) => c.subtypes.contains(CardSubtype.Alien))),
+    Button(
+      ButtonAssets(
+        up = Graphic(0, 0, 36, 8, 2, Material.Bitmap(GameAssets.Buttons.planetButton)),
+        over = Graphic(0, 0, 36, 8, 2, Material.Bitmap(GameAssets.Buttons.planetButton)),
+        down = Graphic(0, 0, 36, 8, 2, Material.Bitmap(GameAssets.Buttons.planetButton))
+      ),
+      Rectangle(56, CardsCatalogViewModel.FilterButtonsOffsetY, 36, 8),
+      Depth(2),
+    ).withUpActions(CardsCatalogEvents.FilterCards((c: Card) => c.subtypes.contains(CardSubtype.Planet))),
+    Button(
+      ButtonAssets(
+        up = Graphic(0, 0, 37, 8, 2, Material.Bitmap(GameAssets.Buttons.minionButton)),
+        over = Graphic(0, 0, 37, 8, 2, Material.Bitmap(GameAssets.Buttons.minionButton)),
+        down = Graphic(0, 0, 37, 8, 2, Material.Bitmap(GameAssets.Buttons.minionButton))
+      ),
+      Rectangle(96, CardsCatalogViewModel.FilterButtonsOffsetY, 37, 8),
+      Depth(2),
+    ).withUpActions(CardsCatalogEvents.FilterCards((c: Card) => c match
+      case _: Card.MinionCard => true
+      case _ => false)),
+    Button(
+      ButtonAssets(
+        up = Graphic(0, 0, 29, 8, 2, Material.Bitmap(GameAssets.Buttons.spellButton)),
+        over = Graphic(0, 0, 29, 8, 2, Material.Bitmap(GameAssets.Buttons.spellButton)),
+        down = Graphic(0, 0, 29, 8, 2, Material.Bitmap(GameAssets.Buttons.spellButton))
+      ),
+      Rectangle(137, CardsCatalogViewModel.FilterButtonsOffsetY, 29, 8),
+      Depth(2),
+    ).withUpActions(CardsCatalogEvents.FilterCards((c: Card) => c match
+      case _: Card.SpellCard => true
+      case _ => false)),
+    Button(
+      ButtonAssets(
+        up = Graphic(0, 0, 48, 8, 2, Material.Bitmap(GameAssets.Buttons.manaCostButton)),
+        over = Graphic(0, 0, 48, 8, 2, Material.Bitmap(GameAssets.Buttons.manaCostButton)),
+        down = Graphic(0, 0, 48, 8, 2, Material.Bitmap(GameAssets.Buttons.manaCostButton))
+      ),
+      Rectangle(10, CardsCatalogViewModel.SortButtonsOffsetY, 48, 8),
+      Depth(2),
+    ).withUpActions(CardsCatalogEvents.SortCards((c1: Card, c2: Card) => c1.manaCost < c2.manaCost)),
+    Button(
+      ButtonAssets(
+        up = Graphic(0, 0, 73, 8, 2, Material.Bitmap(GameAssets.Buttons.attackPointsButton)),
+        over = Graphic(0, 0, 73, 8, 2, Material.Bitmap(GameAssets.Buttons.attackPointsButton)),
+        down = Graphic(0, 0, 73, 8, 2, Material.Bitmap(GameAssets.Buttons.attackPointsButton))
+      ),
+      Rectangle(62, CardsCatalogViewModel.SortButtonsOffsetY, 73, 8),
+      Depth(2),
+    ).withUpActions(CardsCatalogEvents.SortCards((c1: Card, c2: Card) => c1 match
+      case minion1: Card.MinionCard => c2 match
+        case minion2: Card.MinionCard => minion1.damage < minion2.damage
+        case _ => true
+      case _ => false)),
+    Button(
+      ButtonAssets(
+        up = Graphic(0, 0, 71, 8, 2, Material.Bitmap(GameAssets.Buttons.healthPointsButton)),
+        over = Graphic(0, 0, 71, 8, 2, Material.Bitmap(GameAssets.Buttons.healthPointsButton)),
+        down = Graphic(0, 0, 71, 8, 2, Material.Bitmap(GameAssets.Buttons.healthPointsButton))
+      ),
+      Rectangle(139, CardsCatalogViewModel.SortButtonsOffsetY, 71, 8),
+      Depth(2),
+    ).withUpActions(CardsCatalogEvents.SortCards((c1: Card, c2: Card) => c1 match
+      case minion1: Card.MinionCard => c2 match
+        case minion2: Card.MinionCard => minion1.life < minion2.life
+        case _ => true
+      case _ => false)),
   )
 
   val initial: CardsCatalogViewModel = CardsCatalogViewModel(buttons = buttons).initCardsPosition(CardsCatalog.initial)
