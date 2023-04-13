@@ -75,7 +75,7 @@ object CardEffects {
     }
 
     override def toString: String =
-      "This minion earns +" + amount + " " + Plural.getWordWithGoodPlural("attack", amount) + " for each " + subtype + target.toString
+      "This minion earns +" + amount + " " + Plural.getWordWithGoodPlural("attack", amount) + " for each " + subtype + " " + target.toString
   }
 
   /**

@@ -108,38 +108,37 @@ object CardDescriptionView {
       list: List[_],
       offsetY: Int
   ): Batch[SceneNode] = {
-    def rec(recList: List[_], index: Int): Batch[SceneNode] =
-      recList match {
-        case Nil => Batch.empty
-        case head :: tail =>
-          val result = MultilinesText.getMultilinesText(head.toString, 285, 8)
-          Batch(
-            Group(
-              Text(
-                result._1,
-                description_x,
-                description_y + (offsetY + index) * textOffset,
-                baseDepth,
-                GameAssets.Fonts.fontNormal8Key,
-                GameAssets.Fonts.fontNormal8Material.withTint(RGBA.White)
-              )
-            ).withDepth(Depth(baseDepth))
-          ) ++ rec(tail, index + result._2)
-      }
-
-    if (list.isEmpty)
-      Batch(
-        Group(
-          Text(
-            "None",
-            description_x,
-            description_y + offsetY * textOffset,
-            baseDepth,
-            GameAssets.Fonts.fontNormal8Key,
-            GameAssets.Fonts.fontNormal8Material.withTint(RGBA.White)
-          )
+    if (list.isEmpty) {
+    Batch(
+      Group(
+        Text(
+          "None",
+          description_x,
+          description_y + offsetY * textOffset,
+          baseDepth,
+          GameAssets.Fonts.fontNormal8Key,
+          GameAssets.Fonts.fontNormal8Material.withTint(RGBA.White)
+        )
+      ).withDepth(Depth(baseDepth))
+    )
+  } else {
+    val (nodes, _) = list.foldLeft((Batch.empty[SceneNode], 0)) {
+      case ((batch, index), item) =>
+        val result = MultilinesText.getMultilinesText(item.toString, 285, 8)
+        val textNode = Text(
+          result._1,
+          description_x,
+          description_y + (offsetY + index) * textOffset,
+          baseDepth,
+          GameAssets.Fonts.fontNormal8Key,
+          GameAssets.Fonts.fontNormal8Material.withTint(RGBA.White)
         ).withDepth(Depth(baseDepth))
-      )
-    else rec(list, 0)
+
+        (batch :+ Group(textNode), index + result._2)
+    }
+
+    nodes
   }
+}
+
 }
