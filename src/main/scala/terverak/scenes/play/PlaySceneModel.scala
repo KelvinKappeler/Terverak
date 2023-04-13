@@ -8,9 +8,9 @@ package terverak.scenes.play
 
 import indigo.*
 import indigo.scenes.*
-import terverak.data.*
-import terverak.model.*
-import terverak.utils.*
+import terverak.assets.*
+import terverak.card.CardsData
+import terverak.play.*
 
 /**
   * The model of the play scene.
@@ -22,35 +22,35 @@ final case class PlaySceneModel(currentGame: Game) {
       // End the turn
       val newGame = currentGame.newTurn()
       Outcome(copy(currentGame = newGame))
-        .addGlobalEvents(TerverakEvents.HandChanged(true, newGame.currentPlayer.hand))
-        .addGlobalEvents(TerverakEvents.MinionBoardChanged(true, newGame.currentPlayer.minionBoard))
-        .addGlobalEvents(TerverakEvents.HandChanged(false, newGame.waitingPlayer.hand))
-        .addGlobalEvents(TerverakEvents.MinionBoardChanged(false, newGame.waitingPlayer.minionBoard))
-    case FutureEvents.PlayCard(handCard) =>
+        .addGlobalEvents(PlayEvents.HandChanged(true, newGame.currentPlayer.hand))
+        .addGlobalEvents(PlayEvents.MinionBoardChanged(true, newGame.currentPlayer.minionBoard))
+        .addGlobalEvents(PlayEvents.HandChanged(false, newGame.waitingPlayer.hand))
+        .addGlobalEvents(PlayEvents.MinionBoardChanged(false, newGame.waitingPlayer.minionBoard))
+    case PlayEvents.PlayCard(handCard) =>
       // Play a card from the hand
       val (newGame, wasCardPlayed) = currentGame.playCard(handCard)
       if (wasCardPlayed) {
         Outcome(copy(currentGame = newGame))
-          .addGlobalEvents(TerverakEvents.HandChanged(true, newGame.currentPlayer.hand))
-          .addGlobalEvents(TerverakEvents.MinionBoardChanged(true, newGame.currentPlayer.minionBoard))
+          .addGlobalEvents(PlayEvents.HandChanged(true, newGame.currentPlayer.hand))
+          .addGlobalEvents(PlayEvents.MinionBoardChanged(true, newGame.currentPlayer.minionBoard))
       } else {
         Outcome(this)
       }
-    case FutureEvents.DiscardCard(handCard) =>
+    case PlayEvents.DiscardCard(handCard) =>
       // Discard a card from the hand
       val newGame = currentGame.discardCard(handCard)
       Outcome(copy(currentGame = newGame))
-        .addGlobalEvents(TerverakEvents.HandChanged(true, newGame.currentPlayer.hand))
-    case FutureEvents.AttackOpponent(minionWithId) =>
+        .addGlobalEvents(PlayEvents.HandChanged(true, newGame.currentPlayer.hand))
+    case PlayEvents.AttackOpponent(minionWithId) =>
       // Attack the opponent
       val (newWaitingPlayer, newMinion) = minionWithId.minion.attackPlayer(currentGame.waitingPlayer)
       val index = currentGame.currentPlayer.minionBoard.minions.map(_.id).indexOf(minionWithId.id)
       val newMinionBoard = currentGame.currentPlayer.minionBoard.copy(minions = currentGame.currentPlayer.minionBoard.minions.updated(index, IdObject.MinionWithId(newMinion, minionWithId.id)))
       val newGame = currentGame.copy(waitingPlayer = newWaitingPlayer, currentPlayer = currentGame.currentPlayer.copy(minionBoard = newMinionBoard))
       Outcome(copy(currentGame = newGame))
-        .addGlobalEvents(TerverakEvents.MinionBoardChanged(true, newGame.currentPlayer.minionBoard))
-        .addGlobalEvents(TerverakEvents.MinionBoardChanged(false, newGame.waitingPlayer.minionBoard))
-    case FutureEvents.AttackMinion(attacker, defender) =>
+        .addGlobalEvents(PlayEvents.MinionBoardChanged(true, newGame.currentPlayer.minionBoard))
+        .addGlobalEvents(PlayEvents.MinionBoardChanged(false, newGame.waitingPlayer.minionBoard))
+    case PlayEvents.AttackMinion(attacker, defender) =>
       // Attack a minion
       val (newDefender, newAttacker) = attacker.minion.attackMinion(defender.minion)
       val attackerIndex = currentGame.currentPlayer.minionBoard.minions.map(_.id).indexOf(attacker.id)
@@ -59,10 +59,10 @@ final case class PlaySceneModel(currentGame: Game) {
       val newDefenderMinionBoard = currentGame.waitingPlayer.minionBoard.copy(minions = currentGame.waitingPlayer.minionBoard.minions.updated(defenderIndex, IdObject.MinionWithId(newDefender, defender.id))).refresh()
       val newGame = currentGame.copy(currentPlayer = currentGame.currentPlayer.copy(minionBoard = newAttackerMinionBoard), waitingPlayer = currentGame.waitingPlayer.copy(minionBoard = newDefenderMinionBoard))
       Outcome(copy(currentGame = newGame))
-        .addGlobalEvents(TerverakEvents.MinionBoardChanged(true, newGame.currentPlayer.minionBoard))
-        .addGlobalEvents(TerverakEvents.MinionBoardChanged(false, newGame.waitingPlayer.minionBoard))
+        .addGlobalEvents(PlayEvents.MinionBoardChanged(true, newGame.currentPlayer.minionBoard))
+        .addGlobalEvents(PlayEvents.MinionBoardChanged(false, newGame.waitingPlayer.minionBoard))
     case KeyboardEvent.KeyDown(Key.KEY_A) =>
-      Outcome(this).addGlobalEvents(TerverakEvents.HandChanged(true, currentGame.currentPlayer.hand)).addGlobalEvents(TerverakEvents.HandChanged(false, currentGame.waitingPlayer.hand))
+      Outcome(this).addGlobalEvents(PlayEvents.HandChanged(true, currentGame.currentPlayer.hand)).addGlobalEvents(PlayEvents.HandChanged(false, currentGame.waitingPlayer.hand))
 
     case _ => Outcome(this)
 

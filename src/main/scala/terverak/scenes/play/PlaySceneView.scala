@@ -8,9 +8,8 @@ package terverak.scenes.play
 
 import indigo.*
 import indigo.scenes.*
-import terverak.data.*
-import terverak.model.*
-import terverak.view.*
+import terverak.assets.*
+import terverak.play.GameView
 
 /**
   * The view of the play scene.

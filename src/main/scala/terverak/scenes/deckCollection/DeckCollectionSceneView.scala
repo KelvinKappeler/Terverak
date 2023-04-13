@@ -8,8 +8,9 @@ package terverak.scenes.deckCollection
 
 import indigo.*
 import indigo.scenes.*
-import terverak.data.*
-import terverak.view.deckCollection.*
+import terverak.assets.*
+import terverak.deckCollection.CardsCatalogView
+import terverak.deckCollection.DeckCreationView
 
 /**
   * The view of the deck collection scene.

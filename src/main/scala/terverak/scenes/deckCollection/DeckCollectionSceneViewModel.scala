@@ -9,10 +9,10 @@ package terverak.scenes.deckCollection
 import indigo.*
 import indigo.scenes.*
 import indigoextras.ui.*
-import terverak.data.GameAssets
-import terverak.model.*
-import terverak.utils.CardsCatalogEvents
-import terverak.viewmodel.deckCollection.*
+import terverak.assets.GameAssets
+import terverak.deckCollection.CardsCatalogViewModel
+import terverak.deckCollection.DeckCollectionEvents
+import terverak.deckCollection.DeckCreationViewModel
 
 /**
   * The viewmodel of the deck collection scene.
@@ -24,13 +24,13 @@ final case class DeckCollectionSceneViewModel(cardsCatalogViewModel: CardsCatalo
       Outcome(copy(cardsCatalogViewModel.refreshDescription(context.mouse, model.cardsCatalog)))
     case FrameTick =>
       cardsCatalogViewModel.updateButtons(context.inputState.mouse).map(catalog => copy(cardsCatalogViewModel = catalog))
-    case CardsCatalogEvents.NextPage() =>
+    case DeckCollectionEvents.NextPage() =>
       Outcome(copy(cardsCatalogViewModel = cardsCatalogViewModel.nextPage(model.cardsCatalog)))
-    case CardsCatalogEvents.PreviousPage() =>
+    case DeckCollectionEvents.PreviousPage() =>
       Outcome(copy(cardsCatalogViewModel = cardsCatalogViewModel.previousPage(model.cardsCatalog)))
-    case CardsCatalogEvents.FilterCards(filter) =>
+    case DeckCollectionEvents.FilterCards(filter) =>
       Outcome(copy(cardsCatalogViewModel = cardsCatalogViewModel.copy(filter = filter).refreshCardsButtons(model.cardsCatalog)))
-    case CardsCatalogEvents.SortCards(sorter) =>
+    case DeckCollectionEvents.SortCards(sorter) =>
       Outcome(copy(cardsCatalogViewModel = cardsCatalogViewModel.copy(sort = sorter).refreshCardsButtons(model.cardsCatalog)))
     case _ => Outcome(this)
   }

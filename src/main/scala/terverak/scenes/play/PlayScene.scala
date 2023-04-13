@@ -10,10 +10,8 @@ import indigo.*
 import indigo.scenes.*
 import terverak.TerverakModel
 import terverak.TerverakViewModel
-import terverak.data.*
-import terverak.model.*
+import terverak.assets.*
 import terverak.scenes.play.*
-import terverak.view.*
 
 /**
   * The play scene.

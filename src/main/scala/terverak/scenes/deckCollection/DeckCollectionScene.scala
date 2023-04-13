@@ -10,9 +10,7 @@ import indigo.*
 import indigo.scenes.*
 import terverak.TerverakModel
 import terverak.TerverakViewModel
-import terverak.data.*
-import terverak.model.*
-import terverak.view.*
+import terverak.assets.*
 
 /**
   * The deck collection scene. It allows the user to create and edit decks.

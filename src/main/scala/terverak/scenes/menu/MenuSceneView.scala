@@ -8,7 +8,7 @@ package terverak.scenes.menu
 
 import indigo.*
 import indigo.scenes.*
-import terverak.data.*
+import terverak.assets.*
 
 /**
   * The view of the menu scene.
