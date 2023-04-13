@@ -8,16 +8,14 @@ package terverak.deckCollection
 
 /**
   * Represents an user.
-  * @param deck1 the first deck.
-  * @param deck2 the second deck.
-  * @param deck3 the third deck.
+  * @param decks the decks of the user (at least one)
   */
 final case class User(
-  deck1: Deck,
-  deck2: Deck,
-  deck3: Deck,
-)
+  decks: List[Deck]
+) {
+  require(decks.length >= 1, "The user must have at least one deck.")
+}
 
 object User {
-  val initial: User = User(Deck.initial, Deck.initial, Deck.initial)
+  val initial: User = User(List(Deck.initial, Deck.initial, Deck.initial))
 }

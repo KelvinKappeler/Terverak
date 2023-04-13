@@ -10,22 +10,20 @@ import indigo.*
 import terverak.assets.GameAssets
 import terverak.play.HandViewModel
 import terverak.play.PlayerViewModel
+import terverak.utils.*
 
 /** The view of a card description.
   */
 object CardDescriptionView {
 
-  private val description_x =
-    HandViewModel.HandSize.width + PlayerViewModel.HeroSize.width
+  private val description_x = HandViewModel.HandSize.width + PlayerViewModel.HeroSize.width
   private val description_y = HandViewModel.HandSize.height
-  private val textOffset    = 12
-  private val baseDepth     = 100
+  private val textOffset = 12
+  private val baseDepth = 100
 
   /** Draws a card description.
-    * @param card
-    *   the card to draw
-    * @return
-    *   the batch of the card description
+    * @param card the card to draw
+    * @return the batch of the card description
     */
   def draw(card: Card): Batch[SceneNode] = {
 
@@ -35,7 +33,7 @@ object CardDescriptionView {
           Batch(
             Group(
               Text(
-                "Minion attributes:",
+                MultilinesText.getMultilinesText("Minion attributes: Yes It is a good idea to test something yeah yeah", 150, 8),
                 description_x,
                 description_y + (8 + Math
                   .max(card.effectsWhenDiscard.length, 1)) * textOffset,

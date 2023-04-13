@@ -8,6 +8,7 @@ package terverak.card.cardeffect
 
 import terverak.card.CardSubtype
 import terverak.play.Game
+import terverak.utils.Plural
 
 /**
   * The card effects that draw cards.
@@ -26,8 +27,7 @@ object CardEffectsDraw {
     }
 
     override def toString: String =
-      if (amount <= 1) "Draw " + amount + " card"
-      else "Draw " + amount + " cards"
+      "Draw " + amount + " " + Plural.getWordWithGoodPlural("card", amount)
   }
 
   /**
@@ -41,7 +41,7 @@ object CardEffectsDraw {
     }
 
     override def toString: String =
-      DrawCard(amount).toString() + " for each " + subtype + target.toString()
+      DrawCard(amount).toString + " for each " + subtype + " " + target.toString()
   }
 
 }

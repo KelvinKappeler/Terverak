@@ -25,7 +25,7 @@ object CardEffectsMana {
       game.copy(currentPlayer = game.currentPlayer.addMana(amount))
     }
 
-        override def toString: String = "Add " + amount + " mana to your mana pool"
+    override def toString: String = "Add " + amount + " mana to your mana pool"
   }
 
     /**
@@ -39,6 +39,6 @@ object CardEffectsMana {
     }
 
     override def toString: String =
-      AddMana(amount).toString() + " for each " + subtype + target.toString()
+      AddMana(amount).toString + " for each " + subtype + " " + target.toString
   }
 }

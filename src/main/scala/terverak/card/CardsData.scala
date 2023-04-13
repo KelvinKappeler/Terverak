@@ -232,8 +232,8 @@ object CardsData {
       "You don't want to meet him",
       GameAssets.Cards.blackHole,
       4,
-      List(CardEffects.DestroyRandomMinions(2, true)),
-      List(CardEffects.DestroyRandomMinions(1, false)),
+      List(CardEffects.DestroyRandomMinions(2, CardEffectTarget.WaitingPlayerMinionsBoard)),
+      List(CardEffects.DestroyRandomMinions(1, CardEffectTarget.BothPlayersMinionsBoard)),
       Nil
     )
 
@@ -242,8 +242,8 @@ object CardsData {
       "You don't want to meet him",
       GameAssets.Cards.meteor,
       4,
-      List(CardEffects.DestroyRandomMinions(2, true)),
-      List(CardEffects.DestroyRandomMinions(1, false)),
+      List(CardEffects.DestroyRandomMinions(2, CardEffectTarget.WaitingPlayerMinionsBoard)),
+      List(CardEffects.DestroyRandomMinions(1, CardEffectTarget.BothPlayersMinionsBoard)),
       Nil
     )
 

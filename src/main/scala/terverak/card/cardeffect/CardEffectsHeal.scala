@@ -8,6 +8,7 @@ package terverak.card.cardeffect
 
 import terverak.card.CardSubtype
 import terverak.play.Game
+import terverak.utils.*
 
 /**
   * The card effects that heal.
@@ -26,8 +27,7 @@ object CardEffectsHeal {
     }
 
     override def toString: String =
-      if (amount <= 1) "Heal your hero for " + amount + " health point"
-      else "Heal your hero for " + amount + " health points"
+      "Heal your hero for " + amount + " health " + Plural.getWordWithGoodPlural("point", amount)
   }
 
   /**
@@ -41,6 +41,6 @@ object CardEffectsHeal {
     }
 
     override def toString: String =
-      HealHero(amount).toString() + " for each " + subtype + target.toString()
+      HealHero(amount).toString + " for each " + subtype + " " + target.toString()
   }
 }

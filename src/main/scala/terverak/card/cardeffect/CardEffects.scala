@@ -10,6 +10,8 @@ import terverak.card.*
 import terverak.play.Game
 import terverak.play.IdObject.MinionWithId
 import terverak.play.Minion
+import terverak.utils.Plural.getWordWithGoodPlural
+import terverak.utils.*
 
 import scala.util.Random
 
@@ -29,7 +31,8 @@ object CardEffects {
       game.copy(waitingPlayer = game.waitingPlayer.takeDamage(amount))
     }
 
-    override def toString: String = "Deal " + amount + " damage to the opponent hero"
+    override def toString: String = 
+      "Deal " + amount + " " + Plural.getWordWithGoodPlural("damage", amount) + " to the opponent hero"
   }
 
   /**
@@ -72,8 +75,7 @@ object CardEffects {
     }
 
     override def toString: String =
-        if (amount <= 1) "This minion earns +" + amount + " attack for each " + subtype + target.toString()
-        else "This minion earns +" + amount + " attacks for each " + subtype + target.toString()
+      "This minion earns +" + amount + " " + Plural.getWordWithGoodPlural("attack", amount) + " for each " + subtype + target.toString
   }
 
   /**
@@ -81,16 +83,16 @@ object CardEffects {
     * @param amount the amount of minions destroyed
     * @param opponentOnly if true, only destroy minions on the opponent board. If false, destroy minions on both board.
     */
-  final case class DestroyRandomMinions(amount: Int, opponentOnly: Boolean) extends CardEffect {
+  final case class DestroyRandomMinions(amount: Int, target: CardEffectTarget) extends CardEffect {
     require(amount >= 0, "Amount must be equal or greater than 0")
 
     override def activateEffect(game: Game): Game = {
-      val totalMinions = if opponentOnly then game.waitingPlayer.minionBoard.minions.size else
+      val totalMinions = if target == CardEffectTarget.WaitingPlayerMinionsBoard then game.waitingPlayer.minionBoard.minions.size else
         game.currentPlayer.minionBoard.minions.size + game.waitingPlayer.minionBoard.minions.size
 
       val randomMinions = Random.shuffle((0 until totalMinions).toList).take(amount)
 
-      if (opponentOnly) {
+      if (target == CardEffectTarget.WaitingPlayerMinionsBoard) {
         val newWaitingPlayerMinionsBoard = game.waitingPlayer.minionBoard.copy(
           minions = game.waitingPlayer.minionBoard.minions.zipWithIndex.filterNot(minion => randomMinions.contains(minion._2)).map(_._1))
         game.copy(
@@ -115,11 +117,6 @@ object CardEffects {
     }
 
     override def toString: String = 
-      val pluralMinion = if (amount > 1) "minions" else "minion"
-      if (opponentOnly) {
-        "Destroy " + amount + " random " + pluralMinion
-      } else {
-        "Destroy " + amount + " random ally or enemy " + pluralMinion
-      }
+      "Destroy " + amount + " random " + Plural.getWordWithGoodPlural("minion", amount) + " " + target.toString
   }
 }

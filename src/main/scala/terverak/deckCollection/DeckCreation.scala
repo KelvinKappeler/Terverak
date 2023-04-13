@@ -15,16 +15,12 @@ import terverak.card.Card
   * @param user the user.
   */
 final case class DeckCreation(user: User, deckNumber: Int = 0) {
-  require(deckNumber >= 0 && deckNumber <= 2, "Deck number must be between 1 and 3")
+  require(deckNumber >= 0 && deckNumber <= user.decks.length - 1, "The deck number must be between 0 and the number of decks of the user.")
 
   /**
     * Returns the deck of the user.
     */
-  def deck: Deck = deckNumber match {
-    case 0 => user.deck1
-    case 1 => user.deck2
-    case 2 => user.deck3
-  }
+  def deck: Deck = user.decks(deckNumber)
 
   /**
     * Add a card to the current deck.
@@ -32,11 +28,7 @@ final case class DeckCreation(user: User, deckNumber: Int = 0) {
     * @return the deck creation with the card added.
     */
   def addCardToCurrentDeck(card: Card): DeckCreation = {
-    deckNumber match {
-      case 0 => copy(user = user.copy(deck1 = user.deck1.addCard(card)))
-      case 1 => copy(user = user.copy(deck2 = user.deck2.addCard(card)))
-      case 2 => copy(user = user.copy(deck3 = user.deck3.addCard(card)))
-    }
+    copy(user = user.copy(decks = user.decks.updated(deckNumber, user.decks(deckNumber).addCard(card))))
   }
 
   /**
@@ -45,11 +37,7 @@ final case class DeckCreation(user: User, deckNumber: Int = 0) {
     * @return the deck creation with the card removed.
     */
   def removeCardToCurrentDeck(card: Card): DeckCreation = {
-    deckNumber match {
-      case 0 => copy(user = user.copy(deck1 = user.deck1.removeCard(card)))
-      case 1 => copy(user = user.copy(deck2 = user.deck2.removeCard(card)))
-      case 2 => copy(user = user.copy(deck3 = user.deck3.removeCard(card)))
-    }
+    copy(user = user.copy(decks = user.decks.updated(deckNumber, user.decks(deckNumber).removeCard(card))))
   }
 
   /**
@@ -57,7 +45,7 @@ final case class DeckCreation(user: User, deckNumber: Int = 0) {
     * @return the next deck.
     */
   def nextDeck(): DeckCreation = {
-    copy(deckNumber = (deckNumber + 1) % 3)
+    copy(deckNumber = (deckNumber + 1) % user.decks.length)
   }
 
   /**
@@ -65,7 +53,7 @@ final case class DeckCreation(user: User, deckNumber: Int = 0) {
     * @return the previous deck.
     */
   def previousDeck(): DeckCreation = {
-    copy(deckNumber = (deckNumber + 2) % 3)
+    copy(deckNumber = (deckNumber - 1 + user.decks.length) % user.decks.length)
   }
 }
 

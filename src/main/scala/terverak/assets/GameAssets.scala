@@ -95,8 +95,8 @@ object GameAssets {
         AssetType.Image(manaCostButton, AssetPath(AssetCardsDirectory + "manacost_button.png")),
         AssetType.Image(attackPointsButton, AssetPath(AssetCardsDirectory + "attackpoints_button.png")),
         AssetType.Image(healthPointsButton, AssetPath(AssetCardsDirectory + "healthpoints_button.png")),
-        AssetType.Image(rightArrow, AssetPath(AssetCardsDirectory + "next_page_button.png")),
-        AssetType.Image(leftArrow, AssetPath(AssetCardsDirectory + "previous_page_button.png")),
+        AssetType.Image(rightArrow, AssetPath(AssetCardsDirectory + "right_arrow.png")),
+        AssetType.Image(leftArrow, AssetPath(AssetCardsDirectory + "left_arrow.png")),
         AssetType.Image(plusButton, AssetPath(AssetCardsDirectory + "plus_button.png")),
         AssetType.Image(minusButton, AssetPath(AssetCardsDirectory + "minus_button.png"))
       )
