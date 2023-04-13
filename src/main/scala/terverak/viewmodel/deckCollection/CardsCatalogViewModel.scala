@@ -7,14 +7,12 @@
 package terverak.viewmodel.deckCollection
 
 import indigo.*
-import indigo.*
+import indigoextras.ui.*
 import terverak.data.GameAssets
 import terverak.model.*
 import terverak.model.deckCollection.*
+import terverak.utils.*
 import terverak.viewmodel.*
-import terverak.viewmodel.ui.Button.CardsCatalogViewModelModifierButton
-import terverak.viewmodel.ui.Button.DeckCreationModifierButton
-import terverak.viewmodel.ui.*
 
 import scala.scalajs.js.`new`
 
@@ -23,12 +21,13 @@ import scala.scalajs.js.`new`
   */
 final case class CardsCatalogViewModel(
   cardsViewModel: List[CardViewModel] = List.empty, 
-  cardsButtons: List[DeckCreationModifierButton] = List.empty,
+  //cardsButtons: List[DeckCreationModifierButton] = List.empty,
   currentPage: Int = 0,
   rows: Int = CardsCatalogViewModel.DefaultRowsPerPage,
   columns: Int = CardsCatalogViewModel.DefaultColumnsPerPage,
   filter: Card => Boolean = _ => true,
-  sort: (Card, Card) => Boolean = (c1, c2) => c1.manaCost < c2.manaCost
+  sort: (Card, Card) => Boolean = (c1, c2) => c1.manaCost < c2.manaCost,
+  buttons: List[indigoextras.ui.Button] = List.empty
 ) {
   require(rows > 0)
   require(columns > 0)
@@ -41,6 +40,7 @@ final case class CardsCatalogViewModel(
   /**
     * The list of filter buttons.
     */
+  /*
   val buttons: List[Button] = List(
     //clear filter
     Button.FilterButton(Rectangle(10, CardsCatalogViewModel.FilterButtonsOffsetY, 8, 8), GameAssets.Buttons.clearButton, _ => true),
@@ -75,13 +75,10 @@ final case class CardsCatalogViewModel(
         case minion2: Card.MinionCard => minion1.life < minion2.life
         case _ => true
       case _ => false),
-
-    //go to next page
-    Button.CardsCatalogViewModelModifierButton(Rectangle(97, CardsCatalogViewModel.PagesButtonsOffsetY, 15, 13), GameAssets.Buttons.nextPageButton, (model: CardsCatalog) => nextPage(model)),
-    //go to previous page
-    Button.CardsCatalogViewModelModifierButton(Rectangle(10, CardsCatalogViewModel.PagesButtonsOffsetY, 15, 13), GameAssets.Buttons.previousPageButton, (model: CardsCatalog) => previousPage(model))
   )
+  */
 
+  /*
   def refreshCardsButtons(model: CardsCatalog): CardsCatalogViewModel = {
     val buttons = cardsForPage(model).zip(cardsViewModel).foldLeft(List.empty[DeckCreationModifierButton]) { 
       case (list, (card, cardViewModel)) =>
@@ -95,7 +92,7 @@ final case class CardsCatalogViewModel(
           )
         val buttonsIncrement =
           Button.DeckCreationModifierButton(
-            Rectangle(cardPos.x + CardViewModel.CardSize.width - 4, cardPos.y + CardViewModel.CardSize.height/2 - 4, 8, 8), 
+            Rectangle(cardPos.x + CardViewModel.CardSize.width - 4, cardPos.y + CardViewModel.CardSize.height / 2 - 4, 8, 8), 
             GameAssets.Buttons.plusButton,
             (deckCreation: DeckCreation) =>
               deckCreation.setCurrentDeck(deckCreation.deck.addCard(card))
@@ -104,7 +101,7 @@ final case class CardsCatalogViewModel(
     }
 
     copy(cardsButtons = buttons)
-  }
+  }*/
 
   /**
     * Updates the position of displayed cards.
@@ -123,7 +120,7 @@ final case class CardsCatalogViewModel(
         ))
     }
     
-    copy(cardsViewModel = newCardsViewModel).refreshCardsButtons(cardsCatalog)
+    copy(cardsViewModel = newCardsViewModel)//.refreshCardsButtons(cardsCatalog)
   }
 
   /**
@@ -154,38 +151,12 @@ final case class CardsCatalogViewModel(
   } 
 
   /**
-    * check if the mouse is over a button and applies the corresponding effect
-    * @param mouse the mouse
-    * @param model the catalog of cards
-    * @return the updated catalog view model
-    */
-  def checkButtons(mouse: Mouse, model: CardsCatalog, deckCreation: DeckCreation): (CardsCatalogViewModel, DeckCreation) = {
-    val newCardsCatalogViewModel = buttons.foldLeft(this) { (viewModel, button) =>
-      if button.checkMouseOverButton(mouse) then
-        button match
-          case Button.FilterButton(_, _, filter) => viewModel.copy(currentPage = 0, filter = filter)
-          case Button.SortButton(_, _, sort) => viewModel.copy(currentPage = 0, sort = sort)
-          case Button.CardsCatalogViewModelModifierButton(_, _, modifier) => modifier(model)
-          case _ => viewModel
-      else viewModel
-    }
-
-    val newDeckCreation = cardsButtons.foldLeft(deckCreation) { (dc, button) =>
-      if button.checkMouseOverButton(mouse) then button.modifier(dc)
-      else dc
-    }
-
-    (newCardsCatalogViewModel.refreshCardsButtons(model), newDeckCreation)
-  }
-
-  /**
     * The next page of the catalog.
     * @param model The model of the catalog.
     * @return A catalog view model with the next page.
     */
   def nextPage(model: CardsCatalog): CardsCatalogViewModel = {
-    val newPage = currentPage + 1
-    if (newPage < maxPages(model)) copy(currentPage = newPage) else this
+    copy(currentPage = (currentPage + 1) % maxPages(model))//.refreshCardsButtons(model)
   }
 
   /**
@@ -194,8 +165,7 @@ final case class CardsCatalogViewModel(
     * @return A catalog view model with the previous page.
     */
   def previousPage(model: CardsCatalog): CardsCatalogViewModel = {
-    val newPage = currentPage - 1
-    if (newPage >= 0) copy(currentPage = newPage) else this
+    copy(currentPage = (currentPage - 1 + maxPages(model)) % maxPages(model))//.refreshCardsButtons(model)
   }
 
   /**
@@ -221,6 +191,20 @@ final case class CardsCatalogViewModel(
     filterCards.slice(start, end)
   }
 
+  /**
+   * Updates the buttons of the catalog.
+   * @param mouse the mouse
+   * @return the updated catalog view model
+   */
+  def updateButtons(mouse: Mouse): Outcome[CardsCatalogViewModel] = {
+    buttons.foldLeft(Outcome(this))((viewModel, button) =>
+      viewModel.flatMap(vm =>
+        button.update(mouse).map(newButton =>
+          vm.copy(buttons = newButton :: vm.buttons.filterNot(_ == button))
+        )
+      )
+    )
+  }
 }
 
 object CardsCatalogViewModel {
@@ -235,5 +219,44 @@ object CardsCatalogViewModel {
   val FilterButtonsOffsetY: Int = 33 + PagesButtonsOffsetY
   val SortButtonsOffsetY: Int = 24 + FilterButtonsOffsetY
 
-  val initial: CardsCatalogViewModel = CardsCatalogViewModel().initCardsPosition(CardsCatalog.initial)
+  private val buttons: List[indigoextras.ui.Button] = List(
+    Button(
+      ButtonAssets(
+        up = Graphic(0, 0, 15, 13, 2, Material.Bitmap(GameAssets.Buttons.leftArrow)),
+        over = Graphic(0, 0, 15, 13, 2, Material.Bitmap(GameAssets.Buttons.leftArrow)),
+        down = Graphic(0, 0, 15, 13, 2, Material.Bitmap(GameAssets.Buttons.leftArrow))
+      ),
+      Rectangle(10, CardsCatalogViewModel.PagesButtonsOffsetY, 15, 13),
+      Depth(2),
+    ).withUpActions(CardsCatalogEvents.PreviousPage()),
+    Button(
+      ButtonAssets(
+        up = Graphic(0, 0, 15, 13, 2, Material.Bitmap(GameAssets.Buttons.rightArrow)),
+        over = Graphic(0, 0, 15, 13, 2, Material.Bitmap(GameAssets.Buttons.rightArrow)),
+        down = Graphic(0, 0, 15, 13, 2, Material.Bitmap(GameAssets.Buttons.rightArrow))
+      ),
+      Rectangle(97, CardsCatalogViewModel.PagesButtonsOffsetY, 15, 13),
+      Depth(2),
+    ).withUpActions(CardsCatalogEvents.NextPage()),
+    Button(
+      ButtonAssets(
+        up = Graphic(0, 0, 8, 8, 2, Material.Bitmap(GameAssets.Buttons.clearButton)),
+        over = Graphic(0, 0, 8, 8, 2, Material.Bitmap(GameAssets.Buttons.clearButton)),
+        down = Graphic(0, 0, 8, 8, 2, Material.Bitmap(GameAssets.Buttons.clearButton))
+      ),
+      Rectangle(10, CardsCatalogViewModel.FilterButtonsOffsetY, 8, 8),
+      Depth(2),
+    ).withUpActions(CardsCatalogEvents.FilterCards(_ => true)),
+    Button(
+      ButtonAssets(
+        up = Graphic(0, 0, 30, 8, 2, Material.Bitmap(GameAssets.Buttons.alienButton)),
+        over = Graphic(0, 0, 30, 8, 2, Material.Bitmap(GameAssets.Buttons.alienButton)),
+        down = Graphic(0, 0, 30, 8, 2, Material.Bitmap(GameAssets.Buttons.alienButton))
+      ),
+      Rectangle(22, CardsCatalogViewModel.FilterButtonsOffsetY, 30, 8),
+      Depth(2),
+    ).withUpActions(CardsCatalogEvents.FilterCards((c: Card) => c.subtypes.contains(CardSubtype.Alien))),
+  )
+
+  val initial: CardsCatalogViewModel = CardsCatalogViewModel(buttons = buttons).initCardsPosition(CardsCatalog.initial)
 }

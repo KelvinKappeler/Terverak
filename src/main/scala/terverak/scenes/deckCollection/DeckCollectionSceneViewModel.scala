@@ -8,6 +8,8 @@ package terverak.scenes.deckCollection
 
 import indigo.*
 import indigo.scenes.*
+import indigoextras.ui.*
+import terverak.data.GameAssets
 import terverak.model.*
 import terverak.utils.CardsCatalogEvents
 import terverak.viewmodel.deckCollection.*
@@ -20,11 +22,13 @@ final case class DeckCollectionSceneViewModel(cardsCatalogViewModel: CardsCatalo
   def updateViewModel(context: SceneContext[Unit], model: DeckCollectionSceneModel): GlobalEvent => Outcome[DeckCollectionSceneViewModel] = {
     case MouseEvent.Move(_) =>
       Outcome(copy(cardsCatalogViewModel.refreshDescription(context.mouse, model.cardsCatalog)))
-    case MouseEvent.Click(_) =>
-      val (newCatalog, newDeckCreation) = cardsCatalogViewModel.checkButtons(context.mouse, model.cardsCatalog, model.deckCreation)
-      Outcome(copy(cardsCatalogViewModel = newCatalog)).addGlobalEvents(CardsCatalogEvents.UpdateDeck(newDeckCreation))
+    case FrameTick =>
+      cardsCatalogViewModel.updateButtons(context.inputState.mouse).map(catalog => copy(cardsCatalogViewModel = catalog))
+    case CardsCatalogEvents.NextPage() =>
+      Outcome(copy(cardsCatalogViewModel = cardsCatalogViewModel.nextPage(model.cardsCatalog)))
+    case CardsCatalogEvents.PreviousPage() =>
+      Outcome(copy(cardsCatalogViewModel = cardsCatalogViewModel.previousPage(model.cardsCatalog)))
     case _ => Outcome(this)
-
   }
 
 }
@@ -34,6 +38,9 @@ final case class DeckCollectionSceneViewModel(cardsCatalogViewModel: CardsCatalo
   */
 object DeckCollectionSceneViewModel {
 
-  val initial: DeckCollectionSceneViewModel = DeckCollectionSceneViewModel(CardsCatalogViewModel.initial, DeckCreationViewModel.initial)
+  val initial: DeckCollectionSceneViewModel = DeckCollectionSceneViewModel(
+    CardsCatalogViewModel.initial,
+    DeckCreationViewModel.initial
+  )
   
 }

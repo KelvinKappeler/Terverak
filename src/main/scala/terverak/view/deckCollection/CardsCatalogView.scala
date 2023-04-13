@@ -7,13 +7,12 @@
 package terverak.view.deckCollection
 
 import indigo.*
+import indigoextras.ui.*
 import terverak.data.*
 import terverak.model.deckCollection.*
 import terverak.view.*
-import terverak.view.ui.*
 import terverak.viewmodel.*
 import terverak.viewmodel.deckCollection.*
-import terverak.viewmodel.ui.*
 
 /**
   * The view of the catalog of cards.
@@ -40,8 +39,8 @@ object CardsCatalogView {
       }
 
     val buttonsBatch =
-      (viewModel.buttons ::: viewModel.cardsButtons).foldLeft(Batch.empty[SceneNode]) { case (batch, button) =>
-        batch ++ ButtonView.draw(button)
+      (viewModel.buttons/* ::: viewModel.cardsButtons*/).foldLeft(Batch.empty[SceneNode]) { case (batch, button) =>
+        batch ++ Batch(button.draw)
       }
 
     val filterAndSortText =
@@ -50,7 +49,7 @@ object CardsCatalogView {
           Text("Filter by:", 10, CardsCatalogViewModel.FilterButtonsOffsetY - 12, 1, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.White)),
           Text("Sort by:", 10, CardsCatalogViewModel.SortButtonsOffsetY - 12, 1, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.White)),
           Text("Page " + (viewModel.currentPage + 1) + "/" + viewModel.maxPages(model), 29, CardsCatalogViewModel.PagesButtonsOffsetY + 3, 1, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.White)),
-          ) 
+          )
         .withDepth(Depth(1))
       )
 
