@@ -33,7 +33,7 @@ object CardDescriptionView {
           Batch(
             Group(
               Text(
-                MultilinesText.getMultilinesText("Minion attributes: Yes It is a good idea to test something yeah yeah", 150, 8),
+                "Minion attributes:",
                 description_x,
                 description_y + (8 + Math
                   .max(card.effectsWhenDiscard.length, 1)) * textOffset,
@@ -115,7 +115,7 @@ object CardDescriptionView {
           Batch(
             Group(
               Text(
-                head.toString,
+                MultilinesText.getMultilinesText(head.toString, 285, 8)._1,
                 description_x,
                 description_y + (offsetY + index) * textOffset,
                 baseDepth,
