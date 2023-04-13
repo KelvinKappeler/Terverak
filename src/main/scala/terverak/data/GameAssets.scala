@@ -47,15 +47,15 @@ object GameAssets {
       Set(
         AssetType.Image(bato, AssetPath(AssetCardsDirectory + "bato.png")),
         AssetType.Image(cardBack, AssetPath(AssetCardsDirectory + "card_back.png")),
-        AssetType.Image(shinyBato, AssetPath(AssetCardsDirectory + "shiny_bato.png")),
+        AssetType.Image(shinyBato, AssetPath(AssetCardsDirectory + "bato_shiny.png")),
         AssetType.Image(planet1, AssetPath(AssetCardsDirectory + "planet1.png")),
         AssetType.Image(planet2, AssetPath(AssetCardsDirectory + "planet2.png")),
         AssetType.Image(planet3, AssetPath(AssetCardsDirectory + "planet3.png")),
         AssetType.Image(planet4, AssetPath(AssetCardsDirectory + "planet4.png")),
-        AssetType.Image(alienYellow, AssetPath(AssetCardsDirectory + "yellow_alien.png")),
-        AssetType.Image(alienGreen, AssetPath(AssetCardsDirectory + "green_alien.png")),
-        AssetType.Image(alienBlue, AssetPath(AssetCardsDirectory + "blue_alien.png")),
-        AssetType.Image(alienRed, AssetPath(AssetCardsDirectory + "red_alien.png")),
+        AssetType.Image(alienYellow, AssetPath(AssetCardsDirectory + "alien_yellow.png")),
+        AssetType.Image(alienGreen, AssetPath(AssetCardsDirectory + "alien_green.png")),
+        AssetType.Image(alienBlue, AssetPath(AssetCardsDirectory + "alien_blue.png")),
+        AssetType.Image(alienRed, AssetPath(AssetCardsDirectory + "alien_red.png")),
         AssetType.Image(spell1, AssetPath(AssetCardsDirectory + "spell1.png")),
         AssetType.Image(blackHole, AssetPath(AssetCardsDirectory + "black_hole.png")),
         AssetType.Image(meteor, AssetPath(AssetCardsDirectory + "spell2.png"))
@@ -211,6 +211,9 @@ object GameAssets {
         .addChar(FontChar("X", 8, 32, size8, size8))
         .addChar(FontChar("Y", 16, 32, size8, size8))
         .addChar(FontChar("Z", 24, 32, size8, size8))
+        .addChar(FontChar(",", 24, 48, size8, size8))
+        .addChar(FontChar("-", 32, 48, size8, size8))
+        .addChar(FontChar("+", 40, 48, size8, size8))
         .addChar(FontChar("[", 48, 48, size8, size8))
         .addChar(FontChar("]", 56, 48, size8, size8))
         .addChar(FontChar(" ", 8, 56, size8, size8))

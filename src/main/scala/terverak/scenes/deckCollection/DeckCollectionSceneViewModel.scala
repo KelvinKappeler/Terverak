@@ -29,9 +29,9 @@ final case class DeckCollectionSceneViewModel(cardsCatalogViewModel: CardsCatalo
     case CardsCatalogEvents.PreviousPage() =>
       Outcome(copy(cardsCatalogViewModel = cardsCatalogViewModel.previousPage(model.cardsCatalog)))
     case CardsCatalogEvents.FilterCards(filter) =>
-      Outcome(copy(cardsCatalogViewModel = cardsCatalogViewModel.copy(filter = filter)))
+      Outcome(copy(cardsCatalogViewModel = cardsCatalogViewModel.copy(filter = filter).refreshCardsButtons(model.cardsCatalog)))
     case CardsCatalogEvents.SortCards(sorter) =>
-      Outcome(copy(cardsCatalogViewModel = cardsCatalogViewModel.copy(sort = sorter)))
+      Outcome(copy(cardsCatalogViewModel = cardsCatalogViewModel.copy(sort = sorter).refreshCardsButtons(model.cardsCatalog)))
     case _ => Outcome(this)
   }
 
