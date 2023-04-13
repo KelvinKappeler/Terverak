@@ -112,10 +112,11 @@ object CardDescriptionView {
       recList match {
         case Nil => Batch.empty
         case head :: tail =>
+          val result = MultilinesText.getMultilinesText(head.toString, 285, 8)
           Batch(
             Group(
               Text(
-                MultilinesText.getMultilinesText(head.toString, 285, 8)._1,
+                result._1,
                 description_x,
                 description_y + (offsetY + index) * textOffset,
                 baseDepth,
@@ -123,7 +124,7 @@ object CardDescriptionView {
                 GameAssets.Fonts.fontNormal8Material.withTint(RGBA.White)
               )
             ).withDepth(Depth(baseDepth))
-          ) ++ rec(tail, index + 1)
+          ) ++ rec(tail, index + result._2)
       }
 
     if (list.isEmpty)

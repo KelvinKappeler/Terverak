@@ -10,20 +10,6 @@ import indigo.*
 
 object MultilinesText {
 
-  /*
-  def getMultilinesText(text: String, width: Int, fontWidth: Int): String = {
-    val words = text.split(" ")
-    val lines = words.foldLeft(List.empty[String]) { (acc, word) =>
-      val currentLine = if (acc.isEmpty) word else s"${acc.last} $word"
-      if ((currentLine.length + word.length + 1) * fontWidth > width) acc :+ word
-      if (acc.length > 0) acc.init :+ currentLine
-      else
-        if (acc.isEmpty) List(currentLine)
-        else acc.init :+ word
-    }
-    (lines :+ "").mkString("\n")
-  }*/
-
   /** Returns a string with the text split in multiple lines.
     * @param text the text to split
     * @param width the width of the text
