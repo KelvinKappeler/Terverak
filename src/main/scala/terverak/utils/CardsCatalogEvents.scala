@@ -16,9 +16,14 @@ import terverak.model.deckCollection.*
 object CardsCatalogEvents {
 
   /**
-    * Event to update the deck.
+    * Event to add a card to the current deck.
     */
-  final case class UpdateDeck(newDeckCreation: DeckCreation) extends GlobalEvent
+  final case class AddCardToCurrentDeck(card: Card) extends GlobalEvent
+
+  /**
+    * Event to remove a card to the current deck.
+    */
+  final case class RemoveCardToCurrentDeck(card: Card) extends GlobalEvent
 
   /**
     * Event to go to the next page.

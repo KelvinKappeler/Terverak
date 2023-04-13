@@ -20,8 +20,10 @@ final case class DeckCollectionSceneModel(cardsCatalog: CardsCatalog, deckCreati
   def updateModel(context: SceneContext[Unit]): GlobalEvent => Outcome[DeckCollectionSceneModel] = {
     case KeyboardEvent.KeyDown(Key.ESCAPE) =>
       Outcome(this).addGlobalEvents(SceneEvent.JumpTo(MenuScene.name))
-    case CardsCatalogEvents.UpdateDeck(newDeckCreation) =>
-      Outcome(this.copy(deckCreation = newDeckCreation))
+    case CardsCatalogEvents.AddCardToCurrentDeck(card) =>
+      Outcome(copy(deckCreation = deckCreation.addCardToCurrentDeck(card)))
+    case CardsCatalogEvents.RemoveCardToCurrentDeck(card) =>
+      Outcome(copy(deckCreation = deckCreation.removeCardToCurrentDeck(card)))
     case _ => Outcome(this)
   }
 

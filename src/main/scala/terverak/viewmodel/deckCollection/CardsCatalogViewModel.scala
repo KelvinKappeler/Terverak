@@ -14,14 +14,11 @@ import terverak.model.deckCollection.*
 import terverak.utils.*
 import terverak.viewmodel.*
 
-import scala.scalajs.js.`new`
-
 /**
   * The view model of the catalog of cards.
   */
 final case class CardsCatalogViewModel(
   cardsViewModel: List[CardViewModel] = List.empty,
-  //cardsButtons: List[DeckCreationModifierButton] = List.empty,
   currentPage: Int = 0,
   rows: Int = CardsCatalogViewModel.DefaultRowsPerPage,
   columns: Int = CardsCatalogViewModel.DefaultColumnsPerPage,
@@ -37,30 +34,35 @@ final case class CardsCatalogViewModel(
     */
   val cardsPerPage: Int = rows * columns
 
-  /*
   def refreshCardsButtons(model: CardsCatalog): CardsCatalogViewModel = {
-    val buttons = cardsForPage(model).zip(cardsViewModel).foldLeft(List.empty[DeckCreationModifierButton]) { 
+    val cardButtons = cardsForPage(model).zip(cardsViewModel).foldLeft(List.empty[Button]) { 
       case (list, (card, cardViewModel)) =>
         val cardPos = cardViewModel.position
         val buttonsDecrement = 
-          Button.DeckCreationModifierButton(
-            Rectangle(cardPos.x - 4, cardPos.y + CardViewModel.CardSize.height/2 - 4, 8, 8), 
-            GameAssets.Buttons.minusButton,
-            (deckCreation: DeckCreation) =>
-              deckCreation.setCurrentDeck(deckCreation.deck.removeCard(card))
-          )
+          Button(
+            ButtonAssets(
+              up = Graphic(0, 0, 8, 8, 2, Material.Bitmap(GameAssets.Buttons.minusButton)),
+              over = Graphic(0, 0, 8, 8, 2, Material.Bitmap(GameAssets.Buttons.minusButton)),
+              down = Graphic(0, 0, 8, 8, 2, Material.Bitmap(GameAssets.Buttons.minusButton))
+            ),
+            Rectangle(cardPos.x - 4, cardPos.y + CardViewModel.CardSize.height / 2 - 4, 8, 8),
+            Depth(2),
+          ).withUpActions(CardsCatalogEvents.RemoveCardToCurrentDeck(card))
         val buttonsIncrement =
-          Button.DeckCreationModifierButton(
-            Rectangle(cardPos.x + CardViewModel.CardSize.width - 4, cardPos.y + CardViewModel.CardSize.height / 2 - 4, 8, 8), 
-            GameAssets.Buttons.plusButton,
-            (deckCreation: DeckCreation) =>
-              deckCreation.setCurrentDeck(deckCreation.deck.addCard(card))
-          )
+          Button(
+            ButtonAssets(
+              up = Graphic(0, 0, 8, 8, 2, Material.Bitmap(GameAssets.Buttons.plusButton)),
+              over = Graphic(0, 0, 8, 8, 2, Material.Bitmap(GameAssets.Buttons.plusButton)),
+              down = Graphic(0, 0, 8, 8, 2, Material.Bitmap(GameAssets.Buttons.plusButton))
+            ),
+            Rectangle(cardPos.x + CardViewModel.CardSize.width - 4, cardPos.y + CardViewModel.CardSize.height / 2 - 4, 8, 8),
+            Depth(2),
+          ).withUpActions(CardsCatalogEvents.AddCardToCurrentDeck(card))
         buttonsIncrement :: buttonsDecrement :: list
     }
 
-    copy(cardsButtons = buttons)
-  }*/
+    copy(buttons = cardButtons ::: CardsCatalogViewModel.DefaultButtons)
+  }
 
   /**
     * Updates the position of displayed cards.
@@ -79,7 +81,7 @@ final case class CardsCatalogViewModel(
         ))
     }
     
-    copy(cardsViewModel = newCardsViewModel)//.refreshCardsButtons(cardsCatalog)
+    copy(cardsViewModel = newCardsViewModel).refreshCardsButtons(cardsCatalog)
   }
 
   /**
@@ -107,7 +109,7 @@ final case class CardsCatalogViewModel(
         }
 
     copy(cardsViewModel = newCardsViewModel)
-  } 
+  }
 
   /**
     * The next page of the catalog.
@@ -115,7 +117,7 @@ final case class CardsCatalogViewModel(
     * @return A catalog view model with the next page.
     */
   def nextPage(model: CardsCatalog): CardsCatalogViewModel = {
-    copy(currentPage = (currentPage + 1) % maxPages(model))//.refreshCardsButtons(model)
+    copy(currentPage = (currentPage + 1) % maxPages(model)).refreshCardsButtons(model)
   }
 
   /**
@@ -124,7 +126,7 @@ final case class CardsCatalogViewModel(
     * @return A catalog view model with the previous page.
     */
   def previousPage(model: CardsCatalog): CardsCatalogViewModel = {
-    copy(currentPage = (currentPage - 1 + maxPages(model)) % maxPages(model))//.refreshCardsButtons(model)
+    copy(currentPage = (currentPage - 1 + maxPages(model)) % maxPages(model)).refreshCardsButtons(model)
   }
 
   /**
@@ -178,7 +180,7 @@ object CardsCatalogViewModel {
   val FilterButtonsOffsetY: Int = 33 + PagesButtonsOffsetY
   val SortButtonsOffsetY: Int = 24 + FilterButtonsOffsetY
 
-  private val buttons: List[Button] = List(
+  val DefaultButtons: List[Button] = List(
     Button(
       ButtonAssets(
         up = Graphic(0, 0, 15, 13, 2, Material.Bitmap(GameAssets.Buttons.leftArrow)),
@@ -283,5 +285,5 @@ object CardsCatalogViewModel {
       case _ => false)),
   )
 
-  val initial: CardsCatalogViewModel = CardsCatalogViewModel(buttons = buttons).initCardsPosition(CardsCatalog.initial)
+  val initial: CardsCatalogViewModel = CardsCatalogViewModel().initCardsPosition(CardsCatalog.initial)
 }

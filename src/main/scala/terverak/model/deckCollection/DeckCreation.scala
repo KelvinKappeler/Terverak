@@ -14,24 +14,42 @@ import terverak.model.*
   * Represents the creation of a deck.
   * @param user the user.
   */
-final case class DeckCreation(user: User, deckNumber: Int = 1) {
-  require(deckNumber >= 1 && deckNumber <= 3, "Deck number must be between 1 and 3")
+final case class DeckCreation(user: User, deckNumber: Int = 0) {
+  require(deckNumber >= 0 && deckNumber <= 2, "Deck number must be between 1 and 3")
 
   /**
     * Returns the deck of the user.
     */
   def deck: Deck = deckNumber match {
-    case 1 => user.deck1
-    case 2 => user.deck2
-    case 3 => user.deck3
+    case 0 => user.deck1
+    case 1 => user.deck2
+    case 2 => user.deck3
   }
 
-  def setCurrentDeck(deck: Deck): DeckCreation = {
-    copy(user = deckNumber match {
-      case 1 => user.copy(deck1 = deck)
-      case 2 => user.copy(deck2 = deck)
-      case 3 => user.copy(deck3 = deck)
-    })
+  /**
+    * Add a card to the current deck.
+    * @param card the card to add.
+    * @return the deck creation with the card added.
+    */
+  def addCardToCurrentDeck(card: Card): DeckCreation = {
+    deckNumber match {
+      case 0 => copy(user = user.copy(deck1 = user.deck1.addCard(card)))
+      case 1 => copy(user = user.copy(deck2 = user.deck2.addCard(card)))
+      case 2 => copy(user = user.copy(deck3 = user.deck3.addCard(card)))
+    }
+  }
+
+  /**
+    * Remove a card to the current deck.
+    * @param card the card to remove.
+    * @return the deck creation with the card removed.
+    */
+  def removeCardToCurrentDeck(card: Card): DeckCreation = {
+    deckNumber match {
+      case 0 => copy(user = user.copy(deck1 = user.deck1.removeCard(card)))
+      case 1 => copy(user = user.copy(deck2 = user.deck2.removeCard(card)))
+      case 2 => copy(user = user.copy(deck3 = user.deck3.removeCard(card)))
+    }
   }
 
   /**
