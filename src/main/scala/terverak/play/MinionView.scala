@@ -11,6 +11,7 @@ import terverak.assets.*
 import terverak.card.CardDescriptionView
 import terverak.card.CardViewModel
 import terverak.play.Minion
+import terverak.utils.TerverakText
 
 /**
   * The view of a minion.
@@ -42,8 +43,8 @@ object MinionView {
             Shape.Box(Rectangle(x + 10, y + 56, 24, 8), Fill.Color(RGBA.Teal)).withDepth(Depth(if isCardDragged then depth - 4 else depth - 1)))
     
     val textsBatch =
-      Batch(Group(Text(minion.attackPoints.toString, x - 2, y + 56, if isCardDragged then depth - 5 else depth - 2, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Yellow))).withDepth(Depth(if isCardDragged then depth - 5 else depth - 2)),
-            Group(Text(minion.healthPoints.toString + "/" + minion.maxHP.toString, x + 10, y + 56, if isCardDragged then depth - 5 else depth - 2, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Red))).withDepth(Depth(if isCardDragged then depth - 5 else depth - 2)))
+      TerverakText.drawText(minion.attackPoints.toString, x - 2, y + 56, if isCardDragged then depth - 5 else depth - 2, GameAssets.Fonts.defaultFont8, RGBA.Yellow)
+      ++ TerverakText.drawText(minion.healthPoints.toString + "/" + minion.maxHP.toString, x + 10, y + 56, if isCardDragged then depth - 5 else depth - 2, GameAssets.Fonts.defaultFont8, RGBA.Red)
 
     val canAttackBatch =
       if minion.canAttack && isCurrentPlayer then
@@ -51,12 +52,6 @@ object MinionView {
       else
         Batch.empty
 
-    val descriptionBatch = 
-        if minionViewModel.isDescriptionShown || minionViewModel.isDragged then
-          CardDescriptionView.draw(minion.card)
-        else
-          Batch.empty
-
-    batch ++ boxesBatch ++ textsBatch ++ canAttackBatch ++ descriptionBatch
+    batch ++ boxesBatch ++ textsBatch ++ canAttackBatch
   }
 }

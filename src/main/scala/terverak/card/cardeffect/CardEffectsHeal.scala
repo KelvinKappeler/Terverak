@@ -8,7 +8,7 @@ package terverak.card.cardeffect
 
 import terverak.card.CardSubtype
 import terverak.play.Game
-import terverak.utils.*
+import terverak.utils.StringUtils.getWordWithGoodPlural
 
 /**
   * The card effects that heal.
@@ -27,7 +27,7 @@ object CardEffectsHeal {
     }
 
     override def toString: String =
-      "Heal your hero for " + amount + " health " + Plural.getWordWithGoodPlural("point", amount)
+      "Heal your hero for " + amount + " health " + getWordWithGoodPlural("point", amount)
   }
 
   /**

@@ -9,6 +9,7 @@ package terverak.card
 import indigo.*
 import indigoextras.geometry.*
 import indigoextras.ui.*
+import terverak.TerverakEvents
 import terverak.utils.*
 
 /**
@@ -16,9 +17,9 @@ import terverak.utils.*
   */
 final case class CardViewModel(
   position: Point,
+  hitArea: HitArea = HitArea(Rectangle(0, 0, 0, 0)),
   isRevealed: Boolean = true,
   isDragged: Boolean = false,
-  isDescriptionShown: Boolean = false,
   isSmallVersion: Boolean = false,
 ) {
 
@@ -33,6 +34,26 @@ final case class CardViewModel(
     */
   def checkMouseOverCard(mouse: Mouse): Boolean = {
     mouse.wasMousePositionWithin(bounds)
+  }
+
+  /**
+    * Initialize the hit area of the card.
+    * @param card the card
+    * @return the card view model
+    */
+  def initHitArea(card: Card): CardViewModel = {
+    copy(hitArea = HitArea(bounds)
+    .withHoverOverActions(TerverakEvents.OnMouseHoverCard(card))
+    .withHoverOutActions(TerverakEvents.OnMouseOutHoverCard()))
+  }
+
+  /**
+   * Update the hit area of the card.
+   * @param mouse the mouse
+   * @return the outcome of the card view model
+   */
+  def updateHitArea(mouse: Mouse): Outcome[CardViewModel] = {
+    hitArea.update(mouse).map(ha => this.copy(hitArea = ha))
   }
 }
 

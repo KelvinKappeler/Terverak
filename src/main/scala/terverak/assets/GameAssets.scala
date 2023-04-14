@@ -7,6 +7,7 @@
 package terverak.assets
 
 import indigo.*
+import terverak.utils.*
 
 /**
   * The assets of the game.
@@ -154,25 +155,24 @@ object GameAssets {
 
     private val numbersFontName16: AssetName = AssetName("NumbersFont16")
     private val normalFont8Name: AssetName = AssetName("NumbersFont8")
-    val fontKey16: FontKey = FontKey("NumbersFont16")
-    val fontNormal8Key: FontKey = FontKey("NumbersFont8")
-    val fontMaterial16: Material.ImageEffects = Material.ImageEffects(numbersFontName16)
-    val fontNormal8Material: Material.ImageEffects = Material.ImageEffects(normalFont8Name)
+    private val fontKey16: FontKey = FontKey("NumbersFont16")
+    private val fontNormal8Key: FontKey = FontKey("NumbersFont8")
+    private val size16: Int = 16
+    private val size8: Int = 8
 
     def fontInfo16: FontInfo =
-      FontInfo(fontKey16, 160, 16, FontChar("0", 0, 0, 16, 16))
-        .addChar(FontChar("0", 0, 0, 16, 16))
-        .addChar(FontChar("1", 16, 0, 16, 16))
-        .addChar(FontChar("2", 32, 0, 16, 16))
-        .addChar(FontChar("3", 48, 0, 16, 16))
-        .addChar(FontChar("4", 64, 0, 16, 16))
-        .addChar(FontChar("5", 80, 0, 16, 16))
-        .addChar(FontChar("6", 96, 0, 16, 16))
-        .addChar(FontChar("7", 112, 0, 16, 16))
-        .addChar(FontChar("8", 128, 0, 16, 16))
-        .addChar(FontChar("9", 144, 0, 16, 16))
+      FontInfo(fontKey16, 160, 16, FontChar("0", 0, 0, size16, size16))
+        .addChar(FontChar("0", 0, 0, size16, size16))
+        .addChar(FontChar("1", 16, 0, size16, size16))
+        .addChar(FontChar("2", 32, 0, size16, size16))
+        .addChar(FontChar("3", 48, 0, size16, size16))
+        .addChar(FontChar("4", 64, 0, size16, size16))
+        .addChar(FontChar("5", 80, 0, size16, size16))
+        .addChar(FontChar("6", 96, 0, size16, size16))
+        .addChar(FontChar("7", 112, 0, size16, size16))
+        .addChar(FontChar("8", 128, 0, size16, size16))
+        .addChar(FontChar("9", 144, 0, size16, size16))
 
-    private val size8: Int = 8
     def fontInfo8: FontInfo =
       FontInfo(fontNormal8Key, 64, 64, FontChar("?", 56, 56, size8, size8))
         .addChar(FontChar("0", 0, 0, size8, size8))
@@ -229,5 +229,8 @@ object GameAssets {
         AssetType.Image(Fonts.numbersFontName16, AssetPath(AssetFontsDirectory + "font_numbers16.png")),
         AssetType.Image(Fonts.normalFont8Name, AssetPath(AssetFontsDirectory + "font_normal8.png")),
       )
+
+    val defaultFont16: TerverakFont = TerverakFont(fontKey16, Material.ImageEffects(numbersFontName16), size16)
+    val defaultFont8: TerverakFont = TerverakFont(fontNormal8Key, Material.ImageEffects(normalFont8Name), size8)
   }
 }

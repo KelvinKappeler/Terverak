@@ -3,7 +3,7 @@
 // Kelvin Kappeler & Bastien Jolidon
 // Bachelor Project EPFL, 2023
 // =======================================
-  
+
 package terverak.card
 
 import indigo.*
@@ -16,129 +16,57 @@ import terverak.utils.*
   */
 object CardDescriptionView {
 
-  private val description_x = HandViewModel.HandSize.width + PlayerViewModel.HeroSize.width
-  private val description_y = HandViewModel.HandSize.height
-  private val textOffset = 12
   private val baseDepth = 100
+  private val defaultFont = GameAssets.Fonts.defaultFont8
+  private val textOffset = 4 + defaultFont.fontWidth
+  private val defaultWidth = 285
 
   /** Draws a card description.
     * @param card the card to draw
     * @return the batch of the card description
     */
-  def draw(card: Card): Batch[SceneNode] = {
+  def draw(viewModel: CardDescriptionViewModel, position: Point): Batch[SceneNode] = {
+    if (viewModel.isShown) {
+      val nameY = position.y
+      
+      val (descriptionString, descriptionLines) = StringUtils.getMultilinesText(viewModel.linkedCard.description, defaultWidth, defaultFont.fontWidth)
+      val descriptionY = nameY + textOffset
+      
+      val effectsWhenPlayedY = descriptionY + textOffset + descriptionLines * defaultFont.fontWidth
+      val (effectsWhenPlayedString, effectsWhenPlayedLines) =
+        if (viewModel.linkedCard.effectsWhenPlayed.isEmpty) ("None", 1)
+        else StringUtils.getMultilinesText(viewModel.linkedCard.effectsWhenPlayed.map("- " + _).mkString(" \n "), defaultWidth, defaultFont.fontWidth)
 
-    val descriptionOnlyMinion =
-      card match {
-        case minion: Card.MinionCard =>
-          Batch(
-            Group(
-              Text(
-                "Minion attributes:",
-                description_x,
-                description_y + (8 + Math
-                  .max(card.effectsWhenDiscard.length, 1)) * textOffset,
-                baseDepth,
-                GameAssets.Fonts.fontNormal8Key,
-                GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Purple)
-              )
-            ).withDepth(Depth(baseDepth))
-          ) ++ computeBatchForEffectsAttributesDescription(
-            minion.attributes,
-            9 + Math.max(card.effectsWhenDiscard.length, 1)
-          )
-        case _ => Batch.empty
-      }
+      val effectsWhenDiscardY = effectsWhenPlayedY + 2 * textOffset + effectsWhenPlayedLines * defaultFont.fontWidth
+      val (effectsWhenDiscardString, effectsWhenDiscardLines) =
+        if (viewModel.linkedCard.effectsWhenDiscard.isEmpty) ("None", 1)
+        else StringUtils.getMultilinesText(viewModel.linkedCard.effectsWhenDiscard.map("- " + _).mkString(" \n "), defaultWidth, defaultFont.fontWidth)
+      logger.consoleLog(effectsWhenPlayedLines.toString)
+      val descriptionOnlyMinion =
+        viewModel.linkedCard match {
+          case minion: Card.MinionCard =>
+            val batchMinionAttributes = 
+              if (minion.attributes.isEmpty) TerverakText.drawText("None", position.x, effectsWhenDiscardY + defaultFont.fontWidth * effectsWhenDiscardLines + 3 * textOffset, baseDepth, defaultFont, RGBA.White)
+              else TerverakText.drawText(StringUtils.getMultilinesText(minion.attributes.mkString("\n"), defaultWidth, defaultFont.fontWidth)._1, position.x, effectsWhenDiscardY + defaultFont.fontWidth * effectsWhenDiscardLines + 3 * textOffset, baseDepth, defaultFont, RGBA.White)
+            TerverakText.drawText("Minion attributes:", position.x, effectsWhenDiscardY + defaultFont.fontWidth * effectsWhenDiscardLines + 2 * textOffset, baseDepth, defaultFont, RGBA.Purple)
+            ++ batchMinionAttributes
+          case _ => Batch.empty
+        }
 
-    val subtypesList =
-      if (card.subtypes.isEmpty) ""
-      else " [" + card.subtypes.mkString(", ") + "]"
+      val subtypesList =
+        if (viewModel.linkedCard.subtypes.isEmpty) ""
+        else " [" + viewModel.linkedCard.subtypes.mkString(", ") + "]"
 
-    Batch(
-      Group(
-        Text(
-          card.name + subtypesList,
-          description_x,
-          description_y,
-          baseDepth,
-          GameAssets.Fonts.fontNormal8Key,
-          GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Orange)
-        )
-      ).withDepth(Depth(baseDepth)),
-      Group(
-        Text(
-          card.description,
-          description_x,
-          description_y + textOffset,
-          baseDepth,
-          GameAssets.Fonts.fontNormal8Key,
-          GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Orange)
-        )
-      ).withDepth(Depth(baseDepth)),
-      Group(
-        Text(
-          "Effect when played:",
-          description_x,
-          description_y + 3 * textOffset,
-          baseDepth,
-          GameAssets.Fonts.fontNormal8Key,
-          GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Purple)
-        )
-      ).withDepth(Depth(baseDepth)),
-      Group(
-        Text(
-          "Effect when discarded:",
-          description_x,
-          description_y + (5 + Math
-            .max(card.effectsWhenPlayed.length, 1)) * textOffset,
-          baseDepth,
-          GameAssets.Fonts.fontNormal8Key,
-          GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Purple)
-        )
-      ).withDepth(Depth(baseDepth))
-    ) ++ computeBatchForEffectsAttributesDescription(
-      card.effectsWhenPlayed,
-      4
-    ) ++ computeBatchForEffectsAttributesDescription(
-      card.effectsWhenDiscard,
-      6 + Math.max(card.effectsWhenPlayed.length, 1)
-    ) ++ descriptionOnlyMinion
-  }
-
-  private def computeBatchForEffectsAttributesDescription(
-      list: List[_],
-      offsetY: Int
-  ): Batch[SceneNode] = {
-    if (list.isEmpty) {
-    Batch(
-      Group(
-        Text(
-          "None",
-          description_x,
-          description_y + offsetY * textOffset,
-          baseDepth,
-          GameAssets.Fonts.fontNormal8Key,
-          GameAssets.Fonts.fontNormal8Material.withTint(RGBA.White)
-        )
-      ).withDepth(Depth(baseDepth))
-    )
-  } else {
-    val (nodes, _) = list.foldLeft((Batch.empty[SceneNode], 0)) {
-      case ((batch, index), item) =>
-        val result = MultilinesText.getMultilinesText(item.toString, 285, 8)
-        val textNode = Text(
-          result._1,
-          description_x,
-          description_y + (offsetY + index) * textOffset,
-          baseDepth,
-          GameAssets.Fonts.fontNormal8Key,
-          GameAssets.Fonts.fontNormal8Material.withTint(RGBA.White)
-        ).withDepth(Depth(baseDepth))
-
-        (batch :+ Group(textNode), index + result._2)
+      TerverakText.drawText(viewModel.linkedCard.name + subtypesList, position.x, nameY, baseDepth, defaultFont, RGBA.Orange)
+      ++ TerverakText.drawText(descriptionString, position.x, descriptionY, baseDepth, defaultFont, RGBA.Orange)
+      ++ TerverakText.drawText("Effect when played:", position.x, effectsWhenPlayedY, baseDepth, defaultFont, RGBA.Purple)
+      ++ TerverakText.drawText(effectsWhenPlayedString, position.x, effectsWhenPlayedY + textOffset, baseDepth, defaultFont, RGBA.White)
+      ++ TerverakText.drawText("Effect when discarded:", position.x, effectsWhenDiscardY, baseDepth, GameAssets.Fonts.defaultFont8, RGBA.Purple)
+      ++ TerverakText.drawText(effectsWhenDiscardString, position.x, effectsWhenDiscardY + textOffset, baseDepth, defaultFont, RGBA.White)
+      ++ descriptionOnlyMinion
+    } else {
+      Batch.empty
     }
-
-    nodes
   }
-}
 
 }

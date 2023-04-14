@@ -8,6 +8,7 @@ package terverak.card
 
 import indigo.*
 import terverak.assets.GameAssets
+import terverak.utils.TerverakText
 
 /** The view of a card.
   */
@@ -73,57 +74,39 @@ object CardView {
           )
         }
 
-      val descriptionBatch =
-        if cardViewModel.isDescriptionShown || isCardDragged then
-          CardDescriptionView.draw(card)
-        else Batch.empty
-
       if (!cardViewModel.isSmallVersion) {
         val manaCostBatch =
-          Batch(
-            Group(
-              Text(
-                card.manaCost.toString(),
-                x - 2,
-                y,
-                if isCardDragged then depth - 5 else depth - 2,
-                GameAssets.Fonts.fontNormal8Key,
-                GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Cyan)
-              )
-            ).withDepth(Depth(if isCardDragged then depth - 5 else depth - 2)),
-            Shape
+          TerverakText.drawText(
+            card.manaCost.toString,
+            x - 2,
+            y,
+            if isCardDragged then depth - 5 else depth - 2,
+            GameAssets.Fonts.defaultFont8,
+            RGBA.Cyan
+          ) ++
+          Batch(Shape
               .Box(Rectangle(x - 2, y, 8, 8), Fill.Color(RGBA.Teal))
               .withDepth(Depth(if isCardDragged then depth - 4 else depth - 1))
           )
 
         card match {
           case minion: Card.MinionCard =>
-            batch ++ descriptionBatch ++ manaCostBatch
-              ++ Batch(
-                Group(
-                  Text(
-                    minion.damage.toString(),
-                    x - 2,
-                    y + 56,
-                    if isCardDragged then depth - 5 else depth - 2,
-                    GameAssets.Fonts.fontNormal8Key,
-                    GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Yellow)
-                  )
-                ).withDepth(
-                  Depth(if isCardDragged then depth - 5 else depth - 2)
-                ),
-                Group(
-                  Text(
-                    minion.life.toString(),
-                    x + 26,
-                    y + 56,
-                    if isCardDragged then depth - 5 else depth - 2,
-                    GameAssets.Fonts.fontNormal8Key,
-                    GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Red)
-                  )
-                ).withDepth(
-                  Depth(if isCardDragged then depth - 5 else depth - 2)
-                ),
+            batch ++ manaCostBatch
+              ++ TerverakText.drawText(
+                minion.damage.toString(),
+                x - 2,
+                y + 56,
+                if isCardDragged then depth - 5 else depth - 2,
+                GameAssets.Fonts.defaultFont8,
+                RGBA.Yellow
+              ) ++ TerverakText.drawText(
+                minion.life.toString(),
+                x + 26,
+                y + 56,
+                if isCardDragged then depth - 5 else depth - 2,
+                GameAssets.Fonts.defaultFont8,
+                RGBA.Red
+              ) ++ Batch(
                 Shape
                   .Box(Rectangle(x - 2, y + 56, 8, 8), Fill.Color(RGBA.Teal))
                   .withDepth(
@@ -136,10 +119,10 @@ object CardView {
                   )
               )
           case _ =>
-            batch ++ descriptionBatch ++ manaCostBatch
+            batch ++ manaCostBatch
         }
       } else {
-        batch ++ descriptionBatch
+        batch
       }
     } else {
       if (!cardViewModel.isSmallVersion) {

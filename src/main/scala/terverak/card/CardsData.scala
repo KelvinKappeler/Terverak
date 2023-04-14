@@ -239,12 +239,16 @@ object CardsData {
 
     val meteor: Card.SpellCard = Card.SpellCard(
       "METEOR",
-      "You don't want to meet him",
+      "You don't want to meet him because it hurts a lot if a meteor hits you. Be careful out there. It is also a long text to test the text wrapping",
       GameAssets.Cards.meteor,
       4,
-      List(CardEffects.DestroyRandomMinions(2, CardEffectTarget.WaitingPlayerMinionsBoard)),
-      List(CardEffects.DestroyRandomMinions(1, CardEffectTarget.BothPlayersMinionsBoard)),
-      Nil
+      List(CardEffects.DestroyRandomMinions(2, CardEffectTarget.WaitingPlayerMinionsBoard),
+           CardEffects.DestroyRandomMinions(3, CardEffectTarget.BothPlayersMinionsBoard),
+           CardEffects.DestroyRandomMinions(4, CardEffectTarget.WaitingPlayerMinionsBoard)),
+      List(CardEffects.DestroyRandomMinions(1, CardEffectTarget.BothPlayersMinionsBoard),
+           CardEffects.DestroyRandomMinions(3, CardEffectTarget.BothPlayersMinionsBoard),
+           CardEffectsHeal.HealHero(3)),
+      List(CardSubtype.Planet)
     )
 
     val spellCards: Set[Card.SpellCard] = Set(

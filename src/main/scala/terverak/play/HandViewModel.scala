@@ -19,7 +19,7 @@ final case class HandViewModel(
   position: Point, 
   cardsViewModel: List[CardViewModel], 
   isRevealed: Boolean
-  ) {
+) {
   
   /**
     * Updates the position of all cards.
@@ -34,7 +34,7 @@ final case class HandViewModel(
           Point(
             position.x + (HandViewModel.CardSpacing * index) + HandViewModel.OffsetX,
             position.y + HandViewModel.OffsetY
-          ), isRevealed) :: rec(tail, index + 1)
+          ), isRevealed = isRevealed) :: rec(tail, index + 1)
       }
     }
     copy(cardsViewModel = rec(hand.cards, 0))
@@ -49,7 +49,7 @@ final case class HandViewModel(
     */
   def moveUniqueCard(hand: Hand, card: HandCard, newPos: Point): HandViewModel = {
     val index = hand.cards.indexOf(card)
-    val cardViewModel = CardViewModel(newPos, isRevealed, isDragged = true)
+    val cardViewModel = CardViewModel(newPos, isRevealed = isRevealed, isDragged = true)
     copy(cardsViewModel = cardsViewModel.updated(index, cardViewModel))
   }
 
@@ -61,7 +61,7 @@ final case class HandViewModel(
     */
   def showDescription(hand: Hand, card: HandCard): HandViewModel = {
     val index = hand.cards.indexOf(card)
-    val cardViewModel = cardsViewModel(index).copy(isDescriptionShown = true)
+    val cardViewModel = cardsViewModel(index)
     copy(cardsViewModel = cardsViewModel.updated(index, cardViewModel))
   }
 
@@ -71,7 +71,7 @@ final case class HandViewModel(
     * @return the updated hand view model
     */
   def clearDescription(hand: Hand): HandViewModel = {
-    copy(cardsViewModel = cardsViewModel.map(_.copy(isDescriptionShown = false)))
+    copy(cardsViewModel = cardsViewModel)
   }
 
   /**

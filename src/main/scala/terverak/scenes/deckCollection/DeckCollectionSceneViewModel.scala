@@ -9,7 +9,9 @@ package terverak.scenes.deckCollection
 import indigo.*
 import indigo.scenes.*
 import indigoextras.ui.*
+import terverak.*
 import terverak.assets.GameAssets
+import terverak.card.*
 import terverak.deckCollection.CardsCatalogViewModel
 import terverak.deckCollection.DeckCollectionEvents
 import terverak.deckCollection.DeckCreationViewModel
@@ -17,11 +19,11 @@ import terverak.deckCollection.DeckCreationViewModel
 /**
   * The viewmodel of the deck collection scene.
   */
-final case class DeckCollectionSceneViewModel(cardsCatalogViewModel: CardsCatalogViewModel, deckCreationViewModel: DeckCreationViewModel) {
+final case class DeckCollectionSceneViewModel(cardsCatalogViewModel: CardsCatalogViewModel, deckCreationViewModel: DeckCreationViewModel, cardDescriptionViewModel: CardDescriptionViewModel) {
 
   def updateViewModel(context: SceneContext[Unit], model: DeckCollectionSceneModel): GlobalEvent => Outcome[DeckCollectionSceneViewModel] = {
     case MouseEvent.Move(_) =>
-      Outcome(copy(cardsCatalogViewModel.refreshDescription(context.mouse, model.cardsCatalog)))
+      cardsCatalogViewModel.updateHitArea(context.inputState.mouse).map(catalog => copy(cardsCatalogViewModel = catalog))
     case FrameTick =>
       cardsCatalogViewModel.updateButtons(context.inputState.mouse).map(catalog => copy(cardsCatalogViewModel = catalog))
     case DeckCollectionEvents.NextPage() =>
@@ -29,9 +31,13 @@ final case class DeckCollectionSceneViewModel(cardsCatalogViewModel: CardsCatalo
     case DeckCollectionEvents.PreviousPage() =>
       Outcome(copy(cardsCatalogViewModel = cardsCatalogViewModel.previousPage(model.cardsCatalog)))
     case DeckCollectionEvents.FilterCards(filter) =>
-      Outcome(copy(cardsCatalogViewModel = cardsCatalogViewModel.copy(filter = filter).refreshCardsButtons(model.cardsCatalog)))
+      Outcome(copy(cardsCatalogViewModel = cardsCatalogViewModel.filter(filter, model.cardsCatalog)))
     case DeckCollectionEvents.SortCards(sorter) =>
-      Outcome(copy(cardsCatalogViewModel = cardsCatalogViewModel.copy(sort = sorter).refreshCardsButtons(model.cardsCatalog)))
+      Outcome(copy(cardsCatalogViewModel = cardsCatalogViewModel.sort(sorter, model.cardsCatalog)))
+    case TerverakEvents.OnMouseHoverCard(card) =>
+      Outcome(copy(cardDescriptionViewModel = CardDescriptionViewModel(card, true)))
+    case TerverakEvents.OnMouseOutHoverCard() =>
+      Outcome(copy(cardDescriptionViewModel = cardDescriptionViewModel.copy(isShown = false)))
     case _ => Outcome(this)
   }
 
@@ -44,7 +50,8 @@ object DeckCollectionSceneViewModel {
 
   val initial: DeckCollectionSceneViewModel = DeckCollectionSceneViewModel(
     CardsCatalogViewModel.initial,
-    DeckCreationViewModel.initial
+    DeckCreationViewModel.initial,
+    CardDescriptionViewModel.initial
   )
   
 }

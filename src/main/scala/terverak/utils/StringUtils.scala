@@ -1,26 +1,39 @@
 // =======================================
-// Terverak -> MultilinesText.scala
+// Terverak -> StringUtils.scala
 // Kelvin Kappeler & Bastien Jolidon
 // Bachelor Project EPFL, 2023
 // =======================================
-    
+  
 package terverak.utils
 
-import indigo.*
+/**
+  * Object containing methods to add plurals and split text in multiple lines.
+  */
+object StringUtils {
+  
+  /**
+    * Returns the word with the good plural.
+    * @param word the word
+    * @param number the number
+    * @return the word with the good plural
+    */
+  def getWordWithGoodPlural(word: String, number: Int): String = {
+    if (number <= 1) word
+    else word + "s"
+  }
 
-object MultilinesText {
-
-  /** Returns a string with the text split in multiple lines.
+  /** Returns a string with the text split in multiple lines if it is too long.
     * @param text the text to split
-    * @param width the width of the text
+    * @param width the width of the text box
     * @param fontWidth the width of the font
-    * @return the text split in multiple lines
+    * @return the string split in multiple lines and the number of lines
     */
   def getMultilinesText(text: String, width: Int, fontWidth: Int): (String, Int) = {
     def rec(words: List[String]): List[String] = {
       val lists = words.foldLeft((List.empty[List[String]], List.empty[String])) {
         (acc, word) =>
           if acc._2.isEmpty then (acc._1, List(word))
+          else if word == "\n" then (acc._1 ++ List(acc._2), List.empty)	
           else if (acc._2.foldLeft(0)((count, string) => count + string.length + 1) + word.length()) * fontWidth > width then (acc._1 ++ List(acc._2), List(word))
           else (acc._1, acc._2 ++ List(word))
       }

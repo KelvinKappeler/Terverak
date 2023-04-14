@@ -71,7 +71,8 @@ final case class CardsCatalogViewModel(
     * @return the updated catalog view model
     */
   def initCardsPosition(cardsCatalog: CardsCatalog): CardsCatalogViewModel = {
-    val newCardsViewModel = List.range(0, cardsPerPage).map { index =>
+    val cards = cardsForPage(cardsCatalog)
+    val newCardsViewModel = List.range(0, cardsPerPage).zip(cards).map { (index, card) =>
       val row = index / columns
       val column = index % columns
       val defaultOffset = CardsCatalogViewModel.DefaultOffset
@@ -79,37 +80,10 @@ final case class CardsCatalogViewModel(
         CardsCatalogViewModel.Position + Point(
           defaultOffset.x + column * (CardViewModel.CardSize.width + 2 * defaultOffset.x),
           defaultOffset.y + row * (CardViewModel.CardSize.height + 2 * defaultOffset.y)
-        ))
+        )).initHitArea(card)
     }
     
     copy(cardsViewModel = newCardsViewModel).refreshCardsButtons(cardsCatalog)
-  }
-
-  /**
-    * refresh the description of the cards.
-    * @param mouse the mouse
-    * @param cardsCatalog the catalog of cards
-    * @return the updated catalog view model
-    */
-  def refreshDescription(mouse: Mouse, cardsCatalog: CardsCatalog): CardsCatalogViewModel = {
-    val cardsToDisplay = cardsForPage(cardsCatalog)
-    val cardUnderMouse = 
-      cardsToDisplay.zip(cardsViewModel).find { case (_, cardViewModel) =>
-        cardViewModel.checkMouseOverCard(mouse)
-      }
-
-    val newCardsViewModel = cardUnderMouse match 
-      case Some((_, cardViewModelToCompare)) => 
-        cardsViewModel.map { cardViewModel =>
-          if cardViewModel == cardViewModelToCompare then cardViewModel.copy(isDescriptionShown = true)
-          else cardViewModel.copy(isDescriptionShown = false)
-        }
-      case None => 
-        cardsViewModel.map { cardViewModel =>
-          cardViewModel.copy(isDescriptionShown = false)
-        }
-
-    copy(cardsViewModel = newCardsViewModel)
   }
 
   /**
@@ -118,7 +92,7 @@ final case class CardsCatalogViewModel(
     * @return A catalog view model with the next page.
     */
   def nextPage(model: CardsCatalog): CardsCatalogViewModel = {
-    copy(currentPage = (currentPage + 1) % maxPages(model)).refreshCardsButtons(model)
+    copy(currentPage = (currentPage + 1) % maxPages(model)).initCardsPosition(model).refreshCardsButtons(model)
   }
 
   /**
@@ -127,8 +101,26 @@ final case class CardsCatalogViewModel(
     * @return A catalog view model with the previous page.
     */
   def previousPage(model: CardsCatalog): CardsCatalogViewModel = {
-    copy(currentPage = (currentPage - 1 + maxPages(model)) % maxPages(model)).refreshCardsButtons(model)
+    copy(currentPage = (currentPage - 1 + maxPages(model)) % maxPages(model)).initCardsPosition(model).refreshCardsButtons(model)
   }
+
+  /**
+    * Filters the cards of the catalog.
+    * @param filter The filter to apply.
+    * @param model The model of the catalog.
+    * @return A catalog view model with the filtered cards.
+    */
+  def filter(filter: Card => Boolean, model: CardsCatalog): CardsCatalogViewModel =
+    copy(filter = filter).initCardsPosition(model)
+
+  /**
+    * Sorts the cards of the catalog.
+    * @param sort The sort to apply.
+    * @param model The model of the catalog.
+    * @return A catalog view model with the sorted cards.
+    */
+  def sort(sort: (Card, Card) => Boolean, model: CardsCatalog): CardsCatalogViewModel =
+    copy(sort = sort).initCardsPosition(model)
 
   /**
     * The maximum number of pages in the catalog.
@@ -167,11 +159,26 @@ final case class CardsCatalogViewModel(
       )
     )
   }
+
+  /**
+    * Updates the hit area of the cards.
+    * @param mouse the mouse
+    * @return the updated catalog view model
+    */
+  def updateHitArea(mouse: Mouse): Outcome[CardsCatalogViewModel] = {
+    cardsViewModel.zipWithIndex.foldLeft(Outcome(this))((viewModel, cardViewModelWithIndex) =>
+      viewModel.flatMap(vm =>
+        cardViewModelWithIndex._1.updateHitArea(mouse).map(newCardViewModel =>
+          vm.copy(cardsViewModel = vm.cardsViewModel.updated(cardViewModelWithIndex._2, newCardViewModel)
+        )
+      )
+    ))
+  }
 }
 
 object CardsCatalogViewModel {
   val DefaultRowsPerPage = 3
-  val DefaultColumnsPerPage = 3
+  val DefaultColumnsPerPage = 5
   val Position = Point(10, 20)
   val DefaultOffset = Point(5, 5)
   val DefaultWidth: Int = DefaultColumnsPerPage * (CardViewModel.CardSize.width + 2 * DefaultOffset.x)

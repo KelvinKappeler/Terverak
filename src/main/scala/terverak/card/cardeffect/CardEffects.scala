@@ -10,8 +10,7 @@ import terverak.card.*
 import terverak.play.Game
 import terverak.play.IdObject.MinionWithId
 import terverak.play.Minion
-import terverak.utils.Plural.getWordWithGoodPlural
-import terverak.utils.*
+import terverak.utils.StringUtils.getWordWithGoodPlural
 
 import scala.util.Random
 
@@ -32,7 +31,7 @@ object CardEffects {
     }
 
     override def toString: String = 
-      "Deal " + amount + " " + Plural.getWordWithGoodPlural("damage", amount) + " to the opponent hero"
+      "Deal " + amount + " " + getWordWithGoodPlural("damage", amount) + " to the opponent hero"
   }
 
   /**
@@ -75,7 +74,7 @@ object CardEffects {
     }
 
     override def toString: String =
-      "This minion earns +" + amount + " " + Plural.getWordWithGoodPlural("attack", amount) + " for each " + subtype + " " + target.toString
+      "This minion earns +" + amount + " " + getWordWithGoodPlural("attack", amount) + " for each " + subtype + " " + target.toString
   }
 
   /**
@@ -117,6 +116,6 @@ object CardEffects {
     }
 
     override def toString: String = 
-      "Destroy " + amount + " random " + Plural.getWordWithGoodPlural("minion", amount) + " " + target.toString
+      "Destroy " + amount + " random " + getWordWithGoodPlural("minion", amount) + " " + target.toString
   }
 }

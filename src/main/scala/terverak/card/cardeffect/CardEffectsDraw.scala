@@ -8,7 +8,7 @@ package terverak.card.cardeffect
 
 import terverak.card.CardSubtype
 import terverak.play.Game
-import terverak.utils.Plural
+import terverak.utils.StringUtils.getWordWithGoodPlural
 
 /**
   * The card effects that draw cards.
@@ -27,7 +27,7 @@ object CardEffectsDraw {
     }
 
     override def toString: String =
-      "Draw " + amount + " " + Plural.getWordWithGoodPlural("card", amount)
+      "Draw " + amount + " " + getWordWithGoodPlural("card", amount)
   }
 
   /**

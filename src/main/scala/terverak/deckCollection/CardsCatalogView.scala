@@ -11,6 +11,7 @@ import indigoextras.ui.*
 import terverak.assets.*
 import terverak.card.CardView
 import terverak.deckCollection.CardsCatalog
+import terverak.utils.*
 
 /**
   * The view of the catalog of cards.
@@ -42,14 +43,9 @@ object CardsCatalogView {
       }
 
     val filterAndSortText =
-      Batch(
-        Group(
-          Text("Filter by:", 10, CardsCatalogViewModel.FilterButtonsOffsetY - 12, 1, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.White)),
-          Text("Sort by:", 10, CardsCatalogViewModel.SortButtonsOffsetY - 12, 1, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.White)),
-          Text("Page " + (viewModel.currentPage + 1) + "/" + viewModel.maxPages(model), 29, CardsCatalogViewModel.PagesButtonsOffsetY + 3, 1, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.White)),
-          )
-        .withDepth(Depth(1))
-      )
+      TerverakText.drawText("Filter by:", 10, CardsCatalogViewModel.FilterButtonsOffsetY - 12, 1, GameAssets.Fonts.defaultFont8, RGBA.White)
+      ++ TerverakText.drawText("Sort by:", 10, CardsCatalogViewModel.SortButtonsOffsetY - 12, 1, GameAssets.Fonts.defaultFont8, RGBA.White)
+      ++ TerverakText.drawText("Page " + (viewModel.currentPage + 1) + "/" + viewModel.maxPages(model), 29, CardsCatalogViewModel.PagesButtonsOffsetY + 3, 1, GameAssets.Fonts.defaultFont8, RGBA.White)
 
     backgroundBatch ++ cardsBatch ++ buttonsBatch ++ filterAndSortText
   }

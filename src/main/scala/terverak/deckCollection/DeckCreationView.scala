@@ -11,10 +11,11 @@ import terverak.assets.*
 import terverak.card.CardView
 import terverak.card.CardViewModel
 import terverak.deckCollection.DeckCreation
+import terverak.utils.*
 
 object DeckCreationView {
   
-  private val initialPoint = 
+  val initialPoint = 
     Point(
       CardsCatalogViewModel.Position.x + CardsCatalogViewModel.DefaultColumnsPerPage * (CardViewModel.CardSize.width + 2 * CardsCatalogViewModel.DefaultOffset.x) + DeckCreationViewModel.DefaultOffsetX,
       CardsCatalogViewModel.Position.y
@@ -39,7 +40,12 @@ object DeckCreationView {
           initialPoint + Point(0, DeckCreationViewModel.DefaultOffsetY + (DeckCreationViewModel.DefaultOffsetY + CardViewModel.SmallVersionCardSize.height) * index),
           isSmallVersion = true)
         , 30)
-      ++ Batch(Group(Text("x" + cardWithQuantity._2, initialPoint.x + 2 * DeckCreationViewModel.DefaultOffsetX, initialPoint.y + 2 * DeckCreationViewModel.DefaultOffsetY + (DeckCreationViewModel.DefaultOffsetY + CardViewModel.SmallVersionCardSize.height) * index, 30, GameAssets.Fonts.fontNormal8Key, GameAssets.Fonts.fontNormal8Material.withTint(RGBA.Yellow))).withDepth(Depth(30)))
+      ++ TerverakText.drawText(
+        "x" + cardWithQuantity._2.toString,
+        initialPoint.x + 2 * DeckCreationViewModel.DefaultOffsetX,
+        initialPoint.y + 2 * DeckCreationViewModel.DefaultOffsetY + (DeckCreationViewModel.DefaultOffsetY + CardViewModel.SmallVersionCardSize.height) * index,
+        30, GameAssets.Fonts.defaultFont8, RGBA.Yellow
+      )
     }
 
     backgroundBatch ++ cardsBatch
