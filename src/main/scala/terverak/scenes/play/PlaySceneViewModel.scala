@@ -8,7 +8,9 @@ package terverak.scenes.play
 
 import indigo.*
 import indigo.scenes.*
+import terverak.TerverakEvents
 import terverak.assets.*
+import terverak.card.CardDescriptionViewModel
 import terverak.card.CardViewModel
 import terverak.play.GameViewModel
 import terverak.play.IdObject.*
@@ -17,7 +19,7 @@ import terverak.play.PlayEvents
 /**
   * The view model of the play scene.
   */
-final case class PlaySceneViewModel(gameViewModel: GameViewModel) {
+final case class PlaySceneViewModel(gameViewModel: GameViewModel,  cardDescriptionViewModel: CardDescriptionViewModel) {
 
   def updateViewModel(context: SceneContext[Unit], model: PlaySceneModel): GlobalEvent => Outcome[PlaySceneViewModel] =
     case PlayEvents.HandChanged(isCurrentPlayer, hand) =>
@@ -88,28 +90,6 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel) {
             Outcome(this)
           }
 
-    case PlayEvents.ShowDescription(idObject) =>
-      idObject match
-        case handCard: HandCard =>
-          val newHandViewModel = gameViewModel.currentPlayerViewModel.handViewModel.showDescription(model.currentGame.currentPlayer.hand, handCard)
-          Outcome(copy(gameViewModel = gameViewModel.copy(currentPlayerViewModel = gameViewModel.currentPlayerViewModel.copy(handViewModel = newHandViewModel))))
-        case minion: MinionWithId =>
-          val newMinionBoardViewModel = gameViewModel.currentPlayerViewModel.minionBoardViewModel.showDescription(model.currentGame.currentPlayer.minionBoard, minion)
-          val newWaitingPlayerMinionBoardViewModel = gameViewModel.waitingPlayerViewModel.minionBoardViewModel.showDescription(model.currentGame.waitingPlayer.minionBoard, minion)
-          Outcome(copy(gameViewModel = gameViewModel.copy(
-            currentPlayerViewModel = gameViewModel.currentPlayerViewModel.copy(minionBoardViewModel = newMinionBoardViewModel),
-            waitingPlayerViewModel = gameViewModel.waitingPlayerViewModel.copy(minionBoardViewModel = newWaitingPlayerMinionBoardViewModel)
-            )))
-    
-    case PlayEvents.ClearDescription() =>
-      val newHandViewModel = gameViewModel.currentPlayerViewModel.handViewModel.clearDescription(model.currentGame.currentPlayer.hand)
-      val newMinionBoardViewModel = gameViewModel.currentPlayerViewModel.minionBoardViewModel.clearDescription(model.currentGame.currentPlayer.minionBoard)
-      val newWaitingPlayerMinionBoardViewModel = gameViewModel.waitingPlayerViewModel.minionBoardViewModel.clearDescription(model.currentGame.waitingPlayer.minionBoard)
-      Outcome(copy(gameViewModel = gameViewModel.copy(
-        currentPlayerViewModel = gameViewModel.currentPlayerViewModel.copy(handViewModel = newHandViewModel, minionBoardViewModel = newMinionBoardViewModel),
-        waitingPlayerViewModel = gameViewModel.waitingPlayerViewModel.copy(minionBoardViewModel = newWaitingPlayerMinionBoardViewModel)
-        )))
-
     case MouseEvent.MouseDown(position, MouseButton.LeftMouseButton) =>
       gameViewModel.getObjectUnderMouse(context.mouse, model.currentGame, true) match {
         case Some(idObject) =>
@@ -126,20 +106,17 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel) {
         }
 
     case MouseEvent.Move(_) =>
-      val handViewModel = gameViewModel.currentPlayerViewModel.handViewModel
-      val currentPlayerBoardViewModel = gameViewModel.currentPlayerViewModel.minionBoardViewModel
-      val waitingPlayerBoardViewModel = gameViewModel.waitingPlayerViewModel.minionBoardViewModel
-      if handViewModel.cardsViewModel.forall(!_.isDragged) &&
-          currentPlayerBoardViewModel.minionsViewModel.forall(!_.isDragged) &&
-          waitingPlayerBoardViewModel.minionsViewModel.forall(!_.isDragged) then
-        gameViewModel.getObjectUnderMouse(context.mouse, model.currentGame, false) match {
-          case Some(idObject) =>
-            Outcome(this).addGlobalEvents(PlayEvents.ClearDescription()).addGlobalEvents(PlayEvents.ShowDescription(idObject))
-          case None =>
-            Outcome(this).addGlobalEvents(PlayEvents.ClearDescription())
-          }
-      else
-        Outcome(this)
+      val handHitAreaUpdated = gameViewModel.currentPlayerViewModel.handViewModel.updateHitArea(context.inputState.mouse)
+      val minionBoardUpdated = gameViewModel.currentPlayerViewModel.minionBoardViewModel.updateHitArea(context.inputState.mouse)
+      val newCurrentPlayer = handHitAreaUpdated.map(handVM => minionBoardUpdated.map(minionVM => gameViewModel.currentPlayerViewModel.copy(handViewModel = handVM, minionBoardViewModel = minionVM))).flatMap(identity)
+      val waitingPlayerMinionBoardUpdated = gameViewModel.waitingPlayerViewModel.minionBoardViewModel.updateHitArea(context.inputState.mouse)
+      val newWaitingPlayer = waitingPlayerMinionBoardUpdated.map(minionVM => gameViewModel.waitingPlayerViewModel.copy(minionBoardViewModel = minionVM))
+      val newGameViewModel = newCurrentPlayer.map(currentPlayer => newWaitingPlayer.map(waitingPlayer => gameViewModel.copy(currentPlayerViewModel = currentPlayer, waitingPlayerViewModel = waitingPlayer))).flatMap(identity)
+      newGameViewModel.map(gameVM => copy(gameViewModel = gameVM))
+    case TerverakEvents.OnMouseHoverCard(card) =>
+      Outcome(copy(cardDescriptionViewModel = CardDescriptionViewModel(card, true)))
+    case TerverakEvents.OnMouseOutHoverCard() =>
+      Outcome(copy(cardDescriptionViewModel = cardDescriptionViewModel.copy(isShown = false)))
     case _ => Outcome(this)
 
 }
@@ -149,6 +126,6 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel) {
   */
 object PlaySceneViewModel {
 
-  val initial: PlaySceneViewModel = PlaySceneViewModel(GameViewModel.initial)
+  val initial: PlaySceneViewModel = PlaySceneViewModel(GameViewModel.initial, CardDescriptionViewModel.initial)
   
 }

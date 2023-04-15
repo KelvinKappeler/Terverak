@@ -7,6 +7,7 @@
 package terverak.play
 
 import indigo.*
+import indigoextras.ui.HitArea
 import terverak.card.CardViewModel
 import terverak.play.DiscardZoneView
 import terverak.play.Hand
@@ -30,11 +31,15 @@ final case class HandViewModel(
     def rec(cards: List[HandCard], index: Int): List[CardViewModel] = {
       cards match {
         case Nil => List.empty
-        case _ :: tail => CardViewModel(
+        case head :: tail => 
+          val posX = position.x + (HandViewModel.CardSpacing * index) + HandViewModel.OffsetX
+          val posY = position.y + HandViewModel.OffsetY
+          CardViewModel(
           Point(
-            position.x + (HandViewModel.CardSpacing * index) + HandViewModel.OffsetX,
-            position.y + HandViewModel.OffsetY
-          ), isRevealed = isRevealed) :: rec(tail, index + 1)
+            posX,
+            posY
+          ),
+          isRevealed = isRevealed).initHitArea(head.card) :: rec(tail, index + 1)
       }
     }
     copy(cardsViewModel = rec(hand.cards, 0))
@@ -49,29 +54,8 @@ final case class HandViewModel(
     */
   def moveUniqueCard(hand: Hand, card: HandCard, newPos: Point): HandViewModel = {
     val index = hand.cards.indexOf(card)
-    val cardViewModel = CardViewModel(newPos, isRevealed = isRevealed, isDragged = true)
+    val cardViewModel = CardViewModel(newPos, HitArea(Rectangle(newPos, CardViewModel.CardSize)), isRevealed = isRevealed, isDragged = true)
     copy(cardsViewModel = cardsViewModel.updated(index, cardViewModel))
-  }
-
-  /**
-    * Shows the description of a card.
-    * @param hand the hand
-    * @param card the card
-    * @return the updated hand view model
-    */
-  def showDescription(hand: Hand, card: HandCard): HandViewModel = {
-    val index = hand.cards.indexOf(card)
-    val cardViewModel = cardsViewModel(index)
-    copy(cardsViewModel = cardsViewModel.updated(index, cardViewModel))
-  }
-
-  /**
-    * Clears the description of cards.
-    * @param hand the hand
-    * @return the updated hand view model
-    */
-  def clearDescription(hand: Hand): HandViewModel = {
-    copy(cardsViewModel = cardsViewModel)
   }
 
   /**
@@ -87,6 +71,20 @@ final case class HandViewModel(
     }
   }
   
+    /**
+    * Updates the hit area of the cards.
+    * @param mouse the mouse
+    * @return the updated hand view model
+    */
+  def updateHitArea(mouse: Mouse): Outcome[HandViewModel] = {
+    cardsViewModel.zipWithIndex.foldLeft(Outcome(this))((viewModel, cardViewModelWithIndex) =>
+      viewModel.flatMap(vm =>
+        cardViewModelWithIndex._1.updateHitArea(mouse).map(newCardViewModel =>
+          vm.copy(cardsViewModel = vm.cardsViewModel.updated(cardViewModelWithIndex._2, newCardViewModel)
+        )
+      )
+    ))
+  }
 }
 
 object HandViewModel {

@@ -7,6 +7,7 @@
 package terverak.play
 
 import indigo.*
+import indigoextras.ui.*
 import terverak.play.DiscardZoneView
 import terverak.play.IdObject.*
 import terverak.play.MinionBoard
@@ -41,11 +42,11 @@ final case class MinionBoardViewModel(
     def rec(minions: List[MinionWithId], index: Int): List[MinionViewModel] = {
       minions match {
         case Nil => List.empty
-        case _ :: tail => MinionViewModel(
+        case head :: tail => MinionViewModel(
           Point(
             position.x + (MinionBoardViewModel.MinionSpacing * index) + MinionBoardViewModel.OffsetX,
             position.y + MinionBoardViewModel.OffsetY
-          )) :: rec(tail, index + 1)
+          )).initHitArea(head.minion.card) :: rec(tail, index + 1)
       }  
     }
     copy(minionsViewModel = rec(minionBoard.minions, 0))
@@ -62,32 +63,10 @@ final case class MinionBoardViewModel(
     val index = minionBoard.minions.indexOf(boardMinion)
     val minionViewModel = MinionViewModel(
       newPos,
+      HitArea(Rectangle(newPos, MinionViewModel.MinionSize)),
       isDragged = true,
     )
     copy(minionsViewModel = minionsViewModel.updated(index, minionViewModel))
-
-  /**
-    * Show the description of a minion.
-    * @param minionBoard the minion board
-    * @param minion the minion
-    * @return
-    */
-  def showDescription(minionBoard: MinionBoard, minion: MinionWithId): MinionBoardViewModel =
-    val index = minionBoard.minions.indexOf(minion)
-    if index < 0 then
-      this
-    else
-      val minionViewModel = minionsViewModel(index).copy(isDescriptionShown = true)
-      copy(minionsViewModel = minionsViewModel.updated(index, minionViewModel))
-
-  /**
-    * Clear the description of all minions.
-    * @param minionBoard the minion board
-    * @return
-    */
-  def clearDescription(minionBoard: MinionBoard): MinionBoardViewModel =
-    val newMinionsViewModel = minionsViewModel.map(_.copy(isDescriptionShown = false))
-    copy(minionsViewModel = newMinionsViewModel)
 
   /**
     * Check if the mouse is over a minion.
@@ -99,6 +78,21 @@ final case class MinionBoardViewModel(
       case Some(_, minion) => Some(minion)
       case None => None
     }
+  }
+
+  /**
+    * Updates the hit area of the minions.
+    * @param mouse the mouse
+    * @return the updated minion board view model
+    */
+  def updateHitArea(mouse: Mouse): Outcome[MinionBoardViewModel] = {
+    minionsViewModel.zipWithIndex.foldLeft(Outcome(this))((viewModel, minionViewModelWithIndex) =>
+      viewModel.flatMap(vm =>
+        minionViewModelWithIndex._1.updateHitArea(mouse).map(newCardViewModel =>
+          vm.copy(minionsViewModel = vm.minionsViewModel.updated(minionViewModelWithIndex._2, newCardViewModel)
+        )
+      )
+    ))
   }
 
 }
