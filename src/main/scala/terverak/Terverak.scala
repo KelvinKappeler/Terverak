@@ -9,6 +9,7 @@ package terverak
 import indigo.*
 import indigo.scenes.*
 import terverak.assets.*
+import terverak.scenes.chooseDeck.*
 import terverak.scenes.deckCollection.*
 import terverak.scenes.menu.*
 import terverak.scenes.play.*
@@ -27,7 +28,7 @@ object Terverak extends IndigoGame[Unit, Unit, TerverakModel, TerverakViewModel]
     Option(MenuScene.name)
 
   def scenes(bootData: Unit): NonEmptyList[Scene[Unit, TerverakModel, TerverakViewModel]] =
-    NonEmptyList(MenuScene, PlayScene, DeckCollectionScene)
+    NonEmptyList(MenuScene, PlayScene, DeckCollectionScene, ChooseDeckScene)
 
   val eventFilters: EventFilters =
     EventFilters.Permissive

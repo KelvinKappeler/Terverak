@@ -1,39 +1,37 @@
 // =======================================
-// Terverak -> MenuScene.scala
+// Terverak -> ChooseDeckScene.scala
 // Kelvin Kappeler & Bastien Jolidon
 // Bachelor Project EPFL, 2023
 // =======================================
   
-package terverak.scenes.menu
+package terverak.scenes.chooseDeck
 
 import indigo.*
 import indigo.scenes.*
 import terverak.TerverakModel
 import terverak.TerverakViewModel
 import terverak.assets.*
-import terverak.scenes.chooseDeck.*
-import terverak.scenes.play.*
 
 /**
-  * The main menu scene.
+  * The choose deck scene.
   */
-object MenuScene extends Scene[Unit, TerverakModel, TerverakViewModel]:
+object ChooseDeckScene extends Scene[Unit, TerverakModel, TerverakViewModel]:
 
-  type SceneModel = MenuSceneModel
-  type SceneViewModel = MenuSceneViewModel
+  type SceneModel = ChooseDeckSceneModel
+  type SceneViewModel = ChooseDeckSceneViewModel
 
-  val name: SceneName = SceneName("Main Menu")
+  val name: SceneName = SceneName("Choose Deck")
 
   val modelLens: Lens[TerverakModel, SceneModel] =
     Lens(
-      model => model.menuSceneModel,
-      (model, updatedModel) => model.copy(menuSceneModel = updatedModel)
+      model => model.chooseDeckSceneModel,
+      (model, updatedModel) => model.copy(chooseDeckSceneModel = updatedModel)
     )
 
   val viewModelLens: Lens[TerverakViewModel, SceneViewModel] =
     Lens(
-      viewmodel => viewmodel.menuSceneViewModel,
-      (viewmodel, updatedViewModel) => viewmodel.copy(menuSceneViewModel = updatedViewModel)
+      viewmodel => viewmodel.chooseDeckSceneViewModel,
+      (viewmodel, updatedViewModel) => viewmodel.copy(chooseDeckSceneViewModel = updatedViewModel)
     )
 
   val eventFilters: EventFilters =
@@ -60,5 +58,5 @@ object MenuScene extends Scene[Unit, TerverakModel, TerverakViewModel]:
       model: SceneModel,
       viewModel: SceneViewModel
   ): Outcome[SceneUpdateFragment] =
-    MenuSceneView.updateView(context, model, viewModel)
+    ChooseDeckSceneView.updateView(context, model, viewModel)
   

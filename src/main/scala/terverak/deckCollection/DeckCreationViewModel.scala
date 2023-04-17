@@ -29,6 +29,7 @@ final case class DeckCreationViewModel(
       )
     )
   }
+  
 }
 
 object DeckCreationViewModel {

@@ -9,6 +9,7 @@ package terverak
 import indigo.*
 import indigo.scenes.*
 import terverak.scenes.*
+import terverak.scenes.chooseDeck.*
 import terverak.scenes.deckCollection.*
 import terverak.scenes.menu.*
 import terverak.scenes.play.*
@@ -23,12 +24,18 @@ final case class TerverakModel(
     */
   playSceneModel: PlaySceneModel,
   menuSceneModel: MenuSceneModel,
-  deckCollectionSceneModel: DeckCollectionSceneModel
+  deckCollectionSceneModel: DeckCollectionSceneModel,
+  chooseDeckSceneModel: ChooseDeckSceneModel
 )
 
 /**
   * Object containing the initial game model.
   */
 object TerverakModel {
-  val initial: TerverakModel = TerverakModel(PlaySceneModel.initial, MenuSceneModel.initial, DeckCollectionSceneModel.initial)
+  val initial: TerverakModel = TerverakModel(
+    PlaySceneModel.initial,
+    MenuSceneModel.initial,
+    DeckCollectionSceneModel.initial,
+    ChooseDeckSceneModel.initial
+  )
 }

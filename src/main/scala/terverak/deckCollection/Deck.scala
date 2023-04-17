@@ -8,8 +8,6 @@ package terverak.deckCollection
 
 import terverak.card.*
 
-import scala.util.Random
-
 /**
   * A deck of cards.
   */
