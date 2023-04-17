@@ -35,6 +35,16 @@ object DeckCollectionEvents {
   final case class PreviousPage() extends GlobalEvent
 
   /**
+    * Event to go to the next deck.
+    */
+  final case class NextDeck() extends GlobalEvent
+
+  /**
+    * Event to go to the previous deck.
+    */
+  final case class PreviousDeck() extends GlobalEvent
+
+  /**
     * Event to sort the cards.
     * @param sorter the sorter
     */

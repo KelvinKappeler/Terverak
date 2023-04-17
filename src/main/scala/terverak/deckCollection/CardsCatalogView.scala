@@ -38,7 +38,7 @@ object CardsCatalogView {
       }
 
     val buttonsBatch =
-      (viewModel.buttons/* ::: viewModel.cardsButtons*/).foldLeft(Batch.empty[SceneNode]) { case (batch, button) =>
+      (viewModel.buttons).foldLeft(Batch.empty[SceneNode]) { case (batch, button) =>
         batch ++ Batch(button.draw)
       }
 

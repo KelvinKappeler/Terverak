@@ -25,7 +25,9 @@ final case class DeckCollectionSceneViewModel(cardsCatalogViewModel: CardsCatalo
     case MouseEvent.Move(_) =>
       cardsCatalogViewModel.updateHitArea(context.inputState.mouse).map(catalog => copy(cardsCatalogViewModel = catalog))
     case FrameTick =>
-      cardsCatalogViewModel.updateButtons(context.inputState.mouse).map(catalog => copy(cardsCatalogViewModel = catalog))
+      val o1 = cardsCatalogViewModel.updateButtons(context.inputState.mouse).map(catalog => copy(cardsCatalogViewModel = catalog))
+      val o2 = deckCreationViewModel.updateButtons(context.inputState.mouse).map(deck => copy(deckCreationViewModel = deck))
+      o1.flatMap(_ => o2)
     case DeckCollectionEvents.NextPage() =>
       Outcome(copy(cardsCatalogViewModel = cardsCatalogViewModel.nextPage(model.cardsCatalog)))
     case DeckCollectionEvents.PreviousPage() =>
