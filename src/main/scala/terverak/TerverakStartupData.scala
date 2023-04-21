@@ -9,7 +9,6 @@ package terverak
 import terverak.deckCollection.User
 
 /**
-  * The boot data of the game.
-  * @param user the user
+  * The startup data of the game.
   */
-final case class TerverakStartupData(user: User)
+final case class TerverakStartupData()

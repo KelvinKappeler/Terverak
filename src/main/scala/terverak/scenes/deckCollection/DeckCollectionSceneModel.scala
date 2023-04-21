@@ -27,7 +27,7 @@ final case class DeckCollectionSceneModel(cardsCatalog: CardsCatalog, deckCreati
       Outcome(this).addGlobalEvents(
         SceneEvent.JumpTo(MenuScene.name),
         TerverakEvents.OnChangeSceneForUser(deckCreation.user),
-        StorageEvent.Save(User.InitialKey, deckCreation.user.formatForSaving().asJson.toString))
+        StorageEvent.Save(User.InitialKey, User.formatForSaving(deckCreation.user).asJson.toString))
     case DeckCollectionEvents.AddCardToCurrentDeck(card) =>
       Outcome(copy(deckCreation = deckCreation.addCardToCurrentDeck(card)))
     case DeckCollectionEvents.RemoveCardToCurrentDeck(card) =>

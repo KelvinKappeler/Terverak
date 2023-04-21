@@ -54,7 +54,7 @@ object Terverak extends IndigoGame[Unit, TerverakStartupData, TerverakModel, Ter
       assetCollection: AssetCollection,
       dice: Dice
   ): Outcome[Startup[TerverakStartupData]] =
-    Outcome(Startup.Success(TerverakStartupData(User.initial)))
+    Outcome(Startup.Success(TerverakStartupData()))
 
   def updateModel(
       context: FrameContext[TerverakStartupData],
