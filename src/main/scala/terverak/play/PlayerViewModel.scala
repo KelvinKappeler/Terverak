@@ -31,7 +31,15 @@ final case class PlayerViewModel(position: Point, handViewModel: HandViewModel, 
 object PlayerViewModel {
   val HeroSize = Size(72, 72)
 
-  val initialCurrentPlayer: PlayerViewModel = PlayerViewModel(Point(HandViewModel.HandSize.width, HandViewModel.HandSize.height + MinionBoardViewModel.MinionBoardSize.height), HandViewModel.initialCurrentPlayerHand, MinionBoardViewModel.initialCurrentPlayerMinionBoard, DiscardZoneViewModel.initialCurrentPlayerDiscardZone)
-  val initialWaitingPlayer: PlayerViewModel = PlayerViewModel(Point(HandViewModel.HandSize.width, HandViewModel.HandSize.height), HandViewModel.initialWaitingPlayerHand, MinionBoardViewModel.initialWaitingPlayerMinionBoard, DiscardZoneViewModel.initialWaitingPlayerDiscardZone)
+  val initialCurrentPlayer: PlayerViewModel = PlayerViewModel(
+    Point(HandViewModel.HandSize.width, HandViewModel.HandSize.height + MinionBoardViewModel.MinionBoardSize.height),
+    HandViewModel.initialCurrentPlayerHand,
+    MinionBoardViewModel.initialCurrentPlayerMinionBoard,
+    DiscardZoneViewModel.initialCurrentPlayerDiscardZone)
+  val initialWaitingPlayer: PlayerViewModel = PlayerViewModel(
+    Point(HandViewModel.HandSize.width, HandViewModel.HandSize.height),
+    HandViewModel.initialWaitingPlayerHand,
+    MinionBoardViewModel.initialWaitingPlayerMinionBoard,
+     DiscardZoneViewModel.initialWaitingPlayerDiscardZone)
 
 }

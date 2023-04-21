@@ -12,7 +12,8 @@ import terverak.assets.*
 import terverak.card.*
 
 final case class DeckCreationViewModel(
-  buttons: List[Button] = List.empty
+  buttons: List[Button] = List.empty,
+  position: Point = DeckCreationViewModel.InitialPoint
 ) {
 
   /**
@@ -43,27 +44,27 @@ object DeckCreationViewModel {
       CardsCatalogViewModel.Position.y
     )
 
-  val DefaultButtons: List[Button] = List(
+  def DefaultButtons(position: Point, id: Int): List[Button] = List(
     Button(
       ButtonAssets(
         up = Graphic(0, 0, 15, 13, 2, Material.Bitmap(GameAssets.Buttons.leftArrow)),
         over = Graphic(0, 0, 15, 13, 2, Material.Bitmap(GameAssets.Buttons.leftArrow)),
         down = Graphic(0, 0, 15, 13, 2, Material.Bitmap(GameAssets.Buttons.leftArrow))
       ),
-      Rectangle(InitialPoint.x, CardsCatalogViewModel.PagesButtonsOffsetY, 15, 13),
+      Rectangle(position.x, position.y + DeckCreationViewModel.DefaultHeight + 10, 15, 13),
       Depth(2),
-    ).withUpActions(DeckCollectionEvents.PreviousDeck()),
+    ).withUpActions(DeckCollectionEvents.PreviousDeck(id)),
     Button(
       ButtonAssets(
         up = Graphic(0, 0, 15, 13, 2, Material.Bitmap(GameAssets.Buttons.rightArrow)),
         over = Graphic(0, 0, 15, 13, 2, Material.Bitmap(GameAssets.Buttons.rightArrow)),
         down = Graphic(0, 0, 15, 13, 2, Material.Bitmap(GameAssets.Buttons.rightArrow))
       ),
-      Rectangle(InitialPoint.x + 90, CardsCatalogViewModel.PagesButtonsOffsetY, 15, 13),
+      Rectangle(position.x + 90, position.y + DeckCreationViewModel.DefaultHeight + 10, 15, 13),
       Depth(2),
-    ).withUpActions(DeckCollectionEvents.NextDeck())
+    ).withUpActions(DeckCollectionEvents.NextDeck(id))
   )
 
-  val initial: DeckCreationViewModel = DeckCreationViewModel(buttons = DefaultButtons)
+  val initial: DeckCreationViewModel = DeckCreationViewModel(buttons = DefaultButtons(InitialPoint, 0))
 
 }

@@ -25,9 +25,9 @@ final case class DeckCollectionSceneModel(cardsCatalog: CardsCatalog, deckCreati
       Outcome(copy(deckCreation = deckCreation.addCardToCurrentDeck(card)))
     case DeckCollectionEvents.RemoveCardToCurrentDeck(card) =>
       Outcome(copy(deckCreation = deckCreation.removeCardToCurrentDeck(card)))
-    case DeckCollectionEvents.NextDeck() =>
+    case DeckCollectionEvents.NextDeck(_) =>
       Outcome(copy(deckCreation = deckCreation.nextDeck()))
-    case DeckCollectionEvents.PreviousDeck() =>
+    case DeckCollectionEvents.PreviousDeck(_) =>
       Outcome(copy(deckCreation = deckCreation.previousDeck()))
     case _ => Outcome(this)
   }

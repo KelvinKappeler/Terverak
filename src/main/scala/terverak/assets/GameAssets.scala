@@ -86,6 +86,8 @@ object GameAssets {
     val rightArrow: AssetName = AssetName("rightArrow")
     val leftArrow: AssetName = AssetName("leftArrow")
 
+    val playButton: AssetName = AssetName("playButton")
+
     val assets: Set[AssetType] =
       Set(
         AssetType.Image(alienButton, AssetPath(AssetCardsDirectory + "alien_button.png")),
@@ -99,7 +101,8 @@ object GameAssets {
         AssetType.Image(rightArrow, AssetPath(AssetCardsDirectory + "right_arrow.png")),
         AssetType.Image(leftArrow, AssetPath(AssetCardsDirectory + "left_arrow.png")),
         AssetType.Image(plusButton, AssetPath(AssetCardsDirectory + "plus_button.png")),
-        AssetType.Image(minusButton, AssetPath(AssetCardsDirectory + "minus_button.png"))
+        AssetType.Image(minusButton, AssetPath(AssetCardsDirectory + "minus_button.png")),
+        AssetType.Image(playButton, AssetPath(AssetCardsDirectory + "play_button.png"))
       )
   }
 

@@ -37,12 +37,12 @@ object DeckCollectionEvents {
   /**
     * Event to go to the next deck.
     */
-  final case class NextDeck() extends GlobalEvent
+  final case class NextDeck(id: Int = 0) extends GlobalEvent
 
   /**
     * Event to go to the previous deck.
     */
-  final case class PreviousDeck() extends GlobalEvent
+  final case class PreviousDeck(id: Int = 0) extends GlobalEvent
 
   /**
     * Event to sort the cards.
@@ -55,5 +55,10 @@ object DeckCollectionEvents {
     * @param filter the filter
     */
   final case class FilterCards(filter: (Card) => Boolean) extends GlobalEvent
+
+  /**
+    * Event when the user clicks on the start game button.
+    */
+  final case class OnClickOnStartGame() extends GlobalEvent
   
 }

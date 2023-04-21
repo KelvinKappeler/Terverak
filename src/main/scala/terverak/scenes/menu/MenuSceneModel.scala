@@ -19,7 +19,7 @@ final class MenuSceneModel {
 
   def updateModel(context: SceneContext[Unit]): GlobalEvent => Outcome[MenuSceneModel] = {
     case KeyboardEvent.KeyDown(Key.SPACE) =>
-      Outcome(this).addGlobalEvents(SceneEvent.JumpTo(PlayScene.name))
+      Outcome(this).addGlobalEvents(SceneEvent.JumpTo(ChooseDeckScene.name))
     case KeyboardEvent.KeyDown(Key.KEY_E) =>
       Outcome(this).addGlobalEvents(SceneEvent.JumpTo(DeckCollectionScene.name))
     case _ => Outcome(this)
