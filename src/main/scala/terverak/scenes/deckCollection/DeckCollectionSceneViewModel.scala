@@ -9,6 +9,7 @@ package terverak.scenes.deckCollection
 import indigo.*
 import indigo.scenes.*
 import indigoextras.ui.*
+import terverak.TerverakStartupData
 import terverak.*
 import terverak.assets.GameAssets
 import terverak.card.*
@@ -21,7 +22,7 @@ import terverak.deckCollection.DeckCreationViewModel
   */
 final case class DeckCollectionSceneViewModel(cardsCatalogViewModel: CardsCatalogViewModel, deckCreationViewModel: DeckCreationViewModel, cardDescriptionViewModel: CardDescriptionViewModel) {
 
-  def updateViewModel(context: SceneContext[Unit], model: DeckCollectionSceneModel): GlobalEvent => Outcome[DeckCollectionSceneViewModel] = {
+  def updateViewModel(context: SceneContext[TerverakStartupData], model: DeckCollectionSceneModel): GlobalEvent => Outcome[DeckCollectionSceneViewModel] = {
     case FrameTick =>
       val o1 = cardsCatalogViewModel.updateButtons(context.inputState.mouse).map(catalog => copy(cardsCatalogViewModel = catalog))
       val o2 = deckCreationViewModel.updateButtons(context.inputState.mouse).map(deck => copy(deckCreationViewModel = deck))

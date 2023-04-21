@@ -52,6 +52,20 @@ final case class Deck(cardsWithQuantity: Map[Card, Int]) {
   }
 
   /**
+    * Add a card to the deck.
+    * @param cardName the name of the card to add.
+    * @return the new deck, or the same deck if the card is already in the deck twice, or if the deck is full, or if the card does not exist.
+    */
+  def addCard(cardName: String): Deck = {
+    val card = CardsData.cards.find(card => card.name == cardName)
+    if (card.isDefined) {
+      addCard(card.get)
+    } else {
+      this
+    }
+  }
+
+  /**
     * Remove a card to the deck.
     * @param card the card to remove.
     * @return the new deck, or the same deck if the card is not in the deck.
@@ -76,6 +90,20 @@ final case class Deck(cardsWithQuantity: Map[Card, Int]) {
 }
 
 object Deck {
+  /**
+    * Return the deck into a list of card name
+    * @return the deck into a list of card name
+    */
+  def formatForSaving(deck: Deck): List[String] = deck.cards().map(card => card.name)
+
+  /**
+    * Return a list of card into a deck
+    * @param cards the list of card
+    * @return a deck
+    */
+  def formatForLoading(cards: List[String]): Deck =
+    cards.foldLeft(Deck(Map()))((deck, card) => deck.addCard(card))
+
   // Choose a random card from CardsData
   val initial: Deck = Deck(
     Map(

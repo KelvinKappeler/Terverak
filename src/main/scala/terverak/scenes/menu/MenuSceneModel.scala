@@ -9,6 +9,7 @@ package terverak.scenes.menu
 import indigo.*
 import indigo.scenes.*
 import terverak.TerverakEvents
+import terverak.TerverakStartupData
 import terverak.deckCollection.*
 import terverak.scenes.chooseDeck.*
 import terverak.scenes.deckCollection.*
@@ -19,7 +20,7 @@ import terverak.scenes.play.*
   */
 final case class MenuSceneModel(user: User) {
 
-  def updateModel(context: SceneContext[Unit]): GlobalEvent => Outcome[MenuSceneModel] = {
+  def updateModel(context: SceneContext[TerverakStartupData]): GlobalEvent => Outcome[MenuSceneModel] = {
     case KeyboardEvent.KeyDown(Key.SPACE) =>
       Outcome(this).addGlobalEvents(SceneEvent.JumpTo(ChooseDeckScene.name), TerverakEvents.OnChangeSceneForUser(user))
     case KeyboardEvent.KeyDown(Key.KEY_E) =>

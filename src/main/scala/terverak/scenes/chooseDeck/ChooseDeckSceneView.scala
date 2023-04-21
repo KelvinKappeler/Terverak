@@ -8,6 +8,7 @@ package terverak.scenes.chooseDeck
 
 import indigo.*
 import indigo.scenes.*
+import terverak.TerverakStartupData
 import terverak.assets.*
 import terverak.deckCollection.DeckCreationView
 import terverak.utils.TerverakText
@@ -17,7 +18,7 @@ import terverak.utils.TerverakText
   */
 object ChooseDeckSceneView {
   
-  def updateView(context: SceneContext[Unit], model: ChooseDeckSceneModel, viewModel: ChooseDeckSceneViewModel): Outcome[SceneUpdateFragment] = {
+  def updateView(context: SceneContext[TerverakStartupData], model: ChooseDeckSceneModel, viewModel: ChooseDeckSceneViewModel): Outcome[SceneUpdateFragment] = {
     Outcome(
       SceneUpdateFragment.empty.addLayer(
         Layer(BindingKey("ChooseDeckLayer"),

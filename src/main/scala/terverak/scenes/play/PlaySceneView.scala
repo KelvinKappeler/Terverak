@@ -8,6 +8,7 @@ package terverak.scenes.play
 
 import indigo.*
 import indigo.scenes.*
+import terverak.TerverakStartupData
 import terverak.assets.*
 import terverak.card.CardDescriptionView
 import terverak.deckCollection.DeckCreationViewModel
@@ -20,7 +21,7 @@ import terverak.play.PlayerViewModel
   */
 object PlaySceneView {
 
-  def updateView(context: SceneContext[Unit], model: PlaySceneModel, viewModel: PlaySceneViewModel): Outcome[SceneUpdateFragment] =
+  def updateView(context: SceneContext[TerverakStartupData], model: PlaySceneModel, viewModel: PlaySceneViewModel): Outcome[SceneUpdateFragment] =
     Outcome(
       SceneUpdateFragment.empty.addLayer(
         Layer(BindingKey("game"),

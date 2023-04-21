@@ -9,6 +9,7 @@ package terverak.scenes.menu
 import indigo.*
 import indigo.scenes.*
 import terverak.TerverakModel
+import terverak.TerverakStartupData
 import terverak.TerverakViewModel
 import terverak.assets.*
 import terverak.scenes.chooseDeck.*
@@ -17,7 +18,7 @@ import terverak.scenes.play.*
 /**
   * The main menu scene.
   */
-object MenuScene extends Scene[Unit, TerverakModel, TerverakViewModel]:
+object MenuScene extends Scene[TerverakStartupData, TerverakModel, TerverakViewModel]:
 
   type SceneModel = MenuSceneModel
   type SceneViewModel = MenuSceneViewModel
@@ -43,20 +44,20 @@ object MenuScene extends Scene[Unit, TerverakModel, TerverakViewModel]:
     Set()
 
   def updateModel(
-      context: SceneContext[Unit],
+      context: SceneContext[TerverakStartupData],
       model: SceneModel
   ): GlobalEvent => Outcome[SceneModel] =
     model.updateModel(context)
 
   def updateViewModel(
-      context: SceneContext[Unit],
+      context: SceneContext[TerverakStartupData],
       model: SceneModel,
       viewModel: SceneViewModel
   ): GlobalEvent => Outcome[SceneViewModel] =
     viewModel.updateViewModel(context, model)
 
   def present(
-      context: SceneContext[Unit],
+      context: SceneContext[TerverakStartupData],
       model: SceneModel,
       viewModel: SceneViewModel
   ): Outcome[SceneUpdateFragment] =

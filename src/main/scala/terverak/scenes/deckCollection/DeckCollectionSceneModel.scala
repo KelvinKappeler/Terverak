@@ -8,10 +8,13 @@ package terverak.scenes.deckCollection
 
 import indigo.*
 import indigo.scenes.*
+import io.circe.syntax._
 import terverak.TerverakEvents
+import terverak.TerverakStartupData
 import terverak.deckCollection.CardsCatalog
 import terverak.deckCollection.DeckCollectionEvents
 import terverak.deckCollection.DeckCreation
+import terverak.deckCollection.*
 import terverak.scenes.menu.*
 
 /**
@@ -19,9 +22,12 @@ import terverak.scenes.menu.*
   */
 final case class DeckCollectionSceneModel(cardsCatalog: CardsCatalog, deckCreation: DeckCreation) {
 
-  def updateModel(context: SceneContext[Unit]): GlobalEvent => Outcome[DeckCollectionSceneModel] = {
+  def updateModel(context: SceneContext[TerverakStartupData]): GlobalEvent => Outcome[DeckCollectionSceneModel] = {
     case KeyboardEvent.KeyDown(Key.ESCAPE) =>
-      Outcome(this).addGlobalEvents(SceneEvent.JumpTo(MenuScene.name), TerverakEvents.OnChangeSceneForUser(deckCreation.user))
+      Outcome(this).addGlobalEvents(
+        SceneEvent.JumpTo(MenuScene.name),
+        TerverakEvents.OnChangeSceneForUser(deckCreation.user),
+        StorageEvent.Save(User.InitialKey, deckCreation.user.formatForSaving().asJson.toString))
     case DeckCollectionEvents.AddCardToCurrentDeck(card) =>
       Outcome(copy(deckCreation = deckCreation.addCardToCurrentDeck(card)))
     case DeckCollectionEvents.RemoveCardToCurrentDeck(card) =>

@@ -8,6 +8,7 @@ package terverak.scenes.deckCollection
 
 import indigo.*
 import indigo.scenes.*
+import terverak.TerverakStartupData
 import terverak.assets.*
 import terverak.card.CardDescriptionView
 import terverak.deckCollection.CardsCatalogView
@@ -21,7 +22,7 @@ import terverak.utils.*
   */
 object DeckCollectionSceneView {
   
-  def updateView(context: SceneContext[Unit], model: DeckCollectionSceneModel, viewModel: DeckCollectionSceneViewModel): Outcome[SceneUpdateFragment] = {
+  def updateView(context: SceneContext[TerverakStartupData], model: DeckCollectionSceneModel, viewModel: DeckCollectionSceneViewModel): Outcome[SceneUpdateFragment] = {
     Outcome(
       SceneUpdateFragment(
         Layer(BindingKey("DeckCollectionLayer"),

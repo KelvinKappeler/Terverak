@@ -8,6 +8,7 @@ package terverak.scenes.menu
 
 import indigo.*
 import indigo.scenes.*
+import terverak.TerverakStartupData
 import terverak.assets.*
 import terverak.utils.TerverakText
 
@@ -16,7 +17,7 @@ import terverak.utils.TerverakText
   */
 object MenuSceneView {
   
-  def updateView(context: SceneContext[Unit], model: MenuSceneModel, viewModel: MenuSceneViewModel): Outcome[SceneUpdateFragment] = {
+  def updateView(context: SceneContext[TerverakStartupData], model: MenuSceneModel, viewModel: MenuSceneViewModel): Outcome[SceneUpdateFragment] = {
     Outcome(
       SceneUpdateFragment.empty.addLayer(
         Layer(BindingKey("MainMenuLayer"),

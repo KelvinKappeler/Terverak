@@ -9,13 +9,14 @@ package terverak.scenes.chooseDeck
 import indigo.*
 import indigo.scenes.*
 import terverak.TerverakModel
+import terverak.TerverakStartupData
 import terverak.TerverakViewModel
 import terverak.assets.*
 
 /**
   * The choose deck scene.
   */
-object ChooseDeckScene extends Scene[Unit, TerverakModel, TerverakViewModel]:
+object ChooseDeckScene extends Scene[TerverakStartupData, TerverakModel, TerverakViewModel]:
 
   type SceneModel = ChooseDeckSceneModel
   type SceneViewModel = ChooseDeckSceneViewModel
@@ -41,20 +42,20 @@ object ChooseDeckScene extends Scene[Unit, TerverakModel, TerverakViewModel]:
     Set()
 
   def updateModel(
-      context: SceneContext[Unit],
+      context: SceneContext[TerverakStartupData],
       model: SceneModel
   ): GlobalEvent => Outcome[SceneModel] =
     model.updateModel(context)
 
   def updateViewModel(
-      context: SceneContext[Unit],
+      context: SceneContext[TerverakStartupData],
       model: SceneModel,
       viewModel: SceneViewModel
   ): GlobalEvent => Outcome[SceneViewModel] =
     viewModel.updateViewModel(context, model)
 
   def present(
-      context: SceneContext[Unit],
+      context: SceneContext[TerverakStartupData],
       model: SceneModel,
       viewModel: SceneViewModel
   ): Outcome[SceneUpdateFragment] =

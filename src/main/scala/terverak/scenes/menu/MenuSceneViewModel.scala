@@ -8,13 +8,14 @@ package terverak.scenes.menu
 
 import indigo.*
 import indigo.scenes.*
+import terverak.TerverakStartupData
 
 /**
   * The viewmodel of the menu scene.
   */
 final case class MenuSceneViewModel() {
 
-  def updateViewModel(context: SceneContext[Unit], model: MenuSceneModel): GlobalEvent => Outcome[MenuSceneViewModel] =
+  def updateViewModel(context: SceneContext[TerverakStartupData], model: MenuSceneModel): GlobalEvent => Outcome[MenuSceneViewModel] =
     _ => Outcome(this)
 
 }

@@ -9,6 +9,7 @@ package terverak
 import indigo.*
 import indigo.scenes.*
 import terverak.assets.*
+import terverak.deckCollection.*
 import terverak.scenes.chooseDeck.*
 import terverak.scenes.deckCollection.*
 import terverak.scenes.menu.*
@@ -20,14 +21,14 @@ import scala.scalajs.js.annotation.JSExportTopLevel
   * The main class of the game.
   */
 @JSExportTopLevel("IndigoGame")
-object Terverak extends IndigoGame[Unit, Unit, TerverakModel, TerverakViewModel]:
+object Terverak extends IndigoGame[Unit, TerverakStartupData, TerverakModel, TerverakViewModel]:
 
   private val Magnification = 2
 
   def initialScene(bootData: Unit): Option[SceneName] =
     Option(MenuScene.name)
 
-  def scenes(bootData: Unit): NonEmptyList[Scene[Unit, TerverakModel, TerverakViewModel]] =
+  def scenes(bootData: Unit): NonEmptyList[Scene[TerverakStartupData, TerverakModel, TerverakViewModel]] =
     NonEmptyList(MenuScene, PlayScene, DeckCollectionScene, ChooseDeckScene)
 
   val eventFilters: EventFilters =
@@ -37,39 +38,39 @@ object Terverak extends IndigoGame[Unit, Unit, TerverakModel, TerverakViewModel]
     Outcome {
       val assetPath: String = flags.getOrElse("baseUrl", "")
 
-      BootResult.noData(
-        GameConfig.default.withViewport(550, 400).withMagnification(Magnification)
-      ).withAssets(GameAssets.assets).withFonts(GameAssets.Fonts.fontInfo16, GameAssets.Fonts.fontInfo8)
+      BootResult.noData(GameConfig.default.withViewport(550, 400).withMagnification(Magnification))
+        .withAssets(GameAssets.assets)
+        .withFonts(GameAssets.Fonts.fontInfo16, GameAssets.Fonts.fontInfo8)
     }
 
-  def initialModel(startupData: Unit): Outcome[TerverakModel] =
+  def initialModel(startupData: TerverakStartupData): Outcome[TerverakModel] =
     Outcome(TerverakModel.initial)
 
-  def initialViewModel(startupData: Unit, model: TerverakModel): Outcome[TerverakViewModel] =
+  def initialViewModel(startupData: TerverakStartupData, model: TerverakModel): Outcome[TerverakViewModel] =
     Outcome(TerverakViewModel.initial)
 
   def setup(
       bootData: Unit,
       assetCollection: AssetCollection,
       dice: Dice
-  ): Outcome[Startup[Unit]] =
-    Outcome(Startup.Success(()))
+  ): Outcome[Startup[TerverakStartupData]] =
+    Outcome(Startup.Success(TerverakStartupData(User.initial)))
 
   def updateModel(
-      context: FrameContext[Unit],
+      context: FrameContext[TerverakStartupData],
       model: TerverakModel
   ): GlobalEvent => Outcome[TerverakModel] =
     _ => Outcome(model)
 
   def updateViewModel(
-      context: FrameContext[Unit],
+      context: FrameContext[TerverakStartupData],
       model: TerverakModel,
       viewModel: TerverakViewModel
   ): GlobalEvent => Outcome[TerverakViewModel] =
     _ => Outcome(viewModel)
 
   def present(
-      context: FrameContext[Unit],
+      context: FrameContext[TerverakStartupData],
       model: TerverakModel,
       viewModel: TerverakViewModel
   ): Outcome[SceneUpdateFragment] =

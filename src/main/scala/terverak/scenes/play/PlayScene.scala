@@ -9,6 +9,7 @@ package terverak.scenes.play
 import indigo.*
 import indigo.scenes.*
 import terverak.TerverakModel
+import terverak.TerverakStartupData
 import terverak.TerverakViewModel
 import terverak.assets.*
 import terverak.scenes.play.*
@@ -16,7 +17,7 @@ import terverak.scenes.play.*
 /**
   * The play scene.
   */
-object PlayScene extends Scene[Unit, TerverakModel, TerverakViewModel]:
+object PlayScene extends Scene[TerverakStartupData, TerverakModel, TerverakViewModel]:
 
   type SceneModel = PlaySceneModel
   type SceneViewModel = PlaySceneViewModel
@@ -42,20 +43,20 @@ object PlayScene extends Scene[Unit, TerverakModel, TerverakViewModel]:
     Set()
 
   def updateModel(
-      context: SceneContext[Unit],
+      context: SceneContext[TerverakStartupData],
       model: SceneModel
   ): GlobalEvent => Outcome[SceneModel] =
     model.updateModel(context)
 
   def updateViewModel(
-      context: SceneContext[Unit],
+      context: SceneContext[TerverakStartupData],
       model: SceneModel,
       viewModel: SceneViewModel
   ): GlobalEvent => Outcome[SceneViewModel] =
     viewModel.updateViewModel(context, model)
 
   def present(
-      context: SceneContext[Unit],
+      context: SceneContext[TerverakStartupData],
       model: SceneModel,
       viewModel: SceneViewModel
   ): Outcome[SceneUpdateFragment] =

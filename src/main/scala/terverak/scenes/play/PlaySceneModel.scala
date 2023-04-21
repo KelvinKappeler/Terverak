@@ -8,6 +8,7 @@ package terverak.scenes.play
 
 import indigo.*
 import indigo.scenes.*
+import terverak.TerverakStartupData
 import terverak.assets.*
 import terverak.card.CardsData
 import terverak.play.*
@@ -17,7 +18,7 @@ import terverak.play.*
   */
 final case class PlaySceneModel(currentGame: Game) {
 
-  def updateModel(context: SceneContext[Unit]): GlobalEvent => Outcome[PlaySceneModel] =
+  def updateModel(context: SceneContext[TerverakStartupData]): GlobalEvent => Outcome[PlaySceneModel] =
     case PlayEvents.OnStartGame(deck1, deck2) =>
       val newCurrentDeckZone = currentGame.currentPlayer.deck.copy(cards = deck1.cards()).shuffle()
       val newWaitingDeckZone = currentGame.waitingPlayer.deck.copy(cards = deck2.cards()).shuffle()

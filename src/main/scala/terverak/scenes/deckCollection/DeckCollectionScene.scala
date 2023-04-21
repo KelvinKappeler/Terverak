@@ -9,13 +9,14 @@ package terverak.scenes.deckCollection
 import indigo.*
 import indigo.scenes.*
 import terverak.TerverakModel
+import terverak.TerverakStartupData
 import terverak.TerverakViewModel
 import terverak.assets.*
 
 /**
   * The deck collection scene. It allows the user to create and edit decks.
   */
-object DeckCollectionScene extends Scene[Unit, TerverakModel, TerverakViewModel]:
+object DeckCollectionScene extends Scene[TerverakStartupData, TerverakModel, TerverakViewModel]:
 
   type SceneModel = DeckCollectionSceneModel
   type SceneViewModel = DeckCollectionSceneViewModel
@@ -41,20 +42,20 @@ object DeckCollectionScene extends Scene[Unit, TerverakModel, TerverakViewModel]
     Set()
 
   def updateModel(
-      context: SceneContext[Unit],
+      context: SceneContext[TerverakStartupData],
       model: SceneModel
   ): GlobalEvent => Outcome[SceneModel] =
     model.updateModel(context)
 
   def updateViewModel(
-      context: SceneContext[Unit],
+      context: SceneContext[TerverakStartupData],
       model: SceneModel,
       viewModel: SceneViewModel
   ): GlobalEvent => Outcome[SceneViewModel] =
     viewModel.updateViewModel(context, model)
 
   def present(
-      context: SceneContext[Unit],
+      context: SceneContext[TerverakStartupData],
       model: SceneModel,
       viewModel: SceneViewModel
   ): Outcome[SceneUpdateFragment] =

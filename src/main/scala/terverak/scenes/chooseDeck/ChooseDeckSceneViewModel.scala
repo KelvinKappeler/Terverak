@@ -10,6 +10,7 @@ import indigo.*
 import indigo.scenes.*
 import indigoextras.ui.*
 import terverak.TerverakEvents
+import terverak.TerverakStartupData
 import terverak.assets.*
 import terverak.deckCollection.*
 import terverak.scenes.deckCollection.*
@@ -19,7 +20,7 @@ import terverak.scenes.deckCollection.*
   */
 final case class ChooseDeckSceneViewModel(buttonPlay: Button, deckCreationViewModel1: DeckCreationViewModel, deckCreationViewModel2: DeckCreationViewModel) {
 
-  def updateViewModel(context: SceneContext[Unit], model: ChooseDeckSceneModel): GlobalEvent => Outcome[ChooseDeckSceneViewModel] =
+  def updateViewModel(context: SceneContext[TerverakStartupData], model: ChooseDeckSceneModel): GlobalEvent => Outcome[ChooseDeckSceneViewModel] =
     case FrameTick =>
       val o1 = deckCreationViewModel1.updateButtons(context.inputState.mouse).map(deck => copy(deckCreationViewModel1 = deck))
       val o2 = deckCreationViewModel2.updateButtons(context.inputState.mouse).map(deck => copy(deckCreationViewModel2 = deck))

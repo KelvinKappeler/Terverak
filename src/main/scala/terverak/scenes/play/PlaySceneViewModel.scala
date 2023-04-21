@@ -9,6 +9,7 @@ package terverak.scenes.play
 import indigo.*
 import indigo.scenes.*
 import terverak.TerverakEvents
+import terverak.TerverakStartupData
 import terverak.assets.*
 import terverak.card.CardDescriptionViewModel
 import terverak.card.CardViewModel
@@ -21,7 +22,7 @@ import terverak.play.PlayEvents
   */
 final case class PlaySceneViewModel(gameViewModel: GameViewModel,  cardDescriptionViewModel: CardDescriptionViewModel) {
 
-  def updateViewModel(context: SceneContext[Unit], model: PlaySceneModel): GlobalEvent => Outcome[PlaySceneViewModel] =
+  def updateViewModel(context: SceneContext[TerverakStartupData], model: PlaySceneModel): GlobalEvent => Outcome[PlaySceneViewModel] =
     case PlayEvents.HandChanged(isCurrentPlayer, hand) =>
       if (isCurrentPlayer) {
         val newCurrentPlayerHand = gameViewModel.currentPlayerViewModel.handViewModel.updateCardsPosition(hand)
