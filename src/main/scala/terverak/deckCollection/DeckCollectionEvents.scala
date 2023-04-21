@@ -55,10 +55,5 @@ object DeckCollectionEvents {
     * @param filter the filter
     */
   final case class FilterCards(filter: (Card) => Boolean) extends GlobalEvent
-
-  /**
-    * Event when the user clicks on the start game button.
-    */
-  final case class OnClickOnStartGame() extends GlobalEvent
   
 }

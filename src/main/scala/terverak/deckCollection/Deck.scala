@@ -67,6 +67,12 @@ final case class Deck(cardsWithQuantity: Map[Card, Int]) {
       this
     }
   }
+
+  /**
+    * Return the deck into a list of Card
+    * @return the deck into a list of Card
+    */
+  def cards(): List[Card] = cardsWithQuantity.flatMap((card, quantity) => List.fill(quantity)(card)).toList
 }
 
 object Deck {
@@ -76,5 +82,24 @@ object Deck {
       CardsData.SpellCards.meteor -> 2,
       CardsData.MinionCards.alienBlue -> 1,
     )
+  )
+
+  val DefaultDecks: List[Deck] = List(
+    Deck(Map(
+        CardsData.MinionCards.alienGreen -> 2,
+        CardsData.MinionCards.alienBlue -> 2,
+        CardsData.MinionCards.alienRed -> 2,
+        CardsData.MinionCards.alienYellow -> 2,
+        CardsData.MinionCards.bato -> 2,
+        CardsData.MinionCards.shinyBato -> 2,
+      )),
+    Deck(Map(
+      CardsData.MinionCards.planet1 -> 2,
+      CardsData.MinionCards.planet2 -> 2,
+      CardsData.MinionCards.planet3 -> 2,
+      CardsData.MinionCards.planet4 -> 2,
+      CardsData.SpellCards.blackHoleSpell -> 2,
+      CardsData.SpellCards.meteor -> 2,
+    ))
   )
 }

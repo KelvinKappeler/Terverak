@@ -7,6 +7,7 @@
 package terverak.play
 
 import indigo.*
+import terverak.deckCollection.*
 import terverak.play.Hand
 import terverak.play.IdObject
 import terverak.play.IdObject.*
@@ -85,4 +86,11 @@ object PlayEvents {
    * @param attackingMinion the attacking minion
    */
   final case class AttackOpponent(attackingMinion: IdObject.MinionWithId) extends GlobalEvent
+
+  /**
+    * Event when the game starts.
+    * @param deckCurrentPlayer the deck of the current player
+    * @param deckWaitingPlayer the deck of the waiting player
+    */
+  final case class OnStartGame(deckCurrentPlayer: Deck, deckWaitingPlayer: Deck) extends GlobalEvent
 }

@@ -12,7 +12,7 @@ import indigo.scenes.*
 /**
   * The viewmodel of the menu scene.
   */
-final class MenuSceneViewModel {
+final case class MenuSceneViewModel() {
 
   def updateViewModel(context: SceneContext[Unit], model: MenuSceneModel): GlobalEvent => Outcome[MenuSceneViewModel] =
     _ => Outcome(this)

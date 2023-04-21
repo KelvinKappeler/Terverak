@@ -8,6 +8,7 @@ package terverak
 
 import indigo.*
 import indigo.scenes.*
+import terverak.deckCollection.*
 import terverak.scenes.*
 import terverak.scenes.chooseDeck.*
 import terverak.scenes.deckCollection.*

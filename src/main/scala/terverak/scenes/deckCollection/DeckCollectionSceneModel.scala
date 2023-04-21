@@ -8,6 +8,7 @@ package terverak.scenes.deckCollection
 
 import indigo.*
 import indigo.scenes.*
+import terverak.TerverakEvents
 import terverak.deckCollection.CardsCatalog
 import terverak.deckCollection.DeckCollectionEvents
 import terverak.deckCollection.DeckCreation
@@ -20,7 +21,7 @@ final case class DeckCollectionSceneModel(cardsCatalog: CardsCatalog, deckCreati
 
   def updateModel(context: SceneContext[Unit]): GlobalEvent => Outcome[DeckCollectionSceneModel] = {
     case KeyboardEvent.KeyDown(Key.ESCAPE) =>
-      Outcome(this).addGlobalEvents(SceneEvent.JumpTo(MenuScene.name))
+      Outcome(this).addGlobalEvents(SceneEvent.JumpTo(MenuScene.name), TerverakEvents.OnChangeSceneForUser(deckCreation.user))
     case DeckCollectionEvents.AddCardToCurrentDeck(card) =>
       Outcome(copy(deckCreation = deckCreation.addCardToCurrentDeck(card)))
     case DeckCollectionEvents.RemoveCardToCurrentDeck(card) =>
@@ -29,6 +30,8 @@ final case class DeckCollectionSceneModel(cardsCatalog: CardsCatalog, deckCreati
       Outcome(copy(deckCreation = deckCreation.nextDeck()))
     case DeckCollectionEvents.PreviousDeck(_) =>
       Outcome(copy(deckCreation = deckCreation.previousDeck()))
+    case TerverakEvents.OnChangeSceneForUser(user) =>
+      Outcome(copy(deckCreation = deckCreation.copy(user = user)))
     case _ => Outcome(this)
   }
 

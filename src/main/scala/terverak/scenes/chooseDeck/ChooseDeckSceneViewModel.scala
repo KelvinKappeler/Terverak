@@ -9,6 +9,7 @@ package terverak.scenes.chooseDeck
 import indigo.*
 import indigo.scenes.*
 import indigoextras.ui.*
+import terverak.TerverakEvents
 import terverak.assets.*
 import terverak.deckCollection.*
 import terverak.scenes.deckCollection.*
@@ -44,7 +45,7 @@ object ChooseDeckSceneViewModel {
       ),
       Rectangle(50 + DeckCreationViewModel.DefaultWidth, 150 + DeckCreationViewModel.DefaultHeight, 23, 13),
       Depth(1),
-    ).withUpActions(DeckCollectionEvents.OnClickOnStartGame()),
+    ).withUpActions(TerverakEvents.OnClickOnStartGame()),
     DeckCreationViewModel(DeckCreationViewModel.DefaultButtons(initialPointForDeckCreation1, 0), initialPointForDeckCreation1),
     DeckCreationViewModel(DeckCreationViewModel.DefaultButtons(initialPointForDeckCreation2, 1), initialPointForDeckCreation2))
   
