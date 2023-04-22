@@ -13,21 +13,25 @@ import terverak.TerverakStartupData
 import terverak.*
 import terverak.assets.GameAssets
 import terverak.card.*
-import terverak.deckCollection.CardsCatalogViewModel
-import terverak.deckCollection.DeckCollectionEvents
-import terverak.deckCollection.DeckCreationViewModel
+import terverak.deckCollection.*
 
 /**
   * The viewmodel of the deck collection scene.
   */
-final case class DeckCollectionSceneViewModel(cardsCatalogViewModel: CardsCatalogViewModel, deckCreationViewModel: DeckCreationViewModel, cardDescriptionViewModel: CardDescriptionViewModel) {
+final case class DeckCollectionSceneViewModel(
+  cardsCatalogViewModel: CardsCatalogViewModel,
+  deckCreationViewModel: DeckCreationViewModel,
+  cardDescriptionViewModel: CardDescriptionViewModel,
+  saveLoadButtons: SaveLoadButtons
+) {
 
   def updateViewModel(context: SceneContext[TerverakStartupData], model: DeckCollectionSceneModel): GlobalEvent => Outcome[DeckCollectionSceneViewModel] = {
     case FrameTick =>
       val o1 = cardsCatalogViewModel.updateButtons(context.inputState.mouse).map(catalog => copy(cardsCatalogViewModel = catalog))
       val o2 = deckCreationViewModel.updateButtons(context.inputState.mouse).map(deck => copy(deckCreationViewModel = deck))
       val o3 = cardsCatalogViewModel.updateHitArea(context.inputState.mouse).map(catalog => copy(cardsCatalogViewModel = catalog))
-      o1.flatMap(_ => o2).flatMap(_ => o3)
+      val o4 = saveLoadButtons.updateButtons(context.inputState.mouse).map(buttons => copy(saveLoadButtons = buttons))
+      o1.flatMap(_ => o2).flatMap(_ => o3).flatMap(_ => o4)
     case DeckCollectionEvents.NextPage() =>
       Outcome(copy(cardsCatalogViewModel = cardsCatalogViewModel.nextPage(model.cardsCatalog)))
     case DeckCollectionEvents.PreviousPage() =>
@@ -53,7 +57,8 @@ object DeckCollectionSceneViewModel {
   val initial: DeckCollectionSceneViewModel = DeckCollectionSceneViewModel(
     CardsCatalogViewModel.initial,
     DeckCreationViewModel.initial,
-    CardDescriptionViewModel.initial
+    CardDescriptionViewModel.initial,
+    SaveLoadButtons.initial
   )
   
 }

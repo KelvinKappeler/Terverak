@@ -3,7 +3,7 @@
 // Kelvin Kappeler & Bastien Jolidon
 // Bachelor Project EPFL, 2023
 // =======================================
-    
+
 package terverak
 
 import terverak.deckCollection.User

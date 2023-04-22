@@ -30,6 +30,7 @@ object DeckCollectionSceneView {
         ++ CardsCatalogView.draw(model.cardsCatalog, viewModel.cardsCatalogViewModel)
         ++ DeckCreationView.draw(model.deckCreation, viewModel.deckCreationViewModel)
         ++ CardDescriptionView.draw(viewModel.cardDescriptionViewModel, Point(DeckCreationViewModel.InitialPoint.x + DeckCreationViewModel.DefaultWidth + DeckCreationViewModel.DefaultOffsetX, DeckCreationViewModel.InitialPoint.y))
+        ++ Batch(viewModel.saveLoadButtons.buttonLoad.draw, viewModel.saveLoadButtons.buttonSave.draw)
         )
       )
     )

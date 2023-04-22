@@ -8,6 +8,8 @@ package terverak.scenes.deckCollection
 
 import indigo.*
 import indigo.scenes.*
+import io.circe.*
+import io.circe.parser.*
 import io.circe.syntax._
 import terverak.TerverakEvents
 import terverak.TerverakStartupData
@@ -26,8 +28,7 @@ final case class DeckCollectionSceneModel(cardsCatalog: CardsCatalog, deckCreati
     case KeyboardEvent.KeyDown(Key.ESCAPE) =>
       Outcome(this).addGlobalEvents(
         SceneEvent.JumpTo(MenuScene.name),
-        TerverakEvents.OnChangeSceneForUser(deckCreation.user),
-        StorageEvent.Save(User.InitialKey, User.formatForSaving(deckCreation.user).asJson.toString))
+        TerverakEvents.OnChangeSceneForUser(deckCreation.user))
     case DeckCollectionEvents.AddCardToCurrentDeck(card) =>
       Outcome(copy(deckCreation = deckCreation.addCardToCurrentDeck(card)))
     case DeckCollectionEvents.RemoveCardToCurrentDeck(card) =>
@@ -38,6 +39,18 @@ final case class DeckCollectionSceneModel(cardsCatalog: CardsCatalog, deckCreati
       Outcome(copy(deckCreation = deckCreation.previousDeck()))
     case TerverakEvents.OnChangeSceneForUser(user) =>
       Outcome(copy(deckCreation = deckCreation.copy(user = user)))
+    case DeckCollectionEvents.SaveDecks() =>
+      Outcome(this).addGlobalEvents(StorageEvent.Save(User.InitialKey, User.formatForSaving(deckCreation.user).asJson.toString))
+    case DeckCollectionEvents.LoadDecks() =>
+      Outcome(this).addGlobalEvents(StorageEvent.Load(User.InitialKey))
+    case StorageEvent.Loaded(User.InitialKey, jsonString) =>
+      val json = parse(jsonString).getOrElse(Json.Null)
+      val list = json.as[List[List[String]]].getOrElse(Nil)
+      if (list == Nil) Outcome(this)
+      else {
+        val user = User.formatForLoading(list)
+        Outcome(copy(deckCreation = deckCreation.copy(user = user)))
+      }
     case _ => Outcome(this)
   }
 

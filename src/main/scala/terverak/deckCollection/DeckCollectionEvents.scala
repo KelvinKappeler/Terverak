@@ -55,5 +55,15 @@ object DeckCollectionEvents {
     * @param filter the filter
     */
   final case class FilterCards(filter: (Card) => Boolean) extends GlobalEvent
+
+  /**
+    * Event to save the decks.
+    */
+  final case class SaveDecks() extends GlobalEvent
+
+  /**
+   * Event to load the decks.
+   */
+  final case class LoadDecks() extends GlobalEvent
   
 }
