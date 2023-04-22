@@ -39,7 +39,7 @@ object SaveLoadButtons {
                     over = Graphic(0, 0, 23, 13, 2, Material.Bitmap(GameAssets.Buttons.loadButton)),
                     down = Graphic(0, 0, 23, 13, 2, Material.Bitmap(GameAssets.Buttons.loadButton))
                 ),
-                Rectangle(DeckCreationViewModel.InitialPoint.x, DeckCreationViewModel.DefaultHeight + 100, 23, 13),
+                Rectangle(DeckCreationViewModel.InitialPoint.x, DeckCreationViewModel.DefaultHeight + 90, 23, 13),
                 Depth(2),
             ).withUpActions(DeckCollectionEvents.LoadDecks()),
             Button(
@@ -48,7 +48,7 @@ object SaveLoadButtons {
                     over = Graphic(0, 0, 23, 13, 2, Material.Bitmap(GameAssets.Buttons.saveButton)),
                     down = Graphic(0, 0, 23, 13, 2, Material.Bitmap(GameAssets.Buttons.saveButton))
                 ),
-                Rectangle(DeckCreationViewModel.InitialPoint.x, DeckCreationViewModel.DefaultHeight + 110, 23, 13),
+                Rectangle(DeckCreationViewModel.InitialPoint.x + 27, DeckCreationViewModel.DefaultHeight + 90, 23, 13),
                 Depth(2),
             ).withUpActions(DeckCollectionEvents.SaveDecks())
         )

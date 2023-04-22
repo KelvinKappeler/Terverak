@@ -63,7 +63,7 @@ object DeckCreationView {
         ++ TerverakText.drawText(
           StringUtils.getMultilinesText("A deck must be between 12 and 18 cards to be valid", DeckCreationViewModel.DefaultWidth, GameAssets.Fonts.defaultFont8.fontWidth)._1,
           viewModel.position.x,
-          viewModel.position.y + DeckCreationViewModel.DefaultHeight + 10 + 4 * DeckCreationViewModel.DefaultOffsetY,
+          viewModel.position.y + DeckCreationViewModel.DefaultHeight + 4 * DeckCreationViewModel.DefaultOffsetY,
           30, GameAssets.Fonts.defaultFont8, RGBA.White)
       } else {
         Batch.empty
