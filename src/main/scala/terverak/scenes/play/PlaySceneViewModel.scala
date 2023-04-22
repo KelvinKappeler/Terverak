@@ -13,6 +13,7 @@ import terverak.TerverakStartupData
 import terverak.assets.*
 import terverak.card.CardDescriptionViewModel
 import terverak.card.CardViewModel
+import terverak.card.cardeffect.CardEffectTarget
 import terverak.play.GameViewModel
 import terverak.play.IdObject.*
 import terverak.play.PlayEvents
@@ -20,7 +21,7 @@ import terverak.play.PlayEvents
 /**
   * The view model of the play scene.
   */
-final case class PlaySceneViewModel(gameViewModel: GameViewModel,  cardDescriptionViewModel: CardDescriptionViewModel) {
+final case class PlaySceneViewModel(gameViewModel: GameViewModel,  cardDescriptionViewModel: CardDescriptionViewModel, isChoosingTarget: Boolean = false) {
 
   def updateViewModel(context: SceneContext[TerverakStartupData], model: PlaySceneModel): GlobalEvent => Outcome[PlaySceneViewModel] =
     case PlayEvents.HandChanged(isCurrentPlayer, hand) =>
@@ -74,10 +75,14 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel,  cardDescripti
         case handCard: HandCard => 
           if (gameViewModel.currentPlayerViewModel.minionBoardViewModel.checkMouseOverMinionBoard(context.mouse)
             || gameViewModel.waitingPlayerViewModel.minionBoardViewModel.checkMouseOverMinionBoard(context.mouse)) {
-            Outcome(this).addGlobalEvents(PlayEvents.PlayCard(handCard))
+            if(model.currentGame.isCardPlayable(handCard)) {
+              Outcome(copy(isChoosingTarget = true)).addGlobalEvents(PlayEvents.ChooseTargets(handCard, Nil, handCard.card.effectsWhenPlayed, true))
+            } else {
+              Outcome(this)
+            }
           } else if (gameViewModel.currentPlayerViewModel.discardZoneViewModel.checkMouseOverDiscardZone(context.mouse)
             || gameViewModel.waitingPlayerViewModel.discardZoneViewModel.checkMouseOverDiscardZone(context.mouse)) {
-            Outcome(this).addGlobalEvents(PlayEvents.DiscardCard(handCard))      
+            Outcome(copy(isChoosingTarget = true)).addGlobalEvents(PlayEvents.ChooseTargets(handCard, Nil, handCard.card.effectsWhenDiscard, false))      
           } else {
             Outcome(this)
           }
@@ -91,7 +96,7 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel,  cardDescripti
             Outcome(this)
           }
 
-    case MouseEvent.MouseDown(position, MouseButton.LeftMouseButton) =>
+    case MouseEvent.MouseDown(position, MouseButton.LeftMouseButton) if !isChoosingTarget =>
       gameViewModel.getObjectUnderMouse(context.mouse, model.currentGame, true) match {
         case Some(idObject) =>
           idObject match
@@ -118,7 +123,60 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel,  cardDescripti
       Outcome(copy(cardDescriptionViewModel = CardDescriptionViewModel(card, true)))
     case TerverakEvents.OnMouseOutHoverCard() =>
       Outcome(copy(cardDescriptionViewModel = cardDescriptionViewModel.copy(isShown = false)))
-    case _ => Outcome(this)
+
+    case PlayEvents.ChooseTargets(handCard, targets, effects, played) =>
+      if effects.isEmpty then
+        if played then
+          Outcome(copy(isChoosingTarget = false)).addGlobalEvents(PlayEvents.PlayCard(handCard, targets))
+        else
+          Outcome(copy(isChoosingTarget = false)).addGlobalEvents(PlayEvents.DiscardCard(handCard, targets))
+      else
+        effects.head.targetType match
+          case CardEffectTarget.CurrentPlayerMinionsBoard =>
+            if model.currentGame.currentPlayer.minionBoard.minions.isEmpty then
+              Outcome(this).addGlobalEvents(PlayEvents.ChooseTargets(handCard, targets :+ None, effects.tail, played))
+            else if context.mouse.released(MouseButton.LeftMouseButton) then
+              val minion = gameViewModel.currentPlayerViewModel.minionBoardViewModel.getMinionUnderMouse(context.mouse, model.currentGame.currentPlayer.minionBoard)
+              minion match
+                case Some(minion) =>
+                  Outcome(this).addGlobalEvents(PlayEvents.ChooseTargets(handCard, targets :+ Option(minion), effects.tail, played))
+                case None =>
+                  Outcome(this).addGlobalEvents(PlayEvents.ChooseTargets(handCard, targets, effects, played))
+            else 
+              Outcome(this).addGlobalEvents(PlayEvents.ChooseTargets(handCard, targets, effects, played))
+          case CardEffectTarget.WaitingPlayerMinionsBoard =>
+            if model.currentGame.waitingPlayer.minionBoard.minions.isEmpty then
+              Outcome(this).addGlobalEvents(PlayEvents.ChooseTargets(handCard, targets :+ None, effects.tail, played))
+            else if context.mouse.released(MouseButton.LeftMouseButton) then
+              val minion = gameViewModel.waitingPlayerViewModel.minionBoardViewModel.getMinionUnderMouse(context.mouse, model.currentGame.waitingPlayer.minionBoard)
+              minion match
+                case Some(minion) =>
+                  Outcome(this).addGlobalEvents(PlayEvents.ChooseTargets(handCard, targets :+ Option(minion), effects.tail, played))
+                case None =>
+                  Outcome(this).addGlobalEvents(PlayEvents.ChooseTargets(handCard, targets, effects, played))
+            else 
+              Outcome(this).addGlobalEvents(PlayEvents.ChooseTargets(handCard, targets, effects, played))
+          case CardEffectTarget.BothPlayersMinionsBoard =>
+            if model.currentGame.waitingPlayer.minionBoard.minions.isEmpty && model.currentGame.currentPlayer.minionBoard.minions.isEmpty then
+              Outcome(this).addGlobalEvents(PlayEvents.ChooseTargets(handCard, targets :+ None, effects.tail, played))
+            else if context.mouse.released(MouseButton.LeftMouseButton) then
+              val minion = gameViewModel.waitingPlayerViewModel.minionBoardViewModel.getMinionUnderMouse(context.mouse, model.currentGame.waitingPlayer.minionBoard)
+              minion match
+                case Some(minion) =>
+                  Outcome(this).addGlobalEvents(PlayEvents.ChooseTargets(handCard, targets :+ Option(minion), effects.tail, played))
+                case None =>
+                  val minion = gameViewModel.currentPlayerViewModel.minionBoardViewModel.getMinionUnderMouse(context.mouse, model.currentGame.currentPlayer.minionBoard)
+                  minion match
+                    case Some(minion) =>
+                      Outcome(this).addGlobalEvents(PlayEvents.ChooseTargets(handCard, targets :+ Option(minion), effects.tail, played))
+                    case None =>
+                      Outcome(this).addGlobalEvents(PlayEvents.ChooseTargets(handCard, targets, effects, played))
+            else 
+              Outcome(this).addGlobalEvents(PlayEvents.ChooseTargets(handCard, targets, effects, played))
+          case _ => 
+            Outcome(this).addGlobalEvents(PlayEvents.ChooseTargets(handCard, targets :+ None, effects.tail, played))
+      
+    case _ => Outcome(this) 
 
 }
 

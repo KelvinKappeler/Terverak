@@ -8,6 +8,7 @@ package terverak.card.cardeffect
 
 import terverak.card.CardSubtype
 import terverak.play.Game
+import terverak.play.IdObject.MinionWithId
 import terverak.utils.StringUtils.getWordWithGoodPlural
 
 /**
@@ -22,7 +23,7 @@ object CardEffectsDraw {
   final case class DrawCard(amount: Int = 0) extends CardEffect {
     require(amount >= 0, "Amount must be equal or greater than 0")
 
-    override def activateEffect(game: Game): Game = {
+    override def activateEffect(game: Game, target: Option[MinionWithId]): Game = {
       game.copy(currentPlayer = game.currentPlayer.drawCards(amount))
     }
 
@@ -36,8 +37,8 @@ object CardEffectsDraw {
   final case class DrawCardPerSubtype(amount: Int, subtype: CardSubtype, target: CardEffectTarget) extends CardEffect {
     require(amount >= 0)
 
-    override def activateEffect(game: Game): Game = {
-      DrawCard(CardEffectHelper.countMinionsWithSubtype(game, subtype, target) * amount).activateEffect(game)
+    override def activateEffect(game: Game, targetOption: Option[MinionWithId]): Game = {
+      DrawCard(CardEffectHelper.countMinionsWithSubtype(game, subtype, target) * amount).activateEffect(game, targetOption)
     }
 
     override def toString: String =
