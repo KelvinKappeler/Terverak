@@ -10,11 +10,7 @@ package terverak.deckCollection
   * Represents an user.
   * @param decks the decks of the user (at least one)
   */
-final case class User(
-  decks: List[Deck]
-) {
-  require(decks.length >= 1, "The user must have at least one deck.")
-}
+final case class User(decks: List[Deck])
 
 object User {
 

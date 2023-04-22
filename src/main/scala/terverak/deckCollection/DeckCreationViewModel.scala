@@ -13,7 +13,8 @@ import terverak.card.*
 
 final case class DeckCreationViewModel(
   buttons: List[Button] = List.empty,
-  position: Point = DeckCreationViewModel.InitialPoint
+  position: Point = DeckCreationViewModel.InitialPoint,
+  isText: Boolean = true
 ) {
 
   /**

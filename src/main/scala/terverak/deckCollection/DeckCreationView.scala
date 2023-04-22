@@ -44,26 +44,30 @@ object DeckCreationView {
 
     val buttonsBatch = viewModel.buttons.foldLeft(Batch.empty[SceneNode])((batch, button) => batch ++ Batch(button.draw))
 
-    val textDeckBatch = TerverakText.drawText(
-      "Deck " + (model.deckNumber + 1).toString + "/" + model.user.decks.size,
-      viewModel.position.x + 20,
-      viewModel.position.y + DeckCreationViewModel.DefaultHeight + 13,
-      30, GameAssets.Fonts.defaultFont8, RGBA.White
-    )
+    val textDeckBatch =
+      TerverakText.drawText(
+        "Deck " + (model.deckNumber + 1).toString + "/" + model.user.decks.size,
+        viewModel.position.x + 20,
+        viewModel.position.y + DeckCreationViewModel.DefaultHeight + 13,
+        30, GameAssets.Fonts.defaultFont8, RGBA.White
+      )
     
     val textNumberOfCardsBatch =
-      val color = if (model.deck.isValid) RGBA.Green else RGBA.Red
-      TerverakText.drawText(
-      model.deck.cardsWithQuantity.values.sum.toString + "/" + model.deck.MaxCards.toString,
-      viewModel.position.x,
-      viewModel.position.y + DeckCreationViewModel.DefaultHeight + 10 + 2 * DeckCreationViewModel.DefaultOffsetY,
-      30, GameAssets.Fonts.defaultFont8, color)
-      ++ TerverakText.drawText(
-        StringUtils.getMultilinesText("A deck must be between 12 and 18 cards to be valid", DeckCreationViewModel.DefaultWidth, GameAssets.Fonts.defaultFont8.fontWidth)._1,
+      if (viewModel.isText) {
+        val color = if (model.deck.isValid) RGBA.Green else RGBA.Red
+        TerverakText.drawText(
+        model.deck.cardsWithQuantity.values.sum.toString + "/" + model.deck.MaxCards.toString,
         viewModel.position.x,
-        viewModel.position.y + DeckCreationViewModel.DefaultHeight + 10 + 4 * DeckCreationViewModel.DefaultOffsetY,
-        30, GameAssets.Fonts.defaultFont8, RGBA.White
-    )
+        viewModel.position.y + DeckCreationViewModel.DefaultHeight + 10 + 2 * DeckCreationViewModel.DefaultOffsetY,
+        30, GameAssets.Fonts.defaultFont8, color)
+        ++ TerverakText.drawText(
+          StringUtils.getMultilinesText("A deck must be between 12 and 18 cards to be valid", DeckCreationViewModel.DefaultWidth, GameAssets.Fonts.defaultFont8.fontWidth)._1,
+          viewModel.position.x,
+          viewModel.position.y + DeckCreationViewModel.DefaultHeight + 10 + 4 * DeckCreationViewModel.DefaultOffsetY,
+          30, GameAssets.Fonts.defaultFont8, RGBA.White)
+      } else {
+        Batch.empty
+      }
 
     backgroundBatch ++ cardsBatch ++ buttonsBatch ++ textDeckBatch ++ textNumberOfCardsBatch
   }

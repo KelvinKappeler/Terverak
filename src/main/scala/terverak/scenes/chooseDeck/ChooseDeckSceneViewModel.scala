@@ -44,10 +44,10 @@ object ChooseDeckSceneViewModel {
         over = Graphic(0, 0, 23, 13, 1, Material.Bitmap(GameAssets.Buttons.playButton)),
         down = Graphic(0, 0, 23, 13, 1, Material.Bitmap(GameAssets.Buttons.playButton))
       ),
-      Rectangle(50 + DeckCreationViewModel.DefaultWidth, 150 + DeckCreationViewModel.DefaultHeight, 23, 13),
+      Rectangle(50 + DeckCreationViewModel.DefaultWidth, 100 + DeckCreationViewModel.DefaultHeight, 23, 13),
       Depth(1),
     ).withUpActions(TerverakEvents.OnClickOnStartGame()),
-    DeckCreationViewModel(DeckCreationViewModel.DefaultButtons(initialPointForDeckCreation1, 0), initialPointForDeckCreation1),
-    DeckCreationViewModel(DeckCreationViewModel.DefaultButtons(initialPointForDeckCreation2, 1), initialPointForDeckCreation2))
+    DeckCreationViewModel(DeckCreationViewModel.DefaultButtons(initialPointForDeckCreation1, 0), initialPointForDeckCreation1, false),
+    DeckCreationViewModel(DeckCreationViewModel.DefaultButtons(initialPointForDeckCreation2, 1), initialPointForDeckCreation2, false))
   
 }

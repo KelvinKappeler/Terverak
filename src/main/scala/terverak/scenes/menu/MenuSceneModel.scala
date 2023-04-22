@@ -22,7 +22,7 @@ final case class MenuSceneModel(user: User) {
 
   def updateModel(context: SceneContext[TerverakStartupData]): GlobalEvent => Outcome[MenuSceneModel] = {
     case KeyboardEvent.KeyDown(Key.SPACE) =>
-      Outcome(this).addGlobalEvents(SceneEvent.JumpTo(ChooseDeckScene.name), TerverakEvents.OnChangeSceneForUser(user))
+      Outcome(this).addGlobalEvents(SceneEvent.JumpTo(ChooseDeckScene.name), TerverakEvents.OnChangeSceneForUser(user.copy(decks = user.decks.filter(_.isValid))))
     case KeyboardEvent.KeyDown(Key.KEY_E) =>
       Outcome(this).addGlobalEvents(SceneEvent.JumpTo(DeckCollectionScene.name), TerverakEvents.OnChangeSceneForUser(user))
     case TerverakEvents.OnChangeSceneForUser(user) =>
