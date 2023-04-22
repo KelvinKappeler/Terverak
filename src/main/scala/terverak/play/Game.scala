@@ -7,7 +7,7 @@
 package terverak.play
 
 import terverak.assets.*
-import terverak.card.Card
+import terverak.card.*
 import terverak.card.cardeffect.CardEffects
 import terverak.play.IdObject.*
 
@@ -26,7 +26,11 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
     val wakeUpMinions = currentPlayer.minionBoard.wakeUpMinions()
     val newCurrentPlayer = currentPlayer.copy(minionBoard = wakeUpMinions).removeMana(currentPlayer.mana)
 
-    copy(currentPlayer = waitingPlayer.startTurn(), waitingPlayer = newCurrentPlayer)
+    val manaToRegen = waitingPlayer.minionBoard.minions
+      .foldLeft(0)((acc, minion) =>
+        acc + minion.minion.card.attributes.collectFirst { case MinionCardAttributesData.ManaRegen(amount) => amount }.getOrElse(0))
+
+    copy(currentPlayer = waitingPlayer.startTurn().addMana(manaToRegen), waitingPlayer = newCurrentPlayer)
   }
 
   /**

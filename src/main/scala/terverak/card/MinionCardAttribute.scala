@@ -9,7 +9,7 @@ package terverak.card
 /** A card attribute for a minion. Example : "Defender" -> "This card can't
   * attack"
   */
-final case class MinionCardAttribute(name: String, description: String) {
+trait MinionCardAttribute(name: String, description: String) {
 
   override def toString: String = name + " : " + description
 

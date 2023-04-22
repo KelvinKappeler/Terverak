@@ -47,7 +47,7 @@ object CardDescriptionView {
           case minion: Card.MinionCard =>
             val batchMinionAttributes = 
               if (minion.attributes.isEmpty) TerverakText.drawText("None", position.x, effectsWhenDiscardY + defaultFont.fontWidth * effectsWhenDiscardLines + 3 * textOffset, baseDepth, defaultFont, RGBA.White)
-              else TerverakText.drawText(StringUtils.getMultilinesText(minion.attributes.mkString("\n"), defaultWidth, defaultFont.fontWidth)._1, position.x, effectsWhenDiscardY + defaultFont.fontWidth * effectsWhenDiscardLines + 3 * textOffset, baseDepth, defaultFont, RGBA.White)
+              else TerverakText.drawText(StringUtils.getMultilinesText(minion.attributes.map("- " + _).mkString(" \n "), defaultWidth, defaultFont.fontWidth)._1, position.x, effectsWhenDiscardY + defaultFont.fontWidth * effectsWhenDiscardLines + 3 * textOffset, baseDepth, defaultFont, RGBA.White)
             TerverakText.drawText("Minion attributes:", position.x, effectsWhenDiscardY + defaultFont.fontWidth * effectsWhenDiscardLines + 2 * textOffset, baseDepth, defaultFont, RGBA.Purple)
             ++ batchMinionAttributes
           case _ => Batch.empty

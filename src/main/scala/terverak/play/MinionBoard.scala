@@ -33,7 +33,7 @@ final case class MinionBoard(minions: List[IdObject.MinionWithId]) {
    * @return the new board.
    */
   def wakeUpMinions(): MinionBoard = {
-    this.copy(minions = minions.map(minionWithId => minionWithId.copy(minion = minionWithId.minion.copy(canAttack = !minionWithId.minion.card.attributes.contains(MinionCardAttributesData.defender)))))
+    this.copy(minions = minions.map(minionWithId => minionWithId.copy(minion = minionWithId.minion.copy(canAttack = !minionWithId.minion.card.attributes.contains(MinionCardAttributesData.Defender())))))
   }
 
   /**

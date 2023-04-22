@@ -36,7 +36,7 @@ object CardsData {
       "An expensive boat",
       GameAssets.Cards.shinyBato,
       2,
-      List(CardEffects.DamageHero(1)),
+      List(CardEffectsDamage.DamageHero(1)),
       List(CardEffectsMana.AddMana(2)),
       Nil,
       Nil,
@@ -45,55 +45,55 @@ object CardsData {
     )
 
     val planet1: Card.MinionCard = Card.MinionCard(
-      "Planet1",
-      "An old and mysterious planet",
+      "Aethon",
+      "Aethon was the cradle of an ancestral race before its destruction.",
       GameAssets.Cards.planet1,
       3,
-      List(CardEffects.DamageHero(2)),
-      List(CardEffectsMana.AddMana(3)),
+      Nil,
+      List(CardEffectsMana.AddMana(2)),
       List(CardSubtype.Planet),
-      List(MinionCardAttributesData.defender),
+      List(MinionCardAttributesData.Defender(), MinionCardAttributesData.ManaRegen(1)),
       0,
-      5
+      3
     )
 
     val planet2: Card.MinionCard = Card.MinionCard(
-      "Planet2",
-      "An old and mysterious planet",
+      "Nereid",
+      "Mother planet of the aliens and refuge of the most valiant warriors of the galaxy.",
       GameAssets.Cards.planet2,
       3,
-      List(CardEffects.DamageHero(2)),
-      List(CardEffectsMana.AddMana(3)),
+      List(CardEffectsDamage.DamageHero(2)),
+      List(CardEffectsMana.AddMana(1)),
       List(CardSubtype.Planet),
-      List(MinionCardAttributesData.defender),
+      List(MinionCardAttributesData.Defender(), MinionCardAttributesData.ManaRegen(1)),
       0,
-      5
+      2
     )
 
     val planet3: Card.MinionCard = Card.MinionCard(
-      "Planet3",
-      "An old and mysterious planet",
+      "Dictys",
+      "Dictys is a sanctuary dedicated to science. The greatest scientists are retraining themselves to design new technologies.",
       GameAssets.Cards.planet3,
-      3,
-      List(CardEffects.DamageHero(2)),
-      List(CardEffectsMana.AddMana(3)),
+      4,
+      Nil,
+      List(CardEffectsMana.AddMana(1)),
       List(CardSubtype.Planet),
-      List(MinionCardAttributesData.defender),
+      List(MinionCardAttributesData.Defender(), MinionCardAttributesData.ManaRegen(2)),
       0,
       5
     )
 
     val planet4: Card.MinionCard = Card.MinionCard(
-      "Planet4",
-      "An old and mysterious planet",
+      "Arion",
+      "Planet deserted because of the arrid climate. Only madmen would dare to live there.",
       GameAssets.Cards.planet4,
       3,
-      List(CardEffects.DamageHero(2)),
-      List(CardEffectsMana.AddMana(3)),
+      Nil,
+      Nil,
       List(CardSubtype.Planet),
-      List(MinionCardAttributesData.defender),
+      List(MinionCardAttributesData.Defender(), MinionCardAttributesData.ManaRegen(3)),
       0,
-      5
+      1
     )
 
     val alienGreen: Card.MinionCard = Card.MinionCard(
@@ -238,8 +238,8 @@ object CardsData {
     )
 
     val meteor: Card.SpellCard = Card.SpellCard(
-      "METEOR",
-      "You don't want to meet him because it hurts a lot if a meteor hits you. Be careful out there. It is also a long text to test the text wrapping",
+      "Meteor",
+      "Unfortunately, this can happen.",
       GameAssets.Cards.meteor,
       4,
       List(CardEffects.DestroyRandomMinions(2, CardEffectTarget.WaitingPlayerMinionsBoard),

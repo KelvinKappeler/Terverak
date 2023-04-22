@@ -20,21 +20,6 @@ import scala.util.Random
 object CardEffects {
 
   /**
-  * A card effect that damages the opponent hero.
-  * @param amount the amount of damage healed
-  */
-  final case class DamageHero(amount: Int = 0) extends CardEffect {
-    require(amount >= 0, "Damage amount must be equal or greater than 0")
-
-    override def activateEffect(game: Game): Game = {
-      game.copy(waitingPlayer = game.waitingPlayer.takeDamage(amount))
-    }
-
-    override def toString: String = 
-      "Deal " + amount + " " + getWordWithGoodPlural("damage", amount) + " to the opponent hero"
-  }
-
-  /**
     * A card effect that invoke a minion on the board.
     * @param minionCard the minion card
     */
