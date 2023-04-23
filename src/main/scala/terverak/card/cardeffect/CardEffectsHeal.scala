@@ -20,10 +20,10 @@ object CardEffectsHeal {
   * A card effect that heals the hero.
   * @param amount the amount of damage healed
   */
-  final case class HealHero(amount: Int = 0) extends CardEffect {
+  final case class HealHero(amount: Int = 0) extends CardEffectWithoutTarget {
     require(amount >= 0, "Healing amount must be equal or greater than 0")
 
-    override def activateEffect(game: Game, target: Option[MinionWithId]): Game = {
+    override def activateEffect(game: Game): Game = {
       game.copy(currentPlayer = game.currentPlayer.heal(amount))
     }
 
@@ -34,11 +34,11 @@ object CardEffectsHeal {
   /**
    * A card effect that heal the hero for each alien on the board.
    */
-  final case class HealHeroPerSubtype(amount: Int, subtype: CardSubtype, target: CardEffectTarget) extends CardEffect {
+  final case class HealHeroPerSubtype(amount: Int, subtype: CardSubtype, target: CardEffectTarget) extends CardEffectWithoutTarget {
     require(amount >= 0)
 
-    override def activateEffect(game: Game, targetOption: Option[MinionWithId]): Game = {
-      HealHero(CardEffectHelper.countMinionsWithSubtype(game, subtype, target) * amount).activateEffect(game, targetOption)
+    override def activateEffect(game: Game): Game = {
+      HealHero(CardEffectHelper.countMinionsWithSubtype(game, subtype, target) * amount).activateEffect(game)
     }
 
     override def toString: String =

@@ -23,9 +23,9 @@ object CardEffects {
     * A card effect that invoke a minion on the board.
     * @param minionCard the minion card
     */
-  final case class InvokeMinion(minionCard: Card.MinionCard) extends CardEffect {
+  final case class InvokeMinion(minionCard: Card.MinionCard) extends CardEffectWithoutTarget {
 
-    override def activateEffect(game: Game, target: Option[MinionWithId]): Game = {
+    override def activateEffect(game: Game): Game = {
       val newMinionBoard = game.currentPlayer.minionBoard.addMinion(
         Minion(minionCard, minionCard.life, minionCard.life, minionCard.damage, false)
       )
@@ -43,10 +43,10 @@ object CardEffects {
   /**
    * A card effect that add attack to the played minion for each subtype.
    */
-  final case class AddAttackPerSubtype(amount: Int, subtype: CardSubtype, target: CardEffectTarget) extends CardEffect {
+  final case class AddAttackPerSubtype(amount: Int, subtype: CardSubtype, target: CardEffectTarget) extends CardEffectWithoutTarget {
     require(amount >= 0)
 
-    override def activateEffect(game: Game, targetOption: Option[MinionWithId]): Game = {
+    override def activateEffect(game: Game): Game = {
       val number = CardEffectHelper.countMinionsWithSubtype(game, subtype, target) * amount
       val minionToBuff = game.currentPlayer.minionBoard.minions.head
       game.copy(
@@ -67,10 +67,10 @@ object CardEffects {
     * @param amount the amount of minions destroyed
     * @param opponentOnly if true, only destroy minions on the opponent board. If false, destroy minions on both board.
     */
-  final case class DestroyRandomMinions(amount: Int, target: CardEffectTarget) extends CardEffect {
+  final case class DestroyRandomMinions(amount: Int, target: CardEffectTarget) extends CardEffectWithoutTarget {
     require(amount >= 0, "Amount must be equal or greater than 0")
 
-    override def activateEffect(game: Game, target: Option[MinionWithId]): Game = {
+    override def activateEffect(game: Game): Game = {
       val totalMinions = if target == CardEffectTarget.WaitingPlayerMinionsBoard then game.waitingPlayer.minionBoard.minions.size else
         game.currentPlayer.minionBoard.minions.size + game.waitingPlayer.minionBoard.minions.size
 

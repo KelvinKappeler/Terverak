@@ -13,7 +13,7 @@ import terverak.play.IdObject.*
   * A hand of cards.
   * @param cards The cards in the hand.
   */
-final case class Hand(cards: List[HandCard]) {
+final case class Hand(cards: List[HandCard], baseCardId: Int = 0) {
 
   /**
     * The maximum number of cards in a hand.
@@ -54,6 +54,6 @@ final case class Hand(cards: List[HandCard]) {
    * Compute the next id for a card in the hand. 
    */
   private def nextId(): Int = {
-    if (cards.isEmpty) 0 else cards.maxBy(_.id).id + 1
+    if (cards.isEmpty) baseCardId else cards.maxBy(_.id).id + IdObject.BaseIdIncrement
   }
 }

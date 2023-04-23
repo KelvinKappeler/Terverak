@@ -19,6 +19,8 @@ trait IdObject {
 
 object IdObject {
   
+  val BaseIdIncrement = 4
+  
   /**
     * A minion on the board.
     */
