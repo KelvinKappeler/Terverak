@@ -19,8 +19,11 @@ trait CardEffect {
     */
   def activateEffect(game: Game, target: Option[MinionWithId]): Game
 
-  def targetType: CardEffectTarget = CardEffectTarget.None
+  //def targetType: CardEffectTarget = CardEffectTarget.None
 
   override def toString: String = "Unknown effect"
 }
 
+trait CardEffectWithTarget extends CardEffect {
+  def targetType: CardEffectTarget = CardEffectTarget.Minion
+}
