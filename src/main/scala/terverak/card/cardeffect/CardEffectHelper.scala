@@ -7,7 +7,7 @@
 package terverak.card.cardeffect
 
 import terverak.card.CardSubtype
-import terverak.play.Game
+import terverak.play.*
 
 /**
   * A helper class for card effects.
@@ -21,10 +21,10 @@ object CardEffectHelper {
    * @param target the target of the effect (current player, waiting player or both players)
    * @return the number of minions with the specific subtype
    */
-  def countMinionsWithSubtype(game: Game, cardSubtype: CardSubtype, target: CardEffectTarget): Int = {
+  def countMinionsWithSubtype(game: Game, cardSubtype: CardSubtype, target: BoardSelectionForCardEffect): Int = {
     target match {
-      case CardEffectTarget.CurrentPlayerMinionsBoard => game.currentPlayer.minionBoard.minions.count(_.minion.card.subtypes.contains(cardSubtype))
-      case CardEffectTarget.WaitingPlayerMinionsBoard => game.waitingPlayer.minionBoard.minions.count(_.minion.card.subtypes.contains(cardSubtype))
+      case BoardSelectionForCardEffect.CurrentPlayerMinionsBoard => game.currentPlayer.minionBoard.minions.count(_.minion.card.subtypes.contains(cardSubtype))
+      case BoardSelectionForCardEffect.WaitingPlayerMinionsBoard => game.waitingPlayer.minionBoard.minions.count(_.minion.card.subtypes.contains(cardSubtype))
       case _ => game.currentPlayer.minionBoard.minions.count(_.minion.card.subtypes.contains(cardSubtype))
         + game.waitingPlayer.minionBoard.minions.count(_.minion.card.subtypes.contains(cardSubtype))
     }

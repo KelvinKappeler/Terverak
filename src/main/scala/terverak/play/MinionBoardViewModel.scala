@@ -46,8 +46,8 @@ final case class MinionBoardViewModel(
           Point(
             position.x + (MinionBoardViewModel.MinionSpacing * index) + MinionBoardViewModel.OffsetX,
             position.y + MinionBoardViewModel.OffsetY
-          )).initHitArea(head.minion.card) :: rec(tail, index + 1)
-      }  
+          )).initHitArea(head.minion.card, head) :: rec(tail, index + 1)
+      }
     }
     copy(minionsViewModel = rec(minionBoard.minions, 0))
   }
@@ -102,7 +102,7 @@ object MinionBoardViewModel {
   val OffsetY: Int = 4
   val MinionSpacing: Int = 15 + MinionViewModel.MinionSize.width
 
-  val MinionBoardSize: Size = Size((MinionBoardViewModel.MinionSpacing * MinionBoard(List.empty).MaxMinionBoardSize) + MinionBoardViewModel.OffsetX, MinionViewModel.MinionSize.height + 2*MinionBoardViewModel.OffsetY)
+  val MinionBoardSize: Size = Size((MinionBoardViewModel.MinionSpacing * MinionBoard.MaxMinionBoardSize) + MinionBoardViewModel.OffsetX, MinionViewModel.MinionSize.height + 2*MinionBoardViewModel.OffsetY)
 
   val initialCurrentPlayerMinionBoard: MinionBoardViewModel = MinionBoardViewModel(Point(DiscardZoneViewModel.DiscardZoneSize.width, HandViewModel.HandSize.height + MinionBoardViewModel.MinionBoardSize.height), List.empty)
   val initialWaitingPlayerMinionBoard: MinionBoardViewModel = MinionBoardViewModel(Point(DiscardZoneViewModel.DiscardZoneSize.width, HandViewModel.HandSize.height), List.empty)

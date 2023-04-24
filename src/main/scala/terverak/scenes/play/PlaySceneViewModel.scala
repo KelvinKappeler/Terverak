@@ -11,11 +11,10 @@ import indigo.scenes.*
 import terverak.TerverakEvents
 import terverak.TerverakStartupData
 import terverak.assets.*
-import terverak.card.CardDescriptionViewModel
-import terverak.card.CardViewModel
-import terverak.play.GameViewModel
+import terverak.card.*
+import terverak.card.cardeffect.*
 import terverak.play.IdObject.*
-import terverak.play.PlayEvents
+import terverak.play.*
 
 /**
   * The view model of the play scene.
@@ -23,6 +22,22 @@ import terverak.play.PlayEvents
 final case class PlaySceneViewModel(gameViewModel: GameViewModel,  cardDescriptionViewModel: CardDescriptionViewModel) {
 
   def updateViewModel(context: SceneContext[TerverakStartupData], model: PlaySceneModel): GlobalEvent => Outcome[PlaySceneViewModel] =
+    case FrameTick =>
+      val currentPlayerHitArea = gameViewModel.currentPlayerViewModel.updateHitArea(context.mouse)
+      val waitingPlayerHitArea = gameViewModel.waitingPlayerViewModel.updateHitArea(context.mouse)
+      val newGame = currentPlayerHitArea.map(currentPlayer => waitingPlayerHitArea.map(waitingPlayer => gameViewModel.copy(currentPlayerViewModel = currentPlayer, waitingPlayerViewModel = waitingPlayer))).flatMap(identity)
+      
+      val handHitAreaUpdated = gameViewModel.currentPlayerViewModel.handViewModel.updateHitArea(context.inputState.mouse)
+      val minionBoardUpdated = gameViewModel.currentPlayerViewModel.minionBoardViewModel.updateHitArea(context.inputState.mouse)
+      val newCurrentPlayer = handHitAreaUpdated.map(handVM => minionBoardUpdated.map(minionVM => gameViewModel.currentPlayerViewModel.copy(handViewModel = handVM, minionBoardViewModel = minionVM))).flatMap(identity)
+      val waitingPlayerMinionBoardUpdated = gameViewModel.waitingPlayerViewModel.minionBoardViewModel.updateHitArea(context.inputState.mouse)
+      val newWaitingPlayer = waitingPlayerMinionBoardUpdated.map(minionVM => gameViewModel.waitingPlayerViewModel.copy(minionBoardViewModel = minionVM))
+      val newGameViewModel = newCurrentPlayer.map(currentPlayer => newWaitingPlayer.map(waitingPlayer => gameViewModel.copy(currentPlayerViewModel = currentPlayer, waitingPlayerViewModel = waitingPlayer))).flatMap(identity)
+      newGameViewModel.flatMap(_ => newGame).map(gameVM => copy(gameViewModel = gameVM))
+
+    case PlayEvents.OnStartGame(_,_) =>
+      Outcome(copy(gameViewModel = gameViewModel.initPlayerHitArea(model.currentGame)))
+      
     case PlayEvents.HandChanged(isCurrentPlayer, hand) =>
       if (isCurrentPlayer) {
         val newCurrentPlayerHand = gameViewModel.currentPlayerViewModel.handViewModel.updateCardsPosition(hand)
@@ -42,6 +57,10 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel,  cardDescripti
         Outcome(copy(gameViewModel = gameViewModel.copy(
           waitingPlayerViewModel = gameViewModel.waitingPlayerViewModel.copy(minionBoardViewModel = newWaitingPlayerMinionBoard))))
       }
+      
+    case PlayEvents.SwapPlayers() =>
+      /*Outcome(copy(gameViewModel = gameViewModel.swapPlayerPosition(model.currentGame)))*/
+      Outcome(copy(gameViewModel = gameViewModel.initPlayerHitArea(model.currentGame)))
 
     case PlayEvents.Drag(idObject, pos) =>
       if (context.mouse.isLeftDown) {
@@ -77,7 +96,7 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel,  cardDescripti
             Outcome(this).addGlobalEvents(PlayEvents.PlayCard(handCard))
           } else if (gameViewModel.currentPlayerViewModel.discardZoneViewModel.checkMouseOverDiscardZone(context.mouse)
             || gameViewModel.waitingPlayerViewModel.discardZoneViewModel.checkMouseOverDiscardZone(context.mouse)) {
-            Outcome(this).addGlobalEvents(PlayEvents.DiscardCard(handCard))      
+            Outcome(this).addGlobalEvents(PlayEvents.DiscardCard(handCard))         
           } else {
             Outcome(this)
           }
@@ -91,7 +110,7 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel,  cardDescripti
             Outcome(this)
           }
 
-    case MouseEvent.MouseDown(position, MouseButton.LeftMouseButton) =>
+    case MouseEvent.MouseDown(position, MouseButton.LeftMouseButton) if gameViewModel.gameState == GameState.Playing =>
       gameViewModel.getObjectUnderMouse(context.mouse, model.currentGame, true) match {
         case Some(idObject) =>
           idObject match
@@ -106,18 +125,55 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel,  cardDescripti
           Outcome(this)
         }
 
-    case MouseEvent.Move(_) =>
-      val handHitAreaUpdated = gameViewModel.currentPlayerViewModel.handViewModel.updateHitArea(context.inputState.mouse)
-      val minionBoardUpdated = gameViewModel.currentPlayerViewModel.minionBoardViewModel.updateHitArea(context.inputState.mouse)
-      val newCurrentPlayer = handHitAreaUpdated.map(handVM => minionBoardUpdated.map(minionVM => gameViewModel.currentPlayerViewModel.copy(handViewModel = handVM, minionBoardViewModel = minionVM))).flatMap(identity)
-      val waitingPlayerMinionBoardUpdated = gameViewModel.waitingPlayerViewModel.minionBoardViewModel.updateHitArea(context.inputState.mouse)
-      val newWaitingPlayer = waitingPlayerMinionBoardUpdated.map(minionVM => gameViewModel.waitingPlayerViewModel.copy(minionBoardViewModel = minionVM))
-      val newGameViewModel = newCurrentPlayer.map(currentPlayer => newWaitingPlayer.map(waitingPlayer => gameViewModel.copy(currentPlayerViewModel = currentPlayer, waitingPlayerViewModel = waitingPlayer))).flatMap(identity)
-      newGameViewModel.map(gameVM => copy(gameViewModel = gameVM))
-    case TerverakEvents.OnMouseHoverCard(card) =>
+    case TerverakEvents.OnMouseHoverCard(card) if (gameViewModel.gameState == GameState.Playing) =>
       Outcome(copy(cardDescriptionViewModel = CardDescriptionViewModel(card, true)))
+
     case TerverakEvents.OnMouseOutHoverCard() =>
       Outcome(copy(cardDescriptionViewModel = cardDescriptionViewModel.copy(isShown = false)))
+
+    case PlayEvents.ChooseTarget(handCard, effect, tail, invokingMinionIfMinionCard) =>
+      val list = (effect.target match {
+            case TargetTypeForCardEffect.AllyPlayerMinion =>
+              model.currentGame.currentPlayer.minionBoard.minions
+            case TargetTypeForCardEffect.EnemyPlayerMinion =>
+              model.currentGame.waitingPlayer.minionBoard.minions
+            case TargetTypeForCardEffect.AllMinions =>
+              model.currentGame.currentPlayer.minionBoard.minions
+              ++ model.currentGame.waitingPlayer.minionBoard.minions
+            case TargetTypeForCardEffect.AllPlayers =>
+              List(model.currentGame.currentPlayer, model.currentGame.waitingPlayer)
+            case TargetTypeForCardEffect.Everything =>
+              List(model.currentGame.currentPlayer, model.currentGame.waitingPlayer)
+              ++ model.currentGame.currentPlayer.minionBoard.minions
+              ++ model.currentGame.waitingPlayer.minionBoard.minions
+            case TargetTypeForCardEffect.AllyPlayerAndMinions =>
+              List(model.currentGame.currentPlayer)
+              ++ model.currentGame.currentPlayer.minionBoard.minions
+            case TargetTypeForCardEffect.EnemyPlayerAndMinions =>
+              List(model.currentGame.waitingPlayer)
+              ++ model.currentGame.waitingPlayer.minionBoard.minions
+          })
+      if (list.isEmpty)
+        Outcome(this).addGlobalEvents(PlayEvents.ActivateEffects(handCard, tail, invokingMinionIfMinionCard))
+      else
+        val newGame = copy(
+          cardDescriptionViewModel = cardDescriptionViewModel.copy(isShown = false),
+          gameViewModel = gameViewModel.copy(
+            gameState = GameState.ChoosingTarget(handCard, effect, tail, invokingMinionIfMinionCard, list)))
+        Outcome(newGame)
+
+    case PlayEvents.OnClickOnIdObject(idObject) =>
+      gameViewModel.gameState match {
+        case GameState.ChoosingTarget(handCard, effect, tail, invokingMinionIfMinionCard, potentialTargets) =>
+          if (potentialTargets.filter(_.id == idObject.id).isEmpty)
+            Outcome(this)
+          else
+            Outcome(copy(gameViewModel = gameViewModel.copy(gameState = GameState.Playing)))
+            .addGlobalEvents(PlayEvents.ActivateTargetEffect(idObject, handCard, effect, tail, invokingMinionIfMinionCard))
+            
+        case _ => Outcome(this)
+      }
+
     case _ => Outcome(this)
 
 }

@@ -43,7 +43,7 @@ object CardEffects {
   /**
    * A card effect that add attack to the played minion for each subtype.
    */
-  final case class AddAttackPerSubtype(amount: Int, subtype: CardSubtype, target: CardEffectTarget) extends CardEffect {
+  final case class AddAttackPerSubtype(amount: Int, subtype: CardSubtype, target: BoardSelectionForCardEffect) extends CardEffect {
     require(amount >= 0)
 
     override def activateEffect(game: Game): Game = {
@@ -67,16 +67,16 @@ object CardEffects {
     * @param amount the amount of minions destroyed
     * @param opponentOnly if true, only destroy minions on the opponent board. If false, destroy minions on both board.
     */
-  final case class DestroyRandomMinions(amount: Int, target: CardEffectTarget) extends CardEffect {
+  final case class DestroyRandomMinions(amount: Int, target: BoardSelectionForCardEffect) extends CardEffect {
     require(amount >= 0, "Amount must be equal or greater than 0")
 
     override def activateEffect(game: Game): Game = {
-      val totalMinions = if target == CardEffectTarget.WaitingPlayerMinionsBoard then game.waitingPlayer.minionBoard.minions.size else
+      val totalMinions = if target == BoardSelectionForCardEffect.WaitingPlayerMinionsBoard then game.waitingPlayer.minionBoard.minions.size else
         game.currentPlayer.minionBoard.minions.size + game.waitingPlayer.minionBoard.minions.size
 
       val randomMinions = Random.shuffle((0 until totalMinions).toList).take(amount)
 
-      if (target == CardEffectTarget.WaitingPlayerMinionsBoard) {
+      if (target == BoardSelectionForCardEffect.WaitingPlayerMinionsBoard) {
         val newWaitingPlayerMinionsBoard = game.waitingPlayer.minionBoard.copy(
           minions = game.waitingPlayer.minionBoard.minions.zipWithIndex.filterNot(minion => randomMinions.contains(minion._2)).map(_._1))
         game.copy(

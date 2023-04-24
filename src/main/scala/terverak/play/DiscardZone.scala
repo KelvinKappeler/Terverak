@@ -25,4 +25,8 @@ final case class DiscardZone(
   def addCard(card: Card): DiscardZone = {
     copy(cards = card :: cards)
   }
+
+  def addCards(newCards: List[Card]): DiscardZone = {
+    copy(cards = cards ++ newCards)
+  }
 }

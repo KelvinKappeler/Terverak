@@ -15,7 +15,7 @@ import scala.annotation.tailrec
   * A player.
   */
 final case class Player(
-  name: String,
+  id: Int,
   heroPicture: AssetName,
   maxHealthPoints: Int,
   healthPoints: Int,
@@ -24,7 +24,7 @@ final case class Player(
   hand: Hand,
   minionBoard: MinionBoard,
   discardZone: DiscardZone
-) {
+) extends IdObject {
 
   /**
     * The player takes an amount of damage.
@@ -80,7 +80,7 @@ final case class Player(
   @tailrec
   def drawCards(amount: Int): Player = {
     require(amount >= 0, "Draw amount must be equal or greater than 0")
-    if amount == 0 || hand.cards.length == hand.MaxHandSize then
+    if amount == 0 || hand.cards.length == Hand.MaxHandSize then
       this
     else if deck.cards.isEmpty then
       copy(discardZone = DiscardZone(List.empty), deck = DeckZone(discardZone.cards).shuffle())
@@ -89,6 +89,29 @@ final case class Player(
       val (newDeck, drawnCard) = deck.removeTopCard()
       val newHand = hand.addCard(drawnCard)
       copy(deck = newDeck, hand = newHand).drawCards(amount - 1)
+  }
+
+  /**
+    * Damage a specific id object.
+    * @param idObject the id object to damage
+    * @param amount the amount of damage
+    * @return the new player
+    */
+  def damageIdObject(idObject: IdObject, amount: Int): Player = {
+    require(amount >= 0, "Damage amount must be equal or greater than 0")
+
+    idObject match {
+      case minion: IdObject.MinionWithId =>
+        copy(
+          minionBoard = minionBoard.damageMinion(minion, amount),
+        )
+      case player: Player =>
+        if (player.id == id) {
+          takeDamage(amount)
+        } else {
+          this
+        }
+    }
   }
 
   /**
@@ -115,6 +138,8 @@ final case class Player(
     * @return the new player.
     */
   def refresh(): Player = {
-    copy(minionBoard = minionBoard.refresh())
+    val (newMinionBoard, deadMinions) = minionBoard.refresh()
+    val newDiscardZone = discardZone.addCards(deadMinions.map(_.card))
+    copy(minionBoard = newMinionBoard, discardZone = newDiscardZone)
   }
 }

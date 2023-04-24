@@ -12,12 +12,18 @@ import terverak.card.Card
   * An object with an id.
   */
 trait IdObject {
+
   def id: Int
 
   require(id >= 0, "Id must be positive")
 }
 
 object IdObject {
+  
+  /**
+    * The base increment for the id of an object.
+    */
+  val BaseIncrement: Int = 4
   
   /**
     * A minion on the board.

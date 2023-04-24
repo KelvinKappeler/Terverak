@@ -7,11 +7,9 @@
 package terverak.play
 
 import indigo.*
+import terverak.card.cardeffect.*
 import terverak.deckCollection.*
-import terverak.play.Hand
-import terverak.play.IdObject
-import terverak.play.IdObject.*
-import terverak.play.MinionBoard
+import terverak.play.*
 
 /**
   * The events of the game.
@@ -31,6 +29,11 @@ object PlayEvents {
     * @param minionBoard the minion board
     */
   final case class MinionBoardChanged(isCurrentPlayer: Boolean, minionBoard: MinionBoard) extends GlobalEvent
+
+  /**
+    * Triggers when the players position swap
+    */
+  final case class SwapPlayers() extends GlobalEvent
   
   /**
    * Triggers when the drag of a card stops.
@@ -64,6 +67,30 @@ object PlayEvents {
    * @param handCard the card
    */
   final case class PlayCard(handCard: IdObject.HandCard) extends GlobalEvent
+
+  /**
+    * You can use this event to activate the effects of a card.
+    * @param handCard the card
+    * @param effects the effects
+    */
+  final case class ActivateEffects(handCard: IdObject.HandCard, effects: List[CardEffect], invokingMinionIfMinionCard: Boolean) extends GlobalEvent
+
+  /**
+    * You can use this event to activate the effects of a card.
+    * @param idObject the object
+    */
+  final case class ActivateTargetEffect(idObject: IdObject, handCard: IdObject.HandCard, effect: CardEffectWithTargetChoice, effects: List[CardEffect], invokingMinionIfMinionCard: Boolean) extends GlobalEvent
+
+  /**
+    * You can use this event to choose a target for a card.
+    */
+  final case class ChooseTarget(handCard: IdObject.HandCard, effect: CardEffectWithTargetChoice, effects: List[CardEffect], invokingMinionIfMinionCard: Boolean) extends GlobalEvent
+
+  /**
+    * When the player clicks on an object.
+    * @param idObject the object
+    */
+  final case class OnClickOnIdObject(idObject: IdObject) extends GlobalEvent
 
   /**
    * You can use this event to discard a card.

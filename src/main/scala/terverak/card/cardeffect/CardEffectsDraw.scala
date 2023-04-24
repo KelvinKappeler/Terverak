@@ -33,7 +33,7 @@ object CardEffectsDraw {
   /**
    * A card effect that draw cards for each subtype on the board.
    */
-  final case class DrawCardPerSubtype(amount: Int, subtype: CardSubtype, target: CardEffectTarget) extends CardEffect {
+  final case class DrawCardPerSubtype(amount: Int, subtype: CardSubtype, target: BoardSelectionForCardEffect) extends CardEffect {
     require(amount >= 0)
 
     override def activateEffect(game: Game): Game = {

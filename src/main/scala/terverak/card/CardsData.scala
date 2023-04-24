@@ -23,25 +23,26 @@ object CardsData {
       "Bato",
       "Small boat chilling in the water.",
       GameAssets.Cards.bato,
-      1,
-      Nil,
+      0,
+      List(CardEffectsDamage.DamageTarget(1, TargetTypeForCardEffect.AllMinions)),
       List(CardEffectsMana.AddMana(1)),
       Nil,
       Nil,
-      2
+      2,
+      10
     )
 
     val shinyBato: Card.MinionCard = Card.MinionCard(
       "Shiny Bato",
       "An expensive boat",
       GameAssets.Cards.shinyBato,
-      2,
-      List(CardEffectsDamage.DamageHero(1)),
+      0,
+      List(CardEffectsDamage.DamageTarget(1, TargetTypeForCardEffect.Everything)),
       List(CardEffectsMana.AddMana(2)),
       Nil,
       Nil,
       3,
-      2
+      5
     )
 
     val planet1: Card.MinionCard = Card.MinionCard(
@@ -105,7 +106,7 @@ object CardsData {
         CardEffectsHeal.HealHeroPerSubtype(
           1,
           CardSubtype.Alien,
-          CardEffectTarget.BothPlayersMinionsBoard
+          BoardSelectionForCardEffect.BothPlayersMinionsBoard
         )
       ),
       List(CardEffectsMana.AddMana(2)),
@@ -124,14 +125,14 @@ object CardsData {
         CardEffects.AddAttackPerSubtype(
           1,
           CardSubtype.Alien,
-          CardEffectTarget.CurrentPlayerMinionsBoard
+          BoardSelectionForCardEffect.CurrentPlayerMinionsBoard
         )
       ),
       List(
         CardEffectsMana.AddManaPerSubtype(
           1,
           CardSubtype.Alien,
-          CardEffectTarget.BothPlayersMinionsBoard
+          BoardSelectionForCardEffect.BothPlayersMinionsBoard
         ),
         CardEffectsDraw.DrawCard(1)
       ),
@@ -150,14 +151,14 @@ object CardsData {
         CardEffects.AddAttackPerSubtype(
           1,
           CardSubtype.Alien,
-          CardEffectTarget.CurrentPlayerMinionsBoard
+          BoardSelectionForCardEffect.CurrentPlayerMinionsBoard
         )
       ),
       List(
         CardEffectsMana.AddManaPerSubtype(
           1,
           CardSubtype.Alien,
-          CardEffectTarget.BothPlayersMinionsBoard
+          BoardSelectionForCardEffect.BothPlayersMinionsBoard
         ),
         CardEffectsDraw.DrawCard(1)
       ),
@@ -176,14 +177,14 @@ object CardsData {
         CardEffects.AddAttackPerSubtype(
           1,
           CardSubtype.Alien,
-          CardEffectTarget.CurrentPlayerMinionsBoard
+          BoardSelectionForCardEffect.CurrentPlayerMinionsBoard
         )
       ),
       List(
         CardEffectsMana.AddManaPerSubtype(
           1,
           CardSubtype.Alien,
-          CardEffectTarget.BothPlayersMinionsBoard
+          BoardSelectionForCardEffect.BothPlayersMinionsBoard
         ),
         CardEffectsDraw.DrawCard(1)
       ),
@@ -220,7 +221,7 @@ object CardsData {
         CardEffectsDraw.DrawCardPerSubtype(
           1,
           CardSubtype.Planet,
-          CardEffectTarget.CurrentPlayerMinionsBoard
+          BoardSelectionForCardEffect.CurrentPlayerMinionsBoard
         )
       ),
       List(CardEffectsMana.AddMana(1)),
@@ -232,8 +233,8 @@ object CardsData {
       "You don't want to meet him",
       GameAssets.Cards.blackHole,
       4,
-      List(CardEffects.DestroyRandomMinions(2, CardEffectTarget.WaitingPlayerMinionsBoard)),
-      List(CardEffects.DestroyRandomMinions(1, CardEffectTarget.BothPlayersMinionsBoard)),
+      List(CardEffects.DestroyRandomMinions(2, BoardSelectionForCardEffect.WaitingPlayerMinionsBoard)),
+      List(CardEffects.DestroyRandomMinions(1, BoardSelectionForCardEffect.BothPlayersMinionsBoard)),
       Nil
     )
 
@@ -242,11 +243,11 @@ object CardsData {
       "Unfortunately, this can happen.",
       GameAssets.Cards.meteor,
       4,
-      List(CardEffects.DestroyRandomMinions(2, CardEffectTarget.WaitingPlayerMinionsBoard),
-           CardEffects.DestroyRandomMinions(3, CardEffectTarget.BothPlayersMinionsBoard),
-           CardEffects.DestroyRandomMinions(4, CardEffectTarget.WaitingPlayerMinionsBoard)),
-      List(CardEffects.DestroyRandomMinions(1, CardEffectTarget.BothPlayersMinionsBoard),
-           CardEffects.DestroyRandomMinions(3, CardEffectTarget.BothPlayersMinionsBoard),
+      List(CardEffects.DestroyRandomMinions(2, BoardSelectionForCardEffect.WaitingPlayerMinionsBoard),
+           CardEffects.DestroyRandomMinions(3, BoardSelectionForCardEffect.BothPlayersMinionsBoard),
+           CardEffects.DestroyRandomMinions(4, BoardSelectionForCardEffect.WaitingPlayerMinionsBoard)),
+      List(CardEffects.DestroyRandomMinions(1, BoardSelectionForCardEffect.BothPlayersMinionsBoard),
+           CardEffects.DestroyRandomMinions(3, BoardSelectionForCardEffect.BothPlayersMinionsBoard),
            CardEffectsHeal.HealHero(3)),
       List(CardSubtype.Planet)
     )

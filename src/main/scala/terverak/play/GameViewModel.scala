@@ -13,7 +13,7 @@ import terverak.play.IdObject
 /**
   * The view model of the game.
   */
-final case class GameViewModel(currentPlayerViewModel: PlayerViewModel, waitingPlayerViewModel: PlayerViewModel) {
+final case class GameViewModel(currentPlayerViewModel: PlayerViewModel, waitingPlayerViewModel: PlayerViewModel, gameState: GameState) {
   def getObjectUnderMouse(mouse: Mouse, game: Game, currentPlayerOnly: Boolean): Option[IdObject] = {
     currentPlayerViewModel.handViewModel.getCardUnderMouse(mouse, game.currentPlayer.hand) match {
       case Some(idObject) => Some(idObject)
@@ -30,10 +30,23 @@ final case class GameViewModel(currentPlayerViewModel: PlayerViewModel, waitingP
         }
       }
     }
+
+  /*def swapPlayerPosition(model: Game): GameViewModel = {
+    val newCurrentPlayerViewModel = currentPlayerViewModel.copy(position = waitingPlayerViewModel.position).initHitArea(model.currentPlayer)
+    val newWaitingPlayerViewModel = waitingPlayerViewModel.copy(position = currentPlayerViewModel.position).initHitArea(model.waitingPlayer)
+    copy(currentPlayerViewModel = newCurrentPlayerViewModel, waitingPlayerViewModel = newWaitingPlayerViewModel)
+  }*/
+
+  def initPlayerHitArea(model: Game): GameViewModel = {
+    val newCurrentPlayerViewModel = currentPlayerViewModel.initHitArea(model.currentPlayer)
+    val newWaitingPlayerViewModel = waitingPlayerViewModel.initHitArea(model.waitingPlayer)
+    copy(currentPlayerViewModel = newCurrentPlayerViewModel, waitingPlayerViewModel = newWaitingPlayerViewModel)
   }
+
+}
 
 object GameViewModel {
 
-  val initial: GameViewModel = GameViewModel(PlayerViewModel.initialCurrentPlayer, PlayerViewModel.initialWaitingPlayer)
+  val initial: GameViewModel = GameViewModel(PlayerViewModel.initialCurrentPlayer, PlayerViewModel.initialWaitingPlayer, GameState.Playing)
 
 }

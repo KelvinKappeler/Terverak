@@ -33,7 +33,7 @@ object CardEffectsHeal {
   /**
    * A card effect that heal the hero for each alien on the board.
    */
-  final case class HealHeroPerSubtype(amount: Int, subtype: CardSubtype, target: CardEffectTarget) extends CardEffect {
+  final case class HealHeroPerSubtype(amount: Int, subtype: CardSubtype, target: BoardSelectionForCardEffect) extends CardEffect {
     require(amount >= 0)
 
     override def activateEffect(game: Game): Game = {

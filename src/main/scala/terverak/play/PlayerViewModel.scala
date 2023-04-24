@@ -7,13 +7,14 @@
 package terverak.play
 
 import indigo.*
+import indigoextras.ui.*
 import terverak.assets.*
 import terverak.utils.*
 
 /**
   * The view model of the player.
   */
-final case class PlayerViewModel(position: Point, handViewModel: HandViewModel, minionBoardViewModel: MinionBoardViewModel, discardZoneViewModel: DiscardZoneViewModel) {
+final case class PlayerViewModel(position: Point, handViewModel: HandViewModel, minionBoardViewModel: MinionBoardViewModel, discardZoneViewModel: DiscardZoneViewModel, hitArea: HitArea = HitArea(Rectangle(0, 0, 0, 0))) {
   private val bounds = Rectangle(position.x, position.y, PlayerViewModel.HeroSize.width, PlayerViewModel.HeroSize.height)
 
   /**
@@ -25,8 +26,26 @@ final case class PlayerViewModel(position: Point, handViewModel: HandViewModel, 
     mouse.wasMousePositionWithin(bounds)
   }
 
-}
+    /**
+    * Initialize the hit area of the card.
+    * @param card the card
+    * @return the card view model
+    */
+  def initHitArea(player: Player): PlayerViewModel = {
+    copy(hitArea = HitArea(bounds)
+    .withClickActions(PlayEvents.OnClickOnIdObject(player)))
+  }
 
+  /**
+   * Update the hit area of the card.
+   * @param mouse the mouse
+   * @return the outcome of the card view model
+   */
+  def updateHitArea(mouse: Mouse): Outcome[PlayerViewModel] = {
+    hitArea.update(mouse).map(ha => this.copy(hitArea = ha))
+  }
+
+}
 
 object PlayerViewModel {
   val HeroSize = Size(72, 72)

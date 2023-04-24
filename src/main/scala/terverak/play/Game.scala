@@ -43,40 +43,6 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
   }
 
   /**
-    * Activate the effect of a discard card.
-    * @param handCard the card to discard.
-    * @return the new game
-    */
-  def discardCard(handCard: HandCard): Game = {
-    val newPlayer = currentPlayer.moveHandCardToDiscardZone(handCard)
-    val newGame = copy(currentPlayer = newPlayer)
-    handCard.card.effectsWhenDiscard.foldLeft(newGame)((game, effect) => effect.activateEffect(game)).refresh()
-  }
-
-  /**
-    * Activate the effect of a playing card.
-    * @param handCard the card to play.
-    * @return the new game and a boolean that indicates if the card could be played
-    */
-  def playCard(handCard: HandCard): (Game, Boolean) = {
-    if (isCardPlayable(handCard)) {
-      val newPlayer = currentPlayer.moveHandCardToDiscardZone(handCard).removeMana(handCard.card.manaCost)
-      val newGame = copy(currentPlayer = newPlayer)
-      handCard.card match {
-        case minion: Card.MinionCard => 
-          val gameWithInvoke = CardEffects.InvokeMinion(minion).activateEffect(newGame).refresh()
-          val gameWithInvokeAndEffect = handCard.card.effectsWhenPlayed.foldLeft(gameWithInvoke)((game, effect) => effect.activateEffect(game))
-          (gameWithInvokeAndEffect, true)
-        case spell: Card.SpellCard => 
-          val gameWithEffect = handCard.card.effectsWhenPlayed.foldLeft(newGame)((game, effect) => effect.activateEffect(game))
-          (gameWithEffect, true)
-      }
-    } else {
-      (this, false)
-    }
-  }
-
-  /**
    * Check if a card can be played.
    * @param handCard the card to check
    * @return true if the card can be played, false otherwise
@@ -84,8 +50,23 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
   def isCardPlayable(handCard: HandCard): Boolean = {
     handCard.card match
       case minion: Card.MinionCard =>
-        (currentPlayer.mana >= minion.manaCost) && (currentPlayer.minionBoard.minions.length < currentPlayer.minionBoard.MaxMinionBoardSize)
+        (currentPlayer.mana >= minion.manaCost) && (currentPlayer.minionBoard.minions.length < MinionBoard.MaxMinionBoardSize)
       case spell: Card.SpellCard =>
         currentPlayer.mana >= spell.manaCost
+  }
+
+  /**
+    * Damage a specific id object.
+    * @param idObject the id object to damage
+    * @param amount the amount of damage
+    * @return the new game
+    */
+  def damageIdObject(idObject: IdObject, amount: Int): Game = {
+    require(amount >= 0, "Damage amount must be equal or greater than 0")
+
+    copy(
+      currentPlayer = currentPlayer.damageIdObject(idObject, amount),
+      waitingPlayer = waitingPlayer.damageIdObject(idObject, amount)
+    )
   }
 }

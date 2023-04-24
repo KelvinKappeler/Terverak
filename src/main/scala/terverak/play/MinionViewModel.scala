@@ -10,6 +10,7 @@ import indigo.*
 import indigoextras.ui.*
 import terverak.TerverakEvents
 import terverak.card.*
+import terverak.play.IdObject.MinionWithId
 import terverak.play.Minion
 
 /**
@@ -38,10 +39,11 @@ final case class MinionViewModel(
     * @param card the card
     * @return the card view model
     */
-  def initHitArea(card: Card): MinionViewModel = {
+  def initHitArea(card: Card, minion: MinionWithId): MinionViewModel = {
     copy(hitArea = HitArea(bounds)
     .withHoverOverActions(TerverakEvents.OnMouseHoverCard(card))
-    .withHoverOutActions(TerverakEvents.OnMouseOutHoverCard()))
+    .withHoverOutActions(TerverakEvents.OnMouseOutHoverCard())
+    .withClickActions(PlayEvents.OnClickOnIdObject(minion)))
   }
 
   /**

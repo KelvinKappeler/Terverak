@@ -15,7 +15,7 @@ import terverak.utils.StringUtils.*
 object CardEffectsDamage {
   /**
     * A card effect that damages the opponent hero.
-    * @param amount the amount of damage healed
+    * @param amount the amount of damage
     */
   final case class DamageHero(amount: Int = 0) extends CardEffect {
     require(amount >= 0, "Damage amount must be equal or greater than 0")
@@ -26,5 +26,23 @@ object CardEffectsDamage {
 
     override def toString: String = 
       "Deal " + amount + " " + getWordWithGoodPlural("damage", amount) + " to the opponent hero"
+  }
+
+  /**
+    * A card effect that damages a specific minion.
+    * @param amount the amount of damage
+    * @param targetType the target of the damage
+    */
+  final case class DamageTarget(amount: Int = 0, targetType: TargetTypeForCardEffect) extends CardEffectWithTargetChoice {
+    require(amount >= 0, "Damage amount must be equal or greater than 0")
+
+    def target = targetType
+
+    override def activateEffect(game: Game, selectedIdObject: IdObject): Game = {
+      game.damageIdObject(selectedIdObject, amount)
+    }
+
+    override def toString: String = 
+      super.toString + "Deal " + amount + " " + getWordWithGoodPlural("damage", amount) + " to the target"
   }
 }

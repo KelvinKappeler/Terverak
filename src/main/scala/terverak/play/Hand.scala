@@ -13,12 +13,7 @@ import terverak.play.IdObject.*
   * A hand of cards.
   * @param cards The cards in the hand.
   */
-final case class Hand(cards: List[HandCard]) {
-
-  /**
-    * The maximum number of cards in a hand.
-    */
-  val MaxHandSize = 7
+final case class Hand(cards: List[HandCard], baseCardId: Int) {
 
   /**
     * Adds a card to the hand.
@@ -26,7 +21,7 @@ final case class Hand(cards: List[HandCard]) {
     * @return the new hand.
     */
   def addCard(card: Card): Hand = {
-    require(cards.length < MaxHandSize, "Hand must not be full")
+    require(cards.length < Hand.MaxHandSize, "Hand must not be full")
 
     copy(cards = HandCard(card, nextId()) :: cards)
   } ensuring(_.cards.length == cards.length + 1, "Hand length must be increased by 1")
@@ -54,6 +49,13 @@ final case class Hand(cards: List[HandCard]) {
    * Compute the next id for a card in the hand. 
    */
   private def nextId(): Int = {
-    if (cards.isEmpty) 0 else cards.maxBy(_.id).id + 1
+    if (cards.isEmpty) baseCardId else cards.maxBy(_.id).id + IdObject.BaseIncrement
   }
+}
+
+object Hand {
+    /**
+    * The maximum number of cards in a hand.
+    */
+  val MaxHandSize = 7
 }
