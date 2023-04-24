@@ -41,6 +41,7 @@ object CardDescriptionView {
       val (effectsWhenDiscardString, effectsWhenDiscardLines) =
         if (viewModel.linkedCard.effectsWhenDiscard.isEmpty) ("None", 1)
         else StringUtils.getMultilinesText(viewModel.linkedCard.effectsWhenDiscard.map("- " + _).mkString(" \n "), defaultWidth, defaultFont.fontWidth)
+      logger.consoleLog(effectsWhenPlayedLines.toString)
       val descriptionOnlyMinion =
         viewModel.linkedCard match {
           case minion: Card.MinionCard =>

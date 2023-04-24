@@ -7,8 +7,6 @@
 package terverak.play
 
 import indigo.*
-import terverak.card.cardeffect.CardEffect
-import terverak.card.cardeffect.CardEffectTarget
 import terverak.deckCollection.*
 import terverak.play.Hand
 import terverak.play.IdObject
@@ -61,29 +59,18 @@ object PlayEvents {
   final case class ClearDescription() extends GlobalEvent
 
   /**
+   * You can use this event to play a card.
+   *
+   * @param handCard the card
+   */
+  final case class PlayCard(handCard: IdObject.HandCard) extends GlobalEvent
+
+  /**
    * You can use this event to discard a card.
    *
    * @param handCard the card
    */
-  final case class DiscardCard(handCard: IdObject.HandCard, targets: List[Option[MinionWithId]]) extends GlobalEvent
-
-  /**
-   * You can use this event to choose the targets of a card after the card was played.
-   *
-   * @param handCard the card
-   * @param targets the already chosen targets
-   * @param checkRemaining the remaining effects to check
-   * @param isCardPlayed true if the card was played, false if it was discarded
-   */
-  final case class ChooseTargets(handCard: IdObject.HandCard, targets: List[Option[MinionWithId]], checkRemaining: List[CardEffect], isCardPlayed: Boolean) extends GlobalEvent
-
-  /**
-   * You can use this event to play a card after checking for targets.
-   *
-   * @param handCard the card
-   * @param targets the targets
-   */
-  final case class PlayCard(handCard: IdObject.HandCard, targets: List[Option[MinionWithId]]) extends GlobalEvent
+  final case class DiscardCard(handCard: IdObject.HandCard) extends GlobalEvent
 
   /**
    * You can use this event to attack a minion.

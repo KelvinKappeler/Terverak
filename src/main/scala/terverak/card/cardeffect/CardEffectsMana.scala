@@ -8,7 +8,6 @@ package terverak.card.cardeffect
 
 import terverak.card.CardSubtype
 import terverak.play.Game
-import terverak.play.IdObject.MinionWithId
 
 /**
   * The data of the cards effects for mana.
@@ -22,7 +21,7 @@ object CardEffectsMana {
   final case class AddMana(amount: Int = 0) extends CardEffect {
     require(amount >= 0, "Mana amount must be equal or greater than 0")
 
-    override def activateEffect(game: Game, target: Option[MinionWithId]): Game = {
+    override def activateEffect(game: Game): Game = {
       game.copy(currentPlayer = game.currentPlayer.addMana(amount))
     }
 
@@ -35,8 +34,8 @@ object CardEffectsMana {
   final case class AddManaPerSubtype(amount: Int, subtype: CardSubtype, target: CardEffectTarget) extends CardEffect {
     require(amount >= 0)
 
-    override def activateEffect(game: Game, targetOption: Option[MinionWithId]): Game = {
-      AddMana(CardEffectHelper.countMinionsWithSubtype(game, subtype, target) * amount).activateEffect(game, targetOption)
+    override def activateEffect(game: Game): Game = {
+      AddMana(CardEffectHelper.countMinionsWithSubtype(game, subtype, target) * amount).activateEffect(game)
     }
 
     override def toString: String =

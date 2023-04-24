@@ -35,20 +35,21 @@ final case class PlaySceneModel(currentGame: Game) {
         .addGlobalEvents(PlayEvents.MinionBoardChanged(true, newGame.currentPlayer.minionBoard))
         .addGlobalEvents(PlayEvents.HandChanged(false, newGame.waitingPlayer.hand))
         .addGlobalEvents(PlayEvents.MinionBoardChanged(false, newGame.waitingPlayer.minionBoard))
-    case PlayEvents.DiscardCard(handCard, targets) =>
-      // Discard a card from the hand
-      val newGame = currentGame.discardCard(handCard, targets)
-      Outcome(copy(currentGame = newGame))
-        .addGlobalEvents(PlayEvents.HandChanged(true, newGame.currentPlayer.hand))
-        .addGlobalEvents(PlayEvents.MinionBoardChanged(true, newGame.currentPlayer.minionBoard))
-        .addGlobalEvents(PlayEvents.MinionBoardChanged(false, newGame.waitingPlayer.minionBoard))
-    case PlayEvents.PlayCard(handCard, targets) =>
+    case PlayEvents.PlayCard(handCard) =>
       // Play a card from the hand
-      val newGame = currentGame.playCard(handCard, targets)
+      val (newGame, wasCardPlayed) = currentGame.playCard(handCard)
+      if (wasCardPlayed) {
+        Outcome(copy(currentGame = newGame))
+          .addGlobalEvents(PlayEvents.HandChanged(true, newGame.currentPlayer.hand))
+          .addGlobalEvents(PlayEvents.MinionBoardChanged(true, newGame.currentPlayer.minionBoard))
+      } else {
+        Outcome(this)
+      }
+    case PlayEvents.DiscardCard(handCard) =>
+      // Discard a card from the hand
+      val newGame = currentGame.discardCard(handCard)
       Outcome(copy(currentGame = newGame))
         .addGlobalEvents(PlayEvents.HandChanged(true, newGame.currentPlayer.hand))
-        .addGlobalEvents(PlayEvents.MinionBoardChanged(true, newGame.currentPlayer.minionBoard))
-        .addGlobalEvents(PlayEvents.MinionBoardChanged(false, newGame.waitingPlayer.minionBoard))
     case PlayEvents.AttackOpponent(minionWithId) =>
       // Attack the opponent
       val (newWaitingPlayer, newMinion) = minionWithId.minion.attackPlayer(currentGame.waitingPlayer)

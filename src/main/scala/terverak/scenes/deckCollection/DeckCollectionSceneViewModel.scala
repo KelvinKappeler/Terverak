@@ -43,7 +43,6 @@ final case class DeckCollectionSceneViewModel(
     case TerverakEvents.OnMouseHoverCard(card) =>
       Outcome(copy(cardDescriptionViewModel = CardDescriptionViewModel(card, true)))
     case TerverakEvents.OnMouseOutHoverCard() =>
-      logger.consoleLog("Mouse out hover card")
       Outcome(copy(cardDescriptionViewModel = cardDescriptionViewModel.copy(isShown = false)))
     case _ => Outcome(this)
   }

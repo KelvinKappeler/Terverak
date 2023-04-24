@@ -7,8 +7,6 @@
 package terverak.card.cardeffect
 
 import terverak.play.Game
-import terverak.play.IdObject
-import terverak.play.IdObject.MinionWithId
 
 /**
   * A card effect
@@ -17,10 +15,7 @@ trait CardEffect {
   /**
     * Activates the effect of the card
     */
-  def activateEffect(game: Game, target: Option[MinionWithId]): Game
-
-  def targetType: CardEffectTarget = CardEffectTarget.None
+  def activateEffect(game: Game): Game
 
   override def toString: String = "Unknown effect"
 }
-

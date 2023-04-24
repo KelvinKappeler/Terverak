@@ -8,7 +8,7 @@ package terverak.card.cardeffect
 
 import terverak.card.*
 import terverak.play.Game
-import terverak.play.IdObject.*
+import terverak.play.IdObject.MinionWithId
 import terverak.play.Minion
 import terverak.utils.StringUtils.getWordWithGoodPlural
 
@@ -25,7 +25,7 @@ object CardEffects {
     */
   final case class InvokeMinion(minionCard: Card.MinionCard) extends CardEffect {
 
-    override def activateEffect(game: Game, target: Option[MinionWithId]): Game = {
+    override def activateEffect(game: Game): Game = {
       val newMinionBoard = game.currentPlayer.minionBoard.addMinion(
         Minion(minionCard, minionCard.life, minionCard.life, minionCard.damage, false)
       )
@@ -46,7 +46,7 @@ object CardEffects {
   final case class AddAttackPerSubtype(amount: Int, subtype: CardSubtype, target: CardEffectTarget) extends CardEffect {
     require(amount >= 0)
 
-    override def activateEffect(game: Game, targetOption: Option[MinionWithId]): Game = {
+    override def activateEffect(game: Game): Game = {
       val number = CardEffectHelper.countMinionsWithSubtype(game, subtype, target) * amount
       val minionToBuff = game.currentPlayer.minionBoard.minions.head
       game.copy(
@@ -70,7 +70,7 @@ object CardEffects {
   final case class DestroyRandomMinions(amount: Int, target: CardEffectTarget) extends CardEffect {
     require(amount >= 0, "Amount must be equal or greater than 0")
 
-    override def activateEffect(game: Game, target: Option[MinionWithId]): Game = {
+    override def activateEffect(game: Game): Game = {
       val totalMinions = if target == CardEffectTarget.WaitingPlayerMinionsBoard then game.waitingPlayer.minionBoard.minions.size else
         game.currentPlayer.minionBoard.minions.size + game.waitingPlayer.minionBoard.minions.size
 

@@ -6,7 +6,6 @@
 
 package terverak.play
 
-import indigo.*
 import terverak.assets.*
 import terverak.card.*
 import terverak.card.cardeffect.CardEffects
@@ -48,11 +47,10 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
     * @param handCard the card to discard.
     * @return the new game
     */
-  def discardCard(handCard: HandCard, targets: List[Option[MinionWithId]]): Game = {
-    val effectsWithTargets = handCard.card.effectsWhenDiscard.zip(targets)
+  def discardCard(handCard: HandCard): Game = {
     val newPlayer = currentPlayer.moveHandCardToDiscardZone(handCard)
     val newGame = copy(currentPlayer = newPlayer)
-    effectsWithTargets.foldLeft(newGame)((game, effect) => effect._1.activateEffect(game, effect._2)).refresh()
+    handCard.card.effectsWhenDiscard.foldLeft(newGame)((game, effect) => effect.activateEffect(game)).refresh()
   }
 
   /**
@@ -60,22 +58,22 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
     * @param handCard the card to play.
     * @return the new game and a boolean that indicates if the card could be played
     */
-  def playCard(handCard: HandCard, targets: List[Option[MinionWithId]]): Game = {
-    logger.consoleLog("Playing card " + handCard.card.name + " cards: " + handCard.toString)
-    logger.consoleLog("Player hand " + currentPlayer.hand.cards.toString)
-    val newPlayer = currentPlayer.moveHandCardToDiscardZone(handCard).removeMana(handCard.card.manaCost)
-    val newGame = copy(currentPlayer = newPlayer)
-    handCard.card match {
-      case minion: Card.MinionCard => 
-        val effectsWithTargets = handCard.card.effectsWhenPlayed.zip(targets)
-        val gameWithInvoke = CardEffects.InvokeMinion(minion).activateEffect(newGame, None).refresh()
-        val gameWithInvokeAndEffect = effectsWithTargets.foldLeft(gameWithInvoke)((game, effect) => effect._1.activateEffect(game, effect._2)).refresh()
-        gameWithInvokeAndEffect
-      case spell: Card.SpellCard => 
-        val effectsWithTargets = handCard.card.effectsWhenPlayed.zip(targets)
-        val gameWithEffect = effectsWithTargets.foldLeft(newGame)((game, effect) => effect._1.activateEffect(game, effect._2)).refresh()
-        gameWithEffect
+  def playCard(handCard: HandCard): (Game, Boolean) = {
+    if (isCardPlayable(handCard)) {
+      val newPlayer = currentPlayer.moveHandCardToDiscardZone(handCard).removeMana(handCard.card.manaCost)
+      val newGame = copy(currentPlayer = newPlayer)
+      handCard.card match {
+        case minion: Card.MinionCard => 
+          val gameWithInvoke = CardEffects.InvokeMinion(minion).activateEffect(newGame).refresh()
+          val gameWithInvokeAndEffect = handCard.card.effectsWhenPlayed.foldLeft(gameWithInvoke)((game, effect) => effect.activateEffect(game))
+          (gameWithInvokeAndEffect, true)
+        case spell: Card.SpellCard => 
+          val gameWithEffect = handCard.card.effectsWhenPlayed.foldLeft(newGame)((game, effect) => effect.activateEffect(game))
+          (gameWithEffect, true)
       }
+    } else {
+      (this, false)
+    }
   }
 
   /**
