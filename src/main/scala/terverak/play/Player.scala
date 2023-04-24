@@ -115,6 +115,76 @@ final case class Player(
   }
 
   /**
+    * Heals a specific id object.
+    * @param idObject the id object to heal
+    * @param amount the amount of healing
+    * @return the new player
+    */
+  def healIdObject(idObject: IdObject, amount: Int): Player = {
+    require(amount >= 0, "Healing amount must be equal or greater than 0")
+
+    idObject match {
+      case minion: IdObject.MinionWithId =>
+        copy(
+          minionBoard = minionBoard.healMinion(minion, amount),
+        )
+      case player: Player =>
+        if (player.id == id) {
+          heal(amount)
+        } else {
+          this
+        }
+    }
+  }
+
+  /**
+    * Boost the attack of a specific id object.
+    * @param idObject the id object to boost
+    * @param amount the amount of attack to boost
+    * @return the new player
+    */
+  def boostAttackOfIdObject(idObject: IdObject, amount: Int): Player = {
+    require(amount >= 0, "Attack boost amount must be equal or greater than 0")
+
+    idObject match {
+      case minion: IdObject.MinionWithId =>
+        copy(
+          minionBoard = minionBoard.boostMinionAttack(minion, amount),
+        )
+      case _ => this
+    }
+  }
+
+  /**
+    * Boost the health of a specific id object.
+    * @param idObject the id object to boost
+    * @param amount the amount of health to boost
+    * @return the new player
+    */
+  def boostHealthOfIdObject(idObject: IdObject, amount: Int): Player = {
+    require(amount >= 0, "Health boost amount must be equal or greater than 0")
+
+    idObject match {
+      case minion: IdObject.MinionWithId =>
+        copy(
+          minionBoard = minionBoard.boostMinionHealth(minion, amount),
+        )
+      case _ => this
+    }
+  }
+
+  /**
+    * Destroy a minion.
+    * @param minion
+    * @return
+    */
+  def destroyMinion(minion: IdObject.MinionWithId): Player = {
+    copy(
+      minionBoard = minionBoard.destroyMinion(minion),
+    )
+  }
+
+  /**
     * Move a card from the hand to the discard zone.
     * @param handCard the card to move.
     * @return the new player.

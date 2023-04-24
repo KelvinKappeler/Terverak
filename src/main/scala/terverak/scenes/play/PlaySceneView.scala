@@ -15,6 +15,7 @@ import terverak.deckCollection.DeckCreationViewModel
 import terverak.play.GameView
 import terverak.play.HandViewModel
 import terverak.play.PlayerViewModel
+import terverak.play.TargetChoosingView
 
 /**
   * The view of the play scene.
@@ -27,6 +28,7 @@ object PlaySceneView {
         Layer(BindingKey("game"),
           GameView.draw(model.currentGame, viewModel.gameViewModel)
           ++ CardDescriptionView.draw(viewModel.cardDescriptionViewModel, Point(HandViewModel.HandSize.width + PlayerViewModel.HeroSize.width + DeckCreationViewModel.DefaultOffsetX, 10))
+          ++ TargetChoosingView.draw(viewModel.targetChoosingViewModel, Point(HandViewModel.HandSize.width + PlayerViewModel.HeroSize.width + DeckCreationViewModel.DefaultOffsetX, 10))
         )
       )
     )

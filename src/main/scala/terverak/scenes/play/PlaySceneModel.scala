@@ -81,7 +81,7 @@ final case class PlaySceneModel(currentGame: Game) {
           case minion: Card.MinionCard =>
             val newGame = 
               if (invokingMinionIfMinionCard)
-                CardEffects.InvokeMinion(minion).activateEffect(currentGame)
+                CardEffects.InvokeMinion(minion).activateEffect(currentGame).refresh()
               else
                 currentGame
             Outcome(copy(currentGame = newGame))
@@ -94,7 +94,7 @@ final case class PlaySceneModel(currentGame: Game) {
       }
 
     case PlayEvents.ActivateTargetEffect(idObject: IdObject, handCard: IdObject.HandCard, effect: CardEffectWithTargetChoice, effects: List[CardEffect], invokingMinionIfMinionCard: Boolean) =>
-      val newGame = effect.activateEffect(currentGame, idObject)
+      val newGame = effect.activateEffect(currentGame, idObject).refresh()
       Outcome(copy(currentGame = newGame))
         .addGlobalEvents(PlayEvents.ActivateEffects(handCard, effects, invokingMinionIfMinionCard))
 

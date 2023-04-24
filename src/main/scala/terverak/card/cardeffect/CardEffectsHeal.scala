@@ -7,7 +7,7 @@
 package terverak.card.cardeffect
 
 import terverak.card.CardSubtype
-import terverak.play.Game
+import terverak.play.*
 import terverak.utils.StringUtils.getWordWithGoodPlural
 
 /**
@@ -42,5 +42,18 @@ object CardEffectsHeal {
 
     override def toString: String =
       HealHero(amount).toString + " for each " + subtype + " " + target.toString()
+  }
+
+  final case class HealTarget(amount: Int = 0, targetType: TargetTypeForCardEffect) extends CardEffectWithTargetChoice {
+    require(amount >= 0, "Healing amount must be equal or greater than 0")
+
+    def target = targetType
+
+    override def activateEffect(game: Game, selectedIdObject: IdObject): Game = {
+      game.healIdObject(selectedIdObject, amount)
+    }
+
+    override def toString: String =
+      super.toString + "Heal the target for " + amount + " health " + getWordWithGoodPlural("point", amount)
   }
 }

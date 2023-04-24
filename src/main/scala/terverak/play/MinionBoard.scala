@@ -42,6 +42,68 @@ final case class MinionBoard(minions: List[IdObject.MinionWithId], baseMinionId:
   }
 
   /**
+    * Heal a specific minion
+    * @param minionId the minionId
+    * @param amount the amount of damage
+    * @return the new board
+    */
+  def healMinion(minionId: IdObject.MinionWithId, amount: Int): MinionBoard = {
+    require(amount >= 0, "amount must be positive")
+
+    val newMinionsList = minions.map(minionWithId =>
+      if (minionWithId.id == minionId.id)
+        minionWithId.copy(minion = minionWithId.minion.heal(amount))
+      else minionWithId)
+    copy(minions = newMinionsList)
+  }
+
+  /**
+    * Boost a specific minion attack
+    * @param minionId the minionId
+    * @param amount the amount of damage
+    * @return the new board
+    */
+  def boostMinionAttack(minionId: IdObject.MinionWithId, amount: Int): MinionBoard = {
+    require(amount >= 0, "amount must be positive")
+
+    val newMinionsList = minions.map(minionWithId =>
+      if (minionWithId.id == minionId.id)
+        minionWithId.copy(minion = minionWithId.minion.boostAttack(amount))
+      else minionWithId)
+    copy(minions = newMinionsList)
+  }
+
+  /**
+    * Boost a specific minion health
+    * @param minionId the minionId
+    * @param amount the amount of damage
+    * @return the new board
+    */
+  def boostMinionHealth(minionId: IdObject.MinionWithId, amount: Int): MinionBoard = {
+    require(amount >= 0, "amount must be positive")
+
+    val newMinionsList = minions.map(minionWithId =>
+      if (minionWithId.id == minionId.id)
+        minionWithId.copy(minion = minionWithId.minion.boostHealth(amount))
+      else minionWithId)
+    copy(minions = newMinionsList)
+  }
+
+  /**
+    * Destroy a specific minion
+    * @param minionId the minionId
+    * @return the new board
+    */
+  def destroyMinion(minionId: IdObject.MinionWithId): MinionBoard = {
+    val newMinionsList = minions.map(minionWithId =>
+      if (minionWithId.id == minionId.id)
+        minionWithId.copy(minion = minionWithId.minion.destroy())
+      else minionWithId)
+    
+    copy(minions = newMinionsList)
+  }
+
+  /**
    * Wake up all minions on the board.
    * @return the new board.
    */

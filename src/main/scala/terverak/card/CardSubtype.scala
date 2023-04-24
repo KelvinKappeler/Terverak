@@ -12,4 +12,5 @@ package terverak.card
 enum CardSubtype {
   case Planet
   case Alien
+  case Gem
 }

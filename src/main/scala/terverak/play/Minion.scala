@@ -44,6 +44,36 @@ final case class Minion(card: Card.MinionCard, maxHP: Int, healthPoints: Int, at
   }
 
   /**
+    * Boosts the attack points of the minion.
+    * @param amount the amount of attack points to boost.
+    * @return the new minion.
+    */
+  def boostAttack(amount: Int): Minion = {
+    require(amount >= 0, "Boost amount must be equal or greater than 0")
+
+    copy(attackPoints = attackPoints + amount)
+  }
+
+  /**
+    * Boosts the health points of the minion.
+    * @param amount the amount of health points to boost.
+    * @return the new minion.
+    */
+  def boostHealth(amount: Int): Minion = {
+    require(amount >= 0, "Boost amount must be equal or greater than 0")
+
+    copy(maxHP = maxHP + amount, healthPoints = healthPoints + amount)
+  }
+
+  /**
+    * Destroys the minion.
+    * @return the new minion.
+    */
+  def destroy(): Minion = {
+    copy(healthPoints = 0)
+  }
+
+  /**
     * Attacks a player.
     * @param player the player to attack.
     * @return the new player and the new minion.

@@ -19,7 +19,7 @@ import terverak.play.*
 /**
   * The view model of the play scene.
   */
-final case class PlaySceneViewModel(gameViewModel: GameViewModel,  cardDescriptionViewModel: CardDescriptionViewModel) {
+final case class PlaySceneViewModel(gameViewModel: GameViewModel,  cardDescriptionViewModel: CardDescriptionViewModel, targetChoosingViewModel: TargetChoosingViewModel) {
 
   def updateViewModel(context: SceneContext[TerverakStartupData], model: PlaySceneModel): GlobalEvent => Outcome[PlaySceneViewModel] =
     case FrameTick =>
@@ -158,6 +158,7 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel,  cardDescripti
       else
         val newGame = copy(
           cardDescriptionViewModel = cardDescriptionViewModel.copy(isShown = false),
+          targetChoosingViewModel = TargetChoosingViewModel(effect, true),
           gameViewModel = gameViewModel.copy(
             gameState = GameState.ChoosingTarget(handCard, effect, tail, invokingMinionIfMinionCard, list)))
         Outcome(newGame)
@@ -168,7 +169,7 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel,  cardDescripti
           if (potentialTargets.filter(_.id == idObject.id).isEmpty)
             Outcome(this)
           else
-            Outcome(copy(gameViewModel = gameViewModel.copy(gameState = GameState.Playing)))
+            Outcome(copy(gameViewModel = gameViewModel.copy(gameState = GameState.Playing), targetChoosingViewModel = targetChoosingViewModel.copy(isShown = false)))
             .addGlobalEvents(PlayEvents.ActivateTargetEffect(idObject, handCard, effect, tail, invokingMinionIfMinionCard))
             
         case _ => Outcome(this)
@@ -183,6 +184,6 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel,  cardDescripti
   */
 object PlaySceneViewModel {
 
-  val initial: PlaySceneViewModel = PlaySceneViewModel(GameViewModel.initial, CardDescriptionViewModel.initial)
+  val initial: PlaySceneViewModel = PlaySceneViewModel(GameViewModel.initial, CardDescriptionViewModel.initial, TargetChoosingViewModel.initial)
   
 }

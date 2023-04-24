@@ -69,4 +69,65 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
       waitingPlayer = waitingPlayer.damageIdObject(idObject, amount)
     )
   }
+
+  /**
+    * Heal a specific id object.
+    * @param idObject the id object to heal
+    * @param amount the amount of heal
+    * @return the new game
+    */
+  def healIdObject(idObject: IdObject, amount: Int): Game = {
+    require(amount >= 0, "Heal amount must be equal or greater than 0")
+
+    copy(
+      currentPlayer = currentPlayer.healIdObject(idObject, amount),
+      waitingPlayer = waitingPlayer.healIdObject(idObject, amount)
+    )
+  }
+
+  /**
+    * Boost the attack of a specific id object.
+    * @param idObject the id object to boost
+    * @param amount the amount of boost
+    * @return the new game
+    */
+  def boostAttackOfIdObject(idObject: IdObject, amount: Int): Game = {
+    require(amount >= 0, "Boost amount must be equal or greater than 0")
+
+    copy(
+      currentPlayer = currentPlayer.boostAttackOfIdObject(idObject, amount),
+      waitingPlayer = waitingPlayer.boostAttackOfIdObject(idObject, amount)
+    )
+  }
+
+  /**
+    * Boost the life of a specific id object.
+    * @param idObject the id object to boost
+    * @param amount the amount of boost
+    * @return the new game
+    */
+  def boostLifeOfIdObject(idObject: IdObject, amount: Int): Game = {
+    require(amount >= 0, "Boost amount must be equal or greater than 0")
+
+    copy(
+      currentPlayer = currentPlayer.boostHealthOfIdObject(idObject, amount),
+      waitingPlayer = waitingPlayer.boostHealthOfIdObject(idObject, amount)
+    )
+  }
+
+  /**
+    * kill a specific minion
+    * @param idObject
+    * @return
+    */
+  def destroyMinion(idObject: IdObject): Game = {
+    idObject match
+      case minionId: IdObject.MinionWithId =>
+        copy(
+          currentPlayer = currentPlayer.destroyMinion(minionId),
+          waitingPlayer = waitingPlayer.destroyMinion(minionId)
+        )
+      case _ => this
+  }
+
 }

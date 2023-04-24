@@ -8,6 +8,7 @@ package terverak.card.cardeffect
 
 import terverak.card.CardSubtype
 import terverak.play.Game
+import terverak.play.*
 
 /**
   * The data of the cards effects for mana.
@@ -40,5 +41,25 @@ object CardEffectsMana {
 
     override def toString: String =
       AddMana(amount).toString + " for each " + subtype + " " + target.toString
+  }
+
+  final case class DestroyTargetAndGiveManaForHealth(targetType: TargetTypeForCardEffect) extends CardEffectWithTargetChoice {
+    
+    def target = targetType
+
+    override def activateEffect(game: Game, selectedIdObject: IdObject): Game = {
+      val list = (game.currentPlayer.minionBoard.minions ++ game.waitingPlayer.minionBoard.minions)
+        .filter(_.id == selectedIdObject.id)
+      
+      if (list.isEmpty) {
+        game
+      } else {
+        val minion = list.head
+        val newGame = game.destroyMinion(minion)
+        newGame.copy(currentPlayer = newGame.currentPlayer.addMana(minion.minion.healthPoints))
+      }
+    }
+
+    override def toString: String = "Destroy the target, and add mana equal to its health to your mana pool"
   }
 }
