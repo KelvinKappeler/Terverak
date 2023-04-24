@@ -73,57 +73,38 @@ object CardsData {
     )
 
     val alienGreen: Card.MinionCard = Card.MinionCard(
-      "Green Guardian",
-      "A green alien",
+      "Zeneid, the green warrior",
+      "He is still trying to prove his worth to the world, but still needs to put in some more effort.",
       GameAssets.Cards.alienGreen,
-      2,
-      List(
-        CardEffectsHeal.HealHeroPerSubtype(
-          1,
-          CardSubtype.Alien,
-          BoardSelectionForCardEffect.BothPlayersMinionsBoard
-        )
-      ),
-      List(CardEffectsMana.AddMana(2)),
-      List(CardSubtype.Alien),
+      1,
       Nil,
-      2,
-      3
-    )
-
-    val alienYellow: Card.MinionCard = Card.MinionCard(
-      "Yellow Champion",
-      "A yellow alien",
-      GameAssets.Cards.alienYellow,
-      4,
-      List(
-        CardEffects.AddAttackPerSubtype(
-          1,
-          CardSubtype.Alien,
-          BoardSelectionForCardEffect.CurrentPlayerMinionsBoard
-        )
-      ),
-      List(
-        CardEffectsMana.AddManaPerSubtype(
-          1,
-          CardSubtype.Alien,
-          BoardSelectionForCardEffect.BothPlayersMinionsBoard
-        ),
-        CardEffectsDraw.DrawCard(1)
-      ),
+      List(CardEffectsMana.AddMana(1)),
       List(CardSubtype.Alien),
       Nil,
       1,
-      4
+      2
+    )
+
+    val alienYellow: Card.MinionCard = Card.MinionCard(
+      "Yeyereid, the yellow terror",
+      "Terrifyingly powerful... but at what cost.",
+      GameAssets.Cards.alienYellow,
+      4,
+      List(CardEffectsDamage.DamageHero(5, false)),
+      List(CardEffectsDamage.DamageHero(1, false)),
+      List(CardSubtype.Alien),
+      Nil,
+      7,
+      7
     )
 
     val alienBlue: Card.MinionCard = Card.MinionCard(
-      "Blue Champion",
-      "A blue alien",
+      "Terneid, the blue thinker",
+      "One day, his eyes fell on the famous mana crystals. Since then, he has never left them.",
       GameAssets.Cards.alienBlue,
       3,
       List(CardEffectsDraw.DrawCard(1)),
-      List(CardEffectsMana.AddMana(1)),
+      List(CardEffectsMana.AddMana(2)),
       List(CardSubtype.Alien),
       Nil,
       1,
@@ -131,15 +112,15 @@ object CardsData {
     )
 
     val alienRed: Card.MinionCard = Card.MinionCard(
-      "Red Champion",
-      "A red alien",
+      "Serneid, the red sprinter",
+      "He prepares so far in advance that he is never tired once on the battlefield.",
       GameAssets.Cards.alienRed,
       2,
       Nil,
       List(CardEffectsMana.AddMana(1)),
       List(CardSubtype.Alien),
-      Nil,
-      3,
+      List(MinionCardAttributesData.Sprint()),
+      2,
       2
     )
 

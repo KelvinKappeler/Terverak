@@ -15,7 +15,7 @@ object MinionCardAttributesData {
     */
   final case class Defender() extends MinionCardAttribute(
     "Defender",
-    "This minion can't attack"
+    "This minion can't attack."
   )
 
   /**
@@ -28,5 +28,13 @@ object MinionCardAttributesData {
   ) {
     require(amount >= 0, "Mana regeneration amount must be positive")
   }
+
+  /**
+    * The sprint attribute. This minion can attack during the turn it is summoned.
+    */
+  final case class Sprint() extends MinionCardAttribute(
+    "Sprint",
+    "This minion can attack during the turn it is summoned."
+  )
 
 }

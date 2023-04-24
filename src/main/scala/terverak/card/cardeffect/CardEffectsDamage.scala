@@ -14,18 +14,25 @@ import terverak.utils.StringUtils.*
   */
 object CardEffectsDamage {
   /**
-    * A card effect that damages the opponent hero.
+    * A card effect that damages a hero.
     * @param amount the amount of damage
     */
-  final case class DamageHero(amount: Int = 0) extends CardEffect {
+  final case class DamageHero(amount: Int = 0, isEnemyHero: Boolean = true) extends CardEffect {
     require(amount >= 0, "Damage amount must be equal or greater than 0")
 
     override def activateEffect(game: Game): Game = {
-      game.copy(waitingPlayer = game.waitingPlayer.takeDamage(amount))
+      if (isEnemyHero) {
+        game.copy(waitingPlayer = game.waitingPlayer.takeDamage(amount))
+      } else {
+        game.copy(currentPlayer = game.currentPlayer.takeDamage(amount))
+      }
     }
 
-    override def toString: String = 
-      "Deal " + amount + " " + getWordWithGoodPlural("damage", amount) + " to the opponent hero"
+    override def toString: String =
+      if (isEnemyHero)
+        "Deal " + amount + " " + getWordWithGoodPlural("damage", amount) + " to the opponent hero."
+      else
+        "Deal " + amount + " " + getWordWithGoodPlural("damage", amount) + " to your hero."
   }
 
   /**
@@ -43,6 +50,6 @@ object CardEffectsDamage {
     }
 
     override def toString: String = 
-      super.toString + "Deal " + amount + " " + getWordWithGoodPlural("damage", amount) + " to the target"
+      super.toString + "Deal " + amount + " " + getWordWithGoodPlural("damage", amount) + " to the target."
   }
 }

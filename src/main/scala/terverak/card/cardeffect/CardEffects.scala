@@ -26,8 +26,9 @@ object CardEffects {
   final case class InvokeMinion(minionCard: Card.MinionCard) extends CardEffect {
 
     override def activateEffect(game: Game): Game = {
+      val canAttack = minionCard.attributes.contains(MinionCardAttributesData.Sprint())
       val newMinionBoard = game.currentPlayer.minionBoard.addMinion(
-        Minion(minionCard, minionCard.life, minionCard.life, minionCard.damage, false)
+        Minion(minionCard, minionCard.life, minionCard.life, minionCard.damage, canAttack)
       )
 
       game.copy(
