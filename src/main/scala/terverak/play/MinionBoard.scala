@@ -11,7 +11,7 @@ import terverak.card.MinionCardAttributesData
 /**
   * The board of the minions for a player.
   */
-final case class MinionBoard(minions: List[IdObject.MinionWithId], baseMinionId: Int = 0) {
+final case class MinionBoard(minions: List[IdObject.MinionWithId]) {
     
   /**
     * The maximum number of minions on the board.
@@ -56,6 +56,6 @@ final case class MinionBoard(minions: List[IdObject.MinionWithId], baseMinionId:
    * Compute the next id for a minion on the board. 
    */
   private def nextId(): Int = {
-    if (minions.isEmpty) baseMinionId else minions.maxBy(_.id).id + IdObject.BaseIdIncrement
+    if (minions.isEmpty) 0 else minions.maxBy(_.id).id + 1
   }
 }

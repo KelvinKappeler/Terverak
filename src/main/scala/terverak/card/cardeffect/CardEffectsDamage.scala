@@ -18,10 +18,10 @@ object CardEffectsDamage {
     * A card effect that damages the opponent hero.
     * @param amount the amount of damage healed
     */
-  final case class DamageHero(amount: Int = 0) extends CardEffectWithoutTarget {
+  final case class DamageHero(amount: Int = 0) extends CardEffect {
     require(amount >= 0, "Damage amount must be equal or greater than 0")
 
-    override def activateEffect(game: Game): Game = {
+    override def activateEffect(game: Game, target: Option[MinionWithId]): Game = {
       game.copy(waitingPlayer = game.waitingPlayer.takeDamage(amount))
     }
 
@@ -29,7 +29,7 @@ object CardEffectsDamage {
       "Deal " + amount + " " + getWordWithGoodPlural("damage", amount) + " to the opponent hero"
   }
 
-  final case class DamageMinion(amount: Int = 0) extends CardEffectWithTarget {
+  final case class DamageMinion(amount: Int = 0) extends CardEffect {
     require(amount >= 0, "Damage amount must be equal or greater than 0")
 
     override def activateEffect(game: Game, target: Option[MinionWithId]): Game = {
@@ -43,22 +43,13 @@ object CardEffectsDamage {
               case m => m
             }
           )
-          val newWaitingPlayerMinionBoard = game.waitingPlayer.minionBoard.copy(
-            minions = game.waitingPlayer.minionBoard.minions.map {
-              case m if m.id == minion.id => MinionWithId(m.minion.takeDamage(amount), m.id)
-              case m => m
-            }
-          )
-          game.copy(
-            currentPlayer = game.currentPlayer.copy(minionBoard = newCurrentPlayerMinionBoard),
-            waitingPlayer = game.waitingPlayer.copy(minionBoard = newWaitingPlayerMinionBoard)
-          )
+          game.copy(currentPlayer = game.currentPlayer.copy(minionBoard = newCurrentPlayerMinionBoard))
       }
     }
 
-    override def targetType: CardEffectTarget = CardEffectTarget.WaitingPlayerMinionsBoard
+    override def targetType: CardEffectTarget = CardEffectTarget.CurrentPlayerMinionsBoard
 
     override def toString: String = 
-      "Choose an ennemy minion: Deal " + amount + " " + getWordWithGoodPlural("damage", amount) + " to it"
+      "Choose a minion: Deal " + amount + " " + getWordWithGoodPlural("damage", amount) + " to it"
   }
 }

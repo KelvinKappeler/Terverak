@@ -9,7 +9,6 @@ package terverak.play
 import indigo.*
 import terverak.card.cardeffect.CardEffect
 import terverak.card.cardeffect.CardEffectTarget
-import terverak.card.cardeffect.CardEffectWithTarget
 import terverak.deckCollection.*
 import terverak.play.Hand
 import terverak.play.IdObject
@@ -76,7 +75,7 @@ object PlayEvents {
    * @param checkRemaining the remaining effects to check
    * @param isCardPlayed true if the card was played, false if it was discarded
    */
-  final case class ChooseTargets(handCard: IdObject.HandCard, targets: List[Option[MinionWithId]], effectsWithTargetsToCheck: List[CardEffectWithTarget], isCardPlayed: Boolean) extends GlobalEvent
+  final case class ChooseTargets(handCard: IdObject.HandCard, targets: List[Option[MinionWithId]], checkRemaining: List[CardEffect], isCardPlayed: Boolean) extends GlobalEvent
 
   /**
    * You can use this event to play a card after checking for targets.

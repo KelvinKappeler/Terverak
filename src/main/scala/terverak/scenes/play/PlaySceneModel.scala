@@ -79,8 +79,8 @@ final case class PlaySceneModel(currentGame: Game) {
   */
 object PlaySceneModel {
 
-  private val player1: Player = Player("Player1", GameAssets.Heroes.human, 30, 30, 0, DeckZone(List.empty), Hand(List.empty, 0), MinionBoard(List.empty, 1), DiscardZone(List.empty))
-  private val player2: Player = Player("Player2", GameAssets.Heroes.troll, 30, 30, 0, DeckZone(List.empty), Hand(List.empty, 2), MinionBoard(List.empty, 4), DiscardZone(List.empty))
+  private val player1: Player = Player("Player1", GameAssets.Heroes.human, 30, 30, 0, DeckZone(List.empty), Hand(List.empty), MinionBoard(List.empty), DiscardZone(List.empty))
+  private val player2: Player = Player("Player2", GameAssets.Heroes.troll, 30, 30, 0, DeckZone(List.empty), Hand(List.empty), MinionBoard(List.empty), DiscardZone(List.empty))
 
   val initial: PlaySceneModel = PlaySceneModel(Game(player1, player2))
 }

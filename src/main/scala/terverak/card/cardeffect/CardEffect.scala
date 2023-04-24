@@ -14,27 +14,16 @@ import terverak.play.IdObject.MinionWithId
   * A card effect
   */
 trait CardEffect {
+  /**
+    * Activates the effect of the card
+    */
+  def activateEffect(game: Game, target: Option[MinionWithId]): Game
 
   //def targetType: CardEffectTarget = CardEffectTarget.None
 
   override def toString: String = "Unknown effect"
 }
 
-trait CardEffectWithoutTarget extends CardEffect {
-  /**
-  * Activates the effect of the card
-  */
-  def activateEffect(game: Game): Game
-}
-
-/**
-  * A card effect that has a target.
-  */
 trait CardEffectWithTarget extends CardEffect {
-  /**
-  * Activates the effect of the card
-  */
-  def activateEffect(game: Game, target: Option[MinionWithId]): Game
-
-  def targetType: CardEffectTarget = CardEffectTarget.None
+  def targetType: CardEffectTarget = CardEffectTarget.Minion
 }
