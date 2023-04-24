@@ -60,6 +60,7 @@ object CardEffectsMana {
       }
     }
 
-    override def toString: String = "Destroy the target, and add mana equal to its health to your mana pool"
+    override def toString: String =
+      super.toString + "Destroy the target, and add mana equal to its health to your mana pool"
   }
 }

@@ -126,7 +126,7 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel,  cardDescripti
         }
 
     case TerverakEvents.OnMouseHoverCard(card) if (gameViewModel.gameState == GameState.Playing) =>
-      Outcome(copy(cardDescriptionViewModel = CardDescriptionViewModel(card, true)))
+      Outcome(copy(cardDescriptionViewModel = cardDescriptionViewModel.copy(isShown = true, linkedCard = card)))
 
     case TerverakEvents.OnMouseOutHoverCard() =>
       Outcome(copy(cardDescriptionViewModel = cardDescriptionViewModel.copy(isShown = false)))

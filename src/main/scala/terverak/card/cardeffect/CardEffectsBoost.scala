@@ -25,7 +25,7 @@ object CardEffectsBoost {
     }    
 
     override def toString: String =
-      "Add " + amount + " " + getWordWithGoodPlural("attack point", amount) + " to the target"
+      super.toString + "Add " + amount + " " + getWordWithGoodPlural("attack point", amount) + " to the target"
   }
 
   final case class BoostMinionLife(amount: Int, targetType: TargetTypeForCardEffect) extends CardEffectWithTargetChoice {
@@ -38,6 +38,6 @@ object CardEffectsBoost {
     }    
 
     override def toString: String =
-      "Add " + amount + " " + getWordWithGoodPlural("health point", amount) + " to the target"
+      super.toString + "Add " + amount + " " + getWordWithGoodPlural("health point", amount) + " to the target"
   }
 }

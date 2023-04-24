@@ -118,8 +118,8 @@ object Deck {
         CardsData.MinionCards.alienBlue -> 2,
         CardsData.MinionCards.alienRed -> 2,
         CardsData.MinionCards.alienYellow -> 2,
-        CardsData.MinionCards.bato -> 2,
-        CardsData.MinionCards.shinyBato -> 2,
+        CardsData.SpellCards.gemOrange -> 2,
+        CardsData.SpellCards.gemRed -> 2,
       )),
     Deck(Map(
       CardsData.MinionCards.planet1 -> 2,

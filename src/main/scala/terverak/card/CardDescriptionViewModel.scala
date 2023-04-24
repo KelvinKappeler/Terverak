@@ -17,5 +17,5 @@ final case class CardDescriptionViewModel(
 )
 
 object CardDescriptionViewModel {
-  val initial = CardDescriptionViewModel(CardsData.cards.head)
+  val initial = CardDescriptionViewModel(CardsData.cards.head, false)
 }

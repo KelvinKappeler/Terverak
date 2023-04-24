@@ -20,35 +20,6 @@ object CardsData {
   /** The minion cards of the game.
     */
   object MinionCards {
-
-    val bato: Card.MinionCard = Card.MinionCard(
-      "Bato",
-      "Small boat chilling in the water.",
-      GameAssets.Cards.bato,
-      0,
-      List(CardEffectsDamage.DamageTarget(1, TargetTypeForCardEffect.AllMinions)),
-      List(CardEffectsMana.AddMana(1)),
-      Nil,
-      Nil,
-      2,
-      10
-    )
-
-    val shinyBato: Card.MinionCard = Card.MinionCard(
-      "Shiny Bato",
-      "An expensive boat",
-      GameAssets.Cards.shinyBato,
-      0,
-      List(CardEffectsDamage.DamageTarget(10, TargetTypeForCardEffect.Everything), 
-        CardEffectsHeal.HealHero(2),
-        CardEffectsDamage.DamageTarget(3, TargetTypeForCardEffect.EnemyPlayerMinion)),
-      List(CardEffectsMana.AddMana(2)),
-      Nil,
-      Nil,
-      3,
-      5
-    )
-
     val planet1: Card.MinionCard = Card.MinionCard(
       "Aethon",
       "Aethon was the cradle of an ancestral race before its destruction.",
@@ -148,59 +119,31 @@ object CardsData {
 
     val alienBlue: Card.MinionCard = Card.MinionCard(
       "Blue Champion",
-      "A yellow alien",
+      "A blue alien",
       GameAssets.Cards.alienBlue,
-      4,
-      List(
-        CardEffects.AddAttackPerSubtype(
-          1,
-          CardSubtype.Alien,
-          BoardSelectionForCardEffect.CurrentPlayerMinionsBoard
-        )
-      ),
-      List(
-        CardEffectsMana.AddManaPerSubtype(
-          1,
-          CardSubtype.Alien,
-          BoardSelectionForCardEffect.BothPlayersMinionsBoard
-        ),
-        CardEffectsDraw.DrawCard(1)
-      ),
+      3,
+      List(CardEffectsDraw.DrawCard(1)),
+      List(CardEffectsMana.AddMana(1)),
       List(CardSubtype.Alien),
       Nil,
       1,
-      4
+      3
     )
 
     val alienRed: Card.MinionCard = Card.MinionCard(
       "Red Champion",
-      "A yellow alien",
+      "A red alien",
       GameAssets.Cards.alienRed,
-      4,
-      List(
-        CardEffects.AddAttackPerSubtype(
-          1,
-          CardSubtype.Alien,
-          BoardSelectionForCardEffect.CurrentPlayerMinionsBoard
-        )
-      ),
-      List(
-        CardEffectsMana.AddManaPerSubtype(
-          1,
-          CardSubtype.Alien,
-          BoardSelectionForCardEffect.BothPlayersMinionsBoard
-        ),
-        CardEffectsDraw.DrawCard(1)
-      ),
+      2,
+      Nil,
+      List(CardEffectsMana.AddMana(1)),
       List(CardSubtype.Alien),
       Nil,
-      1,
-      4
+      3,
+      2
     )
 
     val minionCards: Set[Card.MinionCard] = Set(
-      bato,
-      shinyBato,
       planet1,
       planet2,
       planet3,
@@ -268,7 +211,7 @@ object CardsData {
 
     val gemRed: Card.SpellCard = Card.SpellCard(
       "Rubyx",
-      "A precious gem found in the ancient ruins of Aethon, it was used to heal warriors during war",
+      "A precious gem found in the ancient ruins of Aethon, it was used to heal warriors during war.",
       GameAssets.Cards.gemRed,
       1,
       List(CardEffectsBoost.BoostMinionLife(2, TargetTypeForCardEffect.AllyPlayerMinion)),
@@ -278,7 +221,7 @@ object CardsData {
 
     val gemOrange: Card.SpellCard = Card.SpellCard(
       "Aurorite",
-      "A very rare gem extracted from the mines of Arion, his shininess gives its owner astonishing power",
+      "A very rare gem extracted from the mines of Arion, his shininess gives its owner astonishing power.",
       GameAssets.Cards.gemOrange,
       1,
       List(CardEffectsBoost.BoostMinionAttack(2, TargetTypeForCardEffect.AllyPlayerMinion)),
