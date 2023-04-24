@@ -12,7 +12,6 @@ import terverak.TerverakStartupData
 import terverak.assets.*
 import terverak.card.CardDescriptionView
 import terverak.deckCollection.DeckCreationViewModel
-import terverak.play.ChooseTargetView
 import terverak.play.GameView
 import terverak.play.HandViewModel
 import terverak.play.PlayerViewModel
@@ -29,13 +28,12 @@ object PlaySceneView {
         Layer(BindingKey("game"),
           GameView.draw(model.currentGame, viewModel.gameViewModel)
           ++ 
-          (if (!viewModel.chooseTargetViewModel.isChoosingTarget) then
+          (if (!viewModel.isChoosingTarget) then
             CardDescriptionView.draw(viewModel.cardDescriptionViewModel, Point(HandViewModel.HandSize.width + PlayerViewModel.HeroSize.width + DeckCreationViewModel.DefaultOffsetX, 10))
           else
-            ChooseTargetView.draw(viewModel.chooseTargetViewModel, Point(HandViewModel.HandSize.width + PlayerViewModel.HeroSize.width + DeckCreationViewModel.DefaultOffsetX, 10))
+            TerverakText.drawText("Choose a target !", HandViewModel.HandSize.width + PlayerViewModel.HeroSize.width + DeckCreationViewModel.DefaultOffsetX, 20, 0, GameAssets.Fonts.defaultFont8, RGBA.Red)
           )
         )
       )
     )
-    
 }

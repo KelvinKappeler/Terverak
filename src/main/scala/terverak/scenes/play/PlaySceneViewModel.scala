@@ -18,18 +18,14 @@ import terverak.card.cardeffect.CardEffectTarget
 import terverak.card.cardeffect.CardEffectWithTarget
 import terverak.card.cardeffect.CardEffectWithoutTarget
 import terverak.card.cardeffect.CardEffects
-import terverak.play.ChooseTargetViewModel
 import terverak.play.GameViewModel
-import terverak.play.HandViewModel
 import terverak.play.IdObject.*
-import terverak.play.MinionBoardViewModel
 import terverak.play.PlayEvents
-import terverak.play.PlayerViewModel
 
 /**
   * The view model of the play scene.
   */
-final case class PlaySceneViewModel(gameViewModel: GameViewModel,  cardDescriptionViewModel: CardDescriptionViewModel, chooseTargetViewModel: ChooseTargetViewModel) {
+final case class PlaySceneViewModel(gameViewModel: GameViewModel,  cardDescriptionViewModel: CardDescriptionViewModel, isChoosingTarget: Boolean = false) {
 
   def updateViewModel(context: SceneContext[TerverakStartupData], model: PlaySceneModel): GlobalEvent => Outcome[PlaySceneViewModel] =
     case PlayEvents.HandChanged(isCurrentPlayer, hand) =>
@@ -72,10 +68,9 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel,  cardDescripti
             )).addGlobalEvents(PlayEvents.Drag(idObject, context.mouse.position))
         }
       } else {
-        //val refreshHand = gameViewModel.currentPlayerViewModel.handViewModel.updateCardsPosition(model.currentGame.currentPlayer.hand)
-        //val refreshMinionBoard = gameViewModel.currentPlayerViewModel.minionBoardViewModel.updateMinionsPosition(model.currentGame.currentPlayer.minionBoard)
-        //Outcome(copy(gameViewModel = gameViewModel.copy(currentPlayerViewModel = gameViewModel.currentPlayerViewModel.copy(handViewModel = refreshHand, minionBoardViewModel = refreshMinionBoard))))
-        Outcome(this)
+        val refreshHand = gameViewModel.currentPlayerViewModel.handViewModel.updateCardsPosition(model.currentGame.currentPlayer.hand)
+        val refreshMinionBoard = gameViewModel.currentPlayerViewModel.minionBoardViewModel.updateMinionsPosition(model.currentGame.currentPlayer.minionBoard)
+        Outcome(copy(gameViewModel = gameViewModel.copy(currentPlayerViewModel = gameViewModel.currentPlayerViewModel.copy(handViewModel = refreshHand, minionBoardViewModel = refreshMinionBoard))))
           .addGlobalEvents(PlayEvents.StopDrag(idObject, context.mouse.position))
       }
 
@@ -90,12 +85,9 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel,  cardDescripti
                 case c1: CardEffectWithoutTarget => acc
                 case c2: CardEffectWithTarget => acc :+ c2
             })
-              val newHandViewModel = gameViewModel.currentPlayerViewModel.handViewModel.moveUniqueCard(model.currentGame.currentPlayer.hand, handCard, Point(HandViewModel.HandSize.width + 220, gameViewModel.currentPlayerViewModel.position.y))
-              val newGameViewModel = gameViewModel.copy(currentPlayerViewModel = gameViewModel.currentPlayerViewModel.copy(handViewModel = newHandViewModel))
-              Outcome(copy(gameViewModel = newGameViewModel, chooseTargetViewModel = chooseTargetViewModel.copy(isChoosingTarget = true))).addGlobalEvents(PlayEvents.ChooseTargets(handCard, Nil, effectsWithTargets, true))
+              Outcome(copy(isChoosingTarget = true)).addGlobalEvents(PlayEvents.ChooseTargets(handCard, Nil, effectsWithTargets, true))
             } else {
-              val refreshHand = gameViewModel.currentPlayerViewModel.handViewModel.updateCardsPosition(model.currentGame.currentPlayer.hand)
-              Outcome(copy(gameViewModel = gameViewModel.copy(currentPlayerViewModel = gameViewModel.currentPlayerViewModel.copy(handViewModel = refreshHand))))
+              Outcome(this)
             }
           } else if (gameViewModel.currentPlayerViewModel.discardZoneViewModel.checkMouseOverDiscardZone(context.mouse)
             || gameViewModel.waitingPlayerViewModel.discardZoneViewModel.checkMouseOverDiscardZone(context.mouse)) {
@@ -104,26 +96,21 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel,  cardDescripti
                 case c1: CardEffectWithoutTarget => acc
                 case c2: CardEffectWithTarget => acc :+ c2
             })
-            val newHandViewModel = gameViewModel.currentPlayerViewModel.handViewModel.moveUniqueCard(model.currentGame.currentPlayer.hand, handCard, Point(HandViewModel.HandSize.width + 220, gameViewModel.currentPlayerViewModel.position.y))
-            val newGameViewModel = gameViewModel.copy(currentPlayerViewModel = gameViewModel.currentPlayerViewModel.copy(handViewModel = newHandViewModel))
-            Outcome(copy(gameViewModel = newGameViewModel, chooseTargetViewModel = chooseTargetViewModel.copy(isChoosingTarget = true))).addGlobalEvents(PlayEvents.ChooseTargets(handCard, Nil, effectsWithTargets, false))      
+            Outcome(copy(isChoosingTarget = true)).addGlobalEvents(PlayEvents.ChooseTargets(handCard, Nil, effectsWithTargets, false))      
           } else {
-            val refreshHand = gameViewModel.currentPlayerViewModel.handViewModel.updateCardsPosition(model.currentGame.currentPlayer.hand)
-            Outcome(copy(gameViewModel = gameViewModel.copy(currentPlayerViewModel = gameViewModel.currentPlayerViewModel.copy(handViewModel = refreshHand))))
+            Outcome(this)
           }
         case minion: MinionWithId =>
-          val refreshMinionBoard = gameViewModel.currentPlayerViewModel.minionBoardViewModel.updateMinionsPosition(model.currentGame.currentPlayer.minionBoard)
-          val newGameOutcome = Outcome(copy(gameViewModel = gameViewModel.copy(currentPlayerViewModel = gameViewModel.currentPlayerViewModel.copy(minionBoardViewModel = refreshMinionBoard))))
           if (gameViewModel.waitingPlayerViewModel.checkMouseOverPlayer(context.mouse)) {
-            newGameOutcome.addGlobalEvents(PlayEvents.AttackOpponent(minion))
+            Outcome(this).addGlobalEvents(PlayEvents.AttackOpponent(minion))
           } else if (gameViewModel.waitingPlayerViewModel.minionBoardViewModel.getMinionUnderMouse(context.mouse, model.currentGame.waitingPlayer.minionBoard).isDefined) {
             val attackedMinion = gameViewModel.waitingPlayerViewModel.minionBoardViewModel.getMinionUnderMouse(context.mouse, model.currentGame.waitingPlayer.minionBoard).get
-            newGameOutcome.addGlobalEvents(PlayEvents.AttackMinion(minion, attackedMinion))
+            Outcome(this).addGlobalEvents(PlayEvents.AttackMinion(minion, attackedMinion))
           } else {
-            newGameOutcome
+            Outcome(this)
           }
 
-    case MouseEvent.MouseDown(position, MouseButton.LeftMouseButton) if !chooseTargetViewModel.isChoosingTarget =>
+    case MouseEvent.MouseDown(position, MouseButton.LeftMouseButton) if !isChoosingTarget =>
       gameViewModel.getObjectUnderMouse(context.mouse, model.currentGame, true) match {
         case Some(idObject) =>
           idObject match
@@ -154,9 +141,9 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel,  cardDescripti
     case PlayEvents.ChooseTargets(handCard, targets, effectsWithTargets, played) =>
       if effectsWithTargets.isEmpty then
         if played then
-          Outcome(copy(chooseTargetViewModel = chooseTargetViewModel.copy(isChoosingTarget = false))).addGlobalEvents(PlayEvents.PlayCard(handCard, targets))
+          Outcome(copy(isChoosingTarget = false)).addGlobalEvents(PlayEvents.PlayCard(handCard, targets))
         else
-          Outcome(copy(chooseTargetViewModel = chooseTargetViewModel.copy(isChoosingTarget = false))).addGlobalEvents(PlayEvents.DiscardCard(handCard, targets))
+          Outcome(copy(isChoosingTarget = false)).addGlobalEvents(PlayEvents.DiscardCard(handCard, targets))
       else
         effectsWithTargets.head.targetType match
           case CardEffectTarget.CurrentPlayerMinionsBoard =>
@@ -212,6 +199,6 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel,  cardDescripti
   */
 object PlaySceneViewModel {
 
-  val initial: PlaySceneViewModel = PlaySceneViewModel(GameViewModel.initial, CardDescriptionViewModel.initial, ChooseTargetViewModel.initial)
+  val initial: PlaySceneViewModel = PlaySceneViewModel(GameViewModel.initial, CardDescriptionViewModel.initial)
   
 }
