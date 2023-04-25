@@ -45,5 +45,8 @@ trait CardEffectWithTargetChoice extends CardEffect {
     */
   def filterForMinions: FilterForMinions
 
-  override def toString: String = "Choose " + target.toString() + " " + filterForMinions.toString + ": "
+  override def toString: String =
+    val filterStr = filterForMinions.toString
+    if (filterStr.isEmpty()) "Choose " + target.toString() + ": "
+    else "Choose " + target.toString() + " " + filterForMinions.toString + ": "
 }
