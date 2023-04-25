@@ -22,7 +22,7 @@ object TargetChoosingView {
   
   def draw(viewModel: TargetChoosingViewModel, position: Point): Batch[SceneNode] = {
     if (viewModel.isShown) {
-      val targetText = StringUtils.getMultilinesText("Choose a target for the following effect :", defaultWidth, 8)._1
+      val targetText = StringUtils.getMultilinesText("Choose a target for the following effect: ", defaultWidth, 8)._1
       val effectText = StringUtils.getMultilinesText(viewModel.currentEffect.toString, defaultWidth, 8)._1
       TerverakText.drawText(targetText, position.x, position.y, baseDepth, defaultFont, RGBA.Red)
       ++ TerverakText.drawText(effectText, position.x, position.y + 3*textOffset, baseDepth, defaultFont, RGBA.White)

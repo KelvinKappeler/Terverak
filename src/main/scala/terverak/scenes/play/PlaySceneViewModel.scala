@@ -25,15 +25,18 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel,  cardDescripti
     case FrameTick =>
       val currentPlayerHitArea = gameViewModel.currentPlayerViewModel.updateHitArea(context.mouse)
       val waitingPlayerHitArea = gameViewModel.waitingPlayerViewModel.updateHitArea(context.mouse)
-      val newGame = currentPlayerHitArea.map(currentPlayer => waitingPlayerHitArea.map(waitingPlayer => gameViewModel.copy(currentPlayerViewModel = currentPlayer, waitingPlayerViewModel = waitingPlayer))).flatMap(identity)
+      val o1: Outcome[GameViewModel] = currentPlayerHitArea.map(currentPlayer => waitingPlayerHitArea.map(waitingPlayer => gameViewModel.copy(currentPlayerViewModel = currentPlayer, waitingPlayerViewModel = waitingPlayer))).flatMap(identity)
       
-      val handHitAreaUpdated = gameViewModel.currentPlayerViewModel.handViewModel.updateHitArea(context.inputState.mouse)
-      val minionBoardUpdated = gameViewModel.currentPlayerViewModel.minionBoardViewModel.updateHitArea(context.inputState.mouse)
-      val newCurrentPlayer = handHitAreaUpdated.map(handVM => minionBoardUpdated.map(minionVM => gameViewModel.currentPlayerViewModel.copy(handViewModel = handVM, minionBoardViewModel = minionVM))).flatMap(identity)
+      val currentPlayerHandHitAreaUpdated = gameViewModel.currentPlayerViewModel.handViewModel.updateHitArea(context.inputState.mouse)
+      val currentPlayerMinionBoardUpdated = gameViewModel.currentPlayerViewModel.minionBoardViewModel.updateHitArea(context.inputState.mouse)
+      val currentPlayer = currentPlayerHandHitAreaUpdated.map(handVM => currentPlayerMinionBoardUpdated.map(minionVM => gameViewModel.currentPlayerViewModel.copy(handViewModel = handVM, minionBoardViewModel = minionVM))).flatMap(identity)
+      val o2: Outcome[GameViewModel] = o1.flatMap(gameVM => currentPlayer.map(currentPlayer => gameVM.copy(currentPlayerViewModel = currentPlayer)))
+
       val waitingPlayerMinionBoardUpdated = gameViewModel.waitingPlayerViewModel.minionBoardViewModel.updateHitArea(context.inputState.mouse)
       val newWaitingPlayer = waitingPlayerMinionBoardUpdated.map(minionVM => gameViewModel.waitingPlayerViewModel.copy(minionBoardViewModel = minionVM))
-      val newGameViewModel = newCurrentPlayer.map(currentPlayer => newWaitingPlayer.map(waitingPlayer => gameViewModel.copy(currentPlayerViewModel = currentPlayer, waitingPlayerViewModel = waitingPlayer))).flatMap(identity)
-      newGameViewModel.flatMap(_ => newGame).map(gameVM => copy(gameViewModel = gameVM))
+      val o3: Outcome[GameViewModel] = o2.flatMap(gameVM => newWaitingPlayer.map(waitingPlayer => gameVM.copy(waitingPlayerViewModel = waitingPlayer)))
+
+      o1.flatMap(gameVM => o2.flatMap(gameVM => o3.map(gameVM => gameVM))).map(gameVM => copy(gameViewModel = gameVM))
 
     case PlayEvents.OnStartGame(_,_) =>
       Outcome(copy(gameViewModel = gameViewModel.initPlayerHitArea(model.currentGame)))
