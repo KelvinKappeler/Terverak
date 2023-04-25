@@ -120,4 +120,9 @@ object PlayEvents {
     * @param deckWaitingPlayer the deck of the waiting player
     */
   final case class OnStartGame(deckCurrentPlayer: Deck, deckWaitingPlayer: Deck) extends GlobalEvent
+
+  /**
+    * Event when the end turn button is pressed.
+    */
+  final case class EndTurn() extends GlobalEvent
 }

@@ -29,7 +29,7 @@ final case class PlaySceneModel(currentGame: Game) {
       Outcome(copy(currentGame = currentGame.copy(currentPlayer = newCurrentPlayer, waitingPlayer = newWaitingPlayer)))
       .addGlobalEvents(PlayEvents.HandChanged(true, newCurrentPlayer.hand))
       .addGlobalEvents(PlayEvents.HandChanged(false, newWaitingPlayer.hand))
-    case KeyboardEvent.KeyDown(Key.ENTER) =>
+    case PlayEvents.EndTurn() =>
       // End the turn
       val newGame = currentGame.newTurn()
       Outcome(copy(currentGame = newGame))

@@ -29,6 +29,7 @@ object PlaySceneView {
           GameView.draw(model.currentGame, viewModel.gameViewModel)
           ++ CardDescriptionView.draw(viewModel.cardDescriptionViewModel, Point(HandViewModel.HandSize.width + PlayerViewModel.HeroSize.width + DeckCreationViewModel.DefaultOffsetX, 10))
           ++ TargetChoosingView.draw(viewModel.targetChoosingViewModel, Point(HandViewModel.HandSize.width + PlayerViewModel.HeroSize.width + DeckCreationViewModel.DefaultOffsetX, 10))
+          ++ Batch(viewModel.gameViewModel.endTurnButton.draw)
         )
       )
     )

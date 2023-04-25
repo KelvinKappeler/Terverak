@@ -36,7 +36,10 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel,  cardDescripti
       val newWaitingPlayer = waitingPlayerMinionBoardUpdated.map(minionVM => gameViewModel.waitingPlayerViewModel.copy(minionBoardViewModel = minionVM))
       val o3: Outcome[GameViewModel] = o2.flatMap(gameVM => newWaitingPlayer.map(waitingPlayer => gameVM.copy(waitingPlayerViewModel = waitingPlayer)))
 
-      o1.flatMap(gameVM => o2.flatMap(gameVM => o3.map(gameVM => gameVM))).map(gameVM => copy(gameViewModel = gameVM))
+      val o4: Outcome[GameViewModel] = gameViewModel.updateEndTurnButton(context.mouse)
+
+      //merge o1,o2,o3,o4
+      o4.flatMap(gameVM => o3.flatMap(waitingPlayer => o2.flatMap(currentPlayer => o1.map(currentPlayer => PlaySceneViewModel(currentPlayer, cardDescriptionViewModel, targetChoosingViewModel)))))
 
     case PlayEvents.OnStartGame(_,_) =>
       Outcome(copy(gameViewModel = gameViewModel.initPlayerHitArea(model.currentGame)))

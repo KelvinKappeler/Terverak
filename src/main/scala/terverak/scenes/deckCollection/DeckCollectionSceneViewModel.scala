@@ -31,8 +31,7 @@ final case class DeckCollectionSceneViewModel(
       val o2 = deckCreationViewModel.updateButtons(context.inputState.mouse).map(deck => copy(deckCreationViewModel = deck))
       val o3 = cardsCatalogViewModel.updateHitArea(context.inputState.mouse).map(catalog => copy(cardsCatalogViewModel = catalog))
       val o4 = saveLoadButtons.updateButtons(context.inputState.mouse).map(buttons => copy(saveLoadButtons = buttons))
-      
-      o2.flatMap(deck => o1.flatMap(catalog => o3.flatMap(catalog2 => o4.map(buttons => catalog2))))
+      o1.flatMap(_ => o2).flatMap(_ => o3).flatMap(_ => o4)
     case DeckCollectionEvents.NextPage() =>
       Outcome(copy(cardsCatalogViewModel = cardsCatalogViewModel.nextPage(model.cardsCatalog)))
     case DeckCollectionEvents.PreviousPage() =>
@@ -42,9 +41,8 @@ final case class DeckCollectionSceneViewModel(
     case DeckCollectionEvents.SortCards(sorter) =>
       Outcome(copy(cardsCatalogViewModel = cardsCatalogViewModel.sort(sorter, model.cardsCatalog)))
     case TerverakEvents.OnMouseHoverCard(card) =>
-      Outcome(copy(cardDescriptionViewModel = cardDescriptionViewModel.copy(card, true)))
+      Outcome(copy(cardDescriptionViewModel = CardDescriptionViewModel(card, true)))
     case TerverakEvents.OnMouseOutHoverCard() =>
-      logger.consoleLog(("OK"))
       Outcome(copy(cardDescriptionViewModel = cardDescriptionViewModel.copy(isShown = false)))
     case _ => Outcome(this)
   }
