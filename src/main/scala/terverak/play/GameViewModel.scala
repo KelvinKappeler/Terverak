@@ -7,10 +7,12 @@
 package terverak.play
 
 import indigo.*
+import indigo.scenes.SceneEvent
 import indigoextras.ui.*
 import terverak.assets.GameAssets
 import terverak.play.Game
 import terverak.play.IdObject
+import terverak.scenes.menu.*
 
 /**
   * The view model of the game.
@@ -18,6 +20,7 @@ import terverak.play.IdObject
 final case class GameViewModel(currentPlayerViewModel: PlayerViewModel, waitingPlayerViewModel: PlayerViewModel, gameState: GameState) {
   
   val endTurnButton = GameViewModel.endTurnButton
+  val backToMenuButton = GameViewModel.backToMenuButton
 
   def getObjectUnderMouse(mouse: Mouse, game: Game, currentPlayerOnly: Boolean): Option[IdObject] = {
     currentPlayerViewModel.handViewModel.getCardUnderMouse(mouse, game.currentPlayer.hand) match {
@@ -42,8 +45,9 @@ final case class GameViewModel(currentPlayerViewModel: PlayerViewModel, waitingP
     copy(currentPlayerViewModel = newCurrentPlayerViewModel, waitingPlayerViewModel = newWaitingPlayerViewModel)
   }
 
-  def updateEndTurnButton(mouse: Mouse): Outcome[GameViewModel] = {
-      endTurnButton.update(mouse).map(_ => this)
+  def updateButtons(mouse: Mouse): Outcome[GameViewModel] = {
+      endTurnButton.update(mouse).map(_ => this).flatMap(_ => backToMenuButton.update(mouse).map(_ => this))
+      
   }
 
 }
@@ -62,4 +66,16 @@ object GameViewModel {
       Rectangle(HandViewModel.HandSize.width + PlayerViewModel.HeroSize.width + 10, HandViewModel.initialCurrentPlayerHand.position.y + HandViewModel.HandSize.height - 25, 72, 18),
       Depth(2),
     ).withUpActions(PlayEvents.EndTurn())
+
+  val backToMenuButton: Button = 
+    Button(
+      ButtonAssets(
+        up = Graphic(0, 0, 103, 18, 2, Material.Bitmap(GameAssets.Buttons.backToMenuButton)),
+        over = Graphic(0, 0, 103, 18, 2, Material.Bitmap(GameAssets.Buttons.backToMenuButton)),
+        down = Graphic(0, 0, 103, 18, 2, Material.Bitmap(GameAssets.Buttons.backToMenuButton))
+      ),
+      Rectangle(HandViewModel.HandSize.width + PlayerViewModel.HeroSize.width + 160,  HandViewModel.initialCurrentPlayerHand.position.y + HandViewModel.HandSize.height - 25, 103, 18),
+      Depth(2),
+    ).withUpActions(SceneEvent.JumpTo(MenuScene.name))
+
 }

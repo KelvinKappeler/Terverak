@@ -99,6 +99,7 @@ object GameAssets {
     val loadButton: AssetName = AssetName("saveButton")
 
     val endTurnButton: AssetName = AssetName("endTurnButton")
+    val backToMenuButton: AssetName = AssetName("backToMenuButton")
 
     val assets: Set[AssetType] =
       Set(
@@ -118,7 +119,8 @@ object GameAssets {
         AssetType.Image(loadButton, AssetPath(AssetCardsDirectory + "load_button.png")),
         AssetType.Image(saveButton, AssetPath(AssetCardsDirectory + "save_button.png")),
         AssetType.Image(gemButton, AssetPath(AssetCardsDirectory + "gem_button.png")),
-        AssetType.Image(endTurnButton, AssetPath(AssetCardsDirectory + "end_turn_button.png"))
+        AssetType.Image(endTurnButton, AssetPath(AssetCardsDirectory + "end_turn_button.png")),
+        AssetType.Image(backToMenuButton, AssetPath(AssetCardsDirectory + "menu_button.png"))
       )
   }
 

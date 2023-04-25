@@ -11,6 +11,7 @@ import indigo.scenes.*
 import terverak.TerverakEvents
 import terverak.TerverakStartupData
 import terverak.deckCollection.*
+import terverak.play.*
 import terverak.scenes.chooseDeck.*
 import terverak.scenes.deckCollection.*
 import terverak.scenes.play.*
@@ -18,9 +19,10 @@ import terverak.scenes.play.*
 /**
   * The model of the game over scene.
   */
-final case class GameOverSceneModel() {
+final case class GameOverSceneModel(winner: Player) {
 
   def updateModel(context: SceneContext[TerverakStartupData]): GlobalEvent => Outcome[GameOverSceneModel] = {
+    case PlayEvents.PlayerWon(player) => Outcome(this.copy(winner = player))
     case _ => Outcome(this)
   }
 
@@ -31,6 +33,6 @@ final case class GameOverSceneModel() {
   */
 object GameOverSceneModel {
 
-  val initial: GameOverSceneModel = GameOverSceneModel()
+  val initial: GameOverSceneModel = GameOverSceneModel(PlaySceneModel.initial.currentGame.currentPlayer)
 
 }

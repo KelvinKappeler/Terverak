@@ -125,4 +125,10 @@ object PlayEvents {
     * Event when the end turn button is pressed.
     */
   final case class EndTurn() extends GlobalEvent
+
+  /**
+    * Event when the game is over.
+    * @param player the player who won
+    */
+  final case class PlayerWon(player: Player) extends GlobalEvent
 }

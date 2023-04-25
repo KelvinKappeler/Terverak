@@ -21,6 +21,16 @@ object GameOverSceneView {
     Outcome(
       SceneUpdateFragment.empty.addLayer(
         Layer(BindingKey("GameOverLayer"),
+        TerverakText.drawText("War is over, congratulations to the winner :" , 10, 10, 1, GameAssets.Fonts.defaultFont8, RGBA.Tomato)
+        ++ Batch(Graphic(
+              10,
+              30,
+              72,
+              72,
+              2,
+              Material.Bitmap(model.winner.heroPicture)
+            ))
+        ++ Batch(viewModel.backToMenuButton.draw)
       )
     ))
   }

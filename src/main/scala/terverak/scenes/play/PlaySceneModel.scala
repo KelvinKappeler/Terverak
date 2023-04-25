@@ -22,11 +22,12 @@ final case class PlaySceneModel(currentGame: Game) {
 
   def updateModel(context: SceneContext[TerverakStartupData]): GlobalEvent => Outcome[PlaySceneModel] =
     case PlayEvents.OnStartGame(deck1, deck2) =>
-      val newCurrentDeckZone = currentGame.currentPlayer.deck.copy(cards = deck1.cards()).shuffle()
-      val newWaitingDeckZone = currentGame.waitingPlayer.deck.copy(cards = deck2.cards()).shuffle()
-      val newCurrentPlayer = currentGame.currentPlayer.copy(deck = newCurrentDeckZone).drawCards(3)
-      val newWaitingPlayer = currentGame.waitingPlayer.copy(deck = newWaitingDeckZone).drawCards(3)
-      Outcome(copy(currentGame = currentGame.copy(currentPlayer = newCurrentPlayer, waitingPlayer = newWaitingPlayer)))
+      val newGame = PlaySceneModel.initial.currentGame
+      val newCurrentDeckZone = newGame.currentPlayer.deck.copy(cards = deck1.cards()).shuffle()
+      val newWaitingDeckZone = newGame.waitingPlayer.deck.copy(cards = deck2.cards()).shuffle()
+      val newCurrentPlayer = newGame.currentPlayer.copy(deck = newCurrentDeckZone).drawCards(3)
+      val newWaitingPlayer = newGame.waitingPlayer.copy(deck = newWaitingDeckZone).drawCards(3)
+      Outcome(copy(currentGame = newGame.copy(currentPlayer = newCurrentPlayer, waitingPlayer = newWaitingPlayer)))
       .addGlobalEvents(PlayEvents.HandChanged(true, newCurrentPlayer.hand))
       .addGlobalEvents(PlayEvents.HandChanged(false, newWaitingPlayer.hand))
     case PlayEvents.EndTurn() =>
@@ -121,8 +122,8 @@ final case class PlaySceneModel(currentGame: Game) {
         .addGlobalEvents(PlayEvents.MinionBoardChanged(false, newGame.waitingPlayer.minionBoard))
 
     case FrameTick =>
-      if (currentGame.currentPlayer.healthPoints <= 0) Outcome(this).addGlobalEvents(SceneEvent.JumpTo(GameOverScene.name))
-      else if (currentGame.waitingPlayer.healthPoints <= 0) Outcome(this).addGlobalEvents(SceneEvent.JumpTo(GameOverScene.name))
+      if (currentGame.currentPlayer.healthPoints <= 0) Outcome(this).addGlobalEvents(SceneEvent.JumpTo(GameOverScene.name), PlayEvents.PlayerWon(currentGame.waitingPlayer))
+      else if (currentGame.waitingPlayer.healthPoints <= 0) Outcome(this).addGlobalEvents(SceneEvent.JumpTo(GameOverScene.name), PlayEvents.PlayerWon(currentGame.currentPlayer))
       else Outcome(this)
 
     case _ => Outcome(this)
@@ -134,8 +135,8 @@ final case class PlaySceneModel(currentGame: Game) {
   */
 object PlaySceneModel {
 
-  private val player1: Player = Player(0, GameAssets.Heroes.human, 30, 30, 0, DeckZone(List.empty), Hand(List.empty, 2), MinionBoard(List.empty, 4), DiscardZone(List.empty))
-  private val player2: Player = Player(1, GameAssets.Heroes.troll, 30, 30, 0, DeckZone(List.empty), Hand(List.empty, 3), MinionBoard(List.empty, 5), DiscardZone(List.empty))
+  private val player1: Player = Player(0, GameAssets.Heroes.human, 2, 2, 0, DeckZone(List.empty), Hand(List.empty, 2), MinionBoard(List.empty, 4), DiscardZone(List.empty))
+  private val player2: Player = Player(1, GameAssets.Heroes.troll, 2, 2, 0, DeckZone(List.empty), Hand(List.empty, 3), MinionBoard(List.empty, 5), DiscardZone(List.empty))
 
   val initial: PlaySceneModel = PlaySceneModel(Game(player1, player2))
 }

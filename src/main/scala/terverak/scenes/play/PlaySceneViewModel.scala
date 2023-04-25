@@ -16,6 +16,7 @@ import terverak.card.cardeffect.*
 import terverak.play.IdObject.*
 import terverak.play.*
 
+
 /**
   * The view model of the play scene.
   */
@@ -36,7 +37,7 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel,  cardDescripti
       val newWaitingPlayer = waitingPlayerMinionBoardUpdated.map(minionVM => gameViewModel.waitingPlayerViewModel.copy(minionBoardViewModel = minionVM))
       val o3: Outcome[GameViewModel] = o2.flatMap(gameVM => newWaitingPlayer.map(waitingPlayer => gameVM.copy(waitingPlayerViewModel = waitingPlayer)))
 
-      val o4: Outcome[GameViewModel] = gameViewModel.updateEndTurnButton(context.mouse)
+      val o4: Outcome[GameViewModel] = gameViewModel.updateButtons(context.mouse)
 
       //merge o1,o2,o3
       o1.flatMap(gameVM => o2.flatMap(gameVM => o4.flatMap(gameVM => o3.map(gameVM => gameVM)))).map(gameVM => copy(gameViewModel = gameVM))
