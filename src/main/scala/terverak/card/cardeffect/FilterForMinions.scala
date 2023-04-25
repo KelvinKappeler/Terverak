@@ -19,19 +19,22 @@ trait FilterForMinions() {
 
 }
 
-final case class NoFilter() extends FilterForMinions() {
+object FilterForMinions {
+  final case class NoFilter() extends FilterForMinions() {
 
-  override def filter = _ => true
-  override def toString(): String = " : "
+    override def filter = _ => true
+    override def toString(): String = ""
 
-}
+  }
 
-/**
-  * A filter for some specific subtypes
-  * @param subtypes the subtypes to filter
-  */
-final case class FilterForSubtypes(subtypes: List[CardSubtype]) extends FilterForMinions() {
-  
-  override def filter = card => subtypes.contains(card.subtypes)
-  override def toString(): String = "of subtype " + subtypes.mkString(" or ") + " : "
+  /**
+    * A filter for some specific subtypes
+    * @param subtypes the subtypes to filter
+    */
+  final case class FilterForSubtype(subtype: CardSubtype) extends FilterForMinions() {
+
+    override def filter = card => card.subtypes.contains(subtype)
+
+    override def toString(): String = "of subtype " + subtype
+  }
 }

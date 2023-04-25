@@ -87,15 +87,11 @@ object PlanetCardsData {
     "Meteor",
     "Do not believe that a planet protects you. Space disasters are never far away.",
     GameAssets.Cards.meteor,
-    4,
-    List(CardEffects.DestroyRandomMinions(2, BoardSelectionForCardEffect.WaitingPlayerMinionsBoard),
-          CardEffects.DestroyRandomMinions(3, BoardSelectionForCardEffect.BothPlayersMinionsBoard),
-          CardEffects.DestroyRandomMinions(4, BoardSelectionForCardEffect.WaitingPlayerMinionsBoard)),
-    List(CardEffects.DestroyRandomMinions(1, BoardSelectionForCardEffect.BothPlayersMinionsBoard),
-          CardEffects.DestroyRandomMinions(3, BoardSelectionForCardEffect.BothPlayersMinionsBoard),
-          CardEffectsHeal.HealHero(3)),
+    3,
+    List(CardEffectsDamage.DestroyMinion(TargetTypeForCardEffect.AllMinions, FilterForMinions.FilterForSubtype(CardSubtype.Planet))),
+    List(CardEffectsMana.AddMana(1)),
     List(CardSubtype.Planet)
-    )
+  )
 
   val cards: Set[Card] = Set(
     planet_aethon,

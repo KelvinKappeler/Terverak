@@ -122,7 +122,7 @@ object Deck {
       PlanetCardsData.planet_arion -> 2,
       PlanetCardsData.planet_dictys -> 2,
       PlanetCardsData.planet_nereid -> 2,
-      CardsData.SpellCards.blackHoleSpell -> 2,
+      OtherCardsData.blackhole -> 2,
       PlanetCardsData.meteor -> 2,
     ))
   )

@@ -47,7 +47,7 @@ object CardEffectsHeal {
   final case class HealTarget(
     amount: Int = 0,
     target: TargetTypeForCardEffect,
-    filterForMinions: FilterForMinions = NoFilter()
+    filterForMinions: FilterForMinions = FilterForMinions.NoFilter()
   ) extends CardEffectWithTargetChoice {
     require(amount >= 0, "Healing amount must be equal or greater than 0")
 
@@ -56,6 +56,6 @@ object CardEffectsHeal {
     }
 
     override def toString: String =
-      super.toString + filterForMinions.toString + "Heal the target for " + amount + " health " + getWordWithGoodPlural("point", amount)
+      super.toString + "Heal the target for " + amount + " health " + getWordWithGoodPlural("point", amount)
   }
 }

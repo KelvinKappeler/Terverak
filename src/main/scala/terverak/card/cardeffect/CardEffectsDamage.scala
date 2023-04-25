@@ -45,7 +45,7 @@ object CardEffectsDamage {
   final case class DamageTarget(
     amount: Int = 0,
     target: TargetTypeForCardEffect = TargetTypeForCardEffect.Everything,
-    filterForMinions: FilterForMinions = NoFilter()
+    filterForMinions: FilterForMinions = FilterForMinions.NoFilter()
   ) extends CardEffectWithTargetChoice {
     require(amount >= 0, "Damage amount must be equal or greater than 0")
 
@@ -54,6 +54,29 @@ object CardEffectsDamage {
     }
 
     override def toString: String = 
-      super.toString + filterForMinions.toString + "Deal " + amount + " " + getWordWithGoodPlural("damage", amount) + " to the target."
+      super.toString + "Deal " + amount + " " + getWordWithGoodPlural("damage", amount) + " to the target."
+  }
+
+    /**
+    * A card effect that damages a specific minion.
+    * @param amount the amount of damage
+    * @param targetType the target of the damage
+    * @param targetFilter the filter to apply to the target
+    */
+  final case class DestroyMinion(
+    target: TargetTypeForCardEffect = TargetTypeForCardEffect.AllMinions,
+    filterForMinions: FilterForMinions = FilterForMinions.NoFilter()
+  ) extends CardEffectWithTargetChoice {
+    require(
+      target == TargetTypeForCardEffect.AllyPlayerMinion
+      || target == TargetTypeForCardEffect.EnemyPlayerMinion
+      || target == TargetTypeForCardEffect.AllMinions, "Target must be a minion")
+
+    override def activateEffect(game: Game, selectedIdObject: IdObject): Game = {
+      game.destroyMinion(selectedIdObject)
+    }
+
+    override def toString: String = 
+      super.toString + "Destroy the target."
   }
 }

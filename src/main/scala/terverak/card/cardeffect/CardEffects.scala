@@ -54,7 +54,7 @@ object CardEffects {
         currentPlayer = game.currentPlayer.copy(
           minionBoard = game.currentPlayer.minionBoard.copy(
             minions = game.currentPlayer.minionBoard.minions.updated(0, MinionWithId(minionToBuff.minion.copy(attackPoints = minionToBuff.minion.attackPoints + number), minionToBuff.id))
-          ) 
+          )
         )
       )
     }

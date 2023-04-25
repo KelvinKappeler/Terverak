@@ -18,7 +18,7 @@ object CardEffectsBoost {
   final case class BoostMinionAttack(
     amount: Int,
     target: TargetTypeForCardEffect,
-    filterForMinions: FilterForMinions = NoFilter()
+    filterForMinions: FilterForMinions = FilterForMinions.NoFilter()
   ) extends CardEffectWithTargetChoice {
     require(amount >= 0)
 
@@ -27,13 +27,13 @@ object CardEffectsBoost {
     }    
 
     override def toString: String =
-      super.toString + filterForMinions.toString + "Add " + amount + " " + getWordWithGoodPlural("attack point", amount) + " to the target"
+      super.toString + "Add " + amount + " " + getWordWithGoodPlural("attack point", amount) + " to the target"
   }
 
   final case class BoostMinionLife(
     amount: Int,
     target: TargetTypeForCardEffect,
-    filterForMinions: FilterForMinions = NoFilter()
+    filterForMinions: FilterForMinions = FilterForMinions.NoFilter()
   ) extends CardEffectWithTargetChoice {
     require(amount >= 0)
 
@@ -42,6 +42,6 @@ object CardEffectsBoost {
     }    
 
     override def toString: String =
-      super.toString + filterForMinions.toString + "Add " + amount + " " + getWordWithGoodPlural("health point", amount) + " to the target"
+      super.toString + "Add " + amount + " " + getWordWithGoodPlural("health point", amount) + " to the target"
   }
 }
