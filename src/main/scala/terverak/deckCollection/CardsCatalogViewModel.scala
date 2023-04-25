@@ -236,11 +236,20 @@ object CardsCatalogViewModel {
     ).withUpActions(DeckCollectionEvents.FilterCards((c: Card) => c.subtypes.contains(CardSubtype.Planet))),
     Button(
       ButtonAssets(
+        up = Graphic(0, 0, 18, 8, 2, Material.Bitmap(GameAssets.Buttons.gemButton)),
+        over = Graphic(0, 0, 18, 8, 2, Material.Bitmap(GameAssets.Buttons.gemButton)),
+        down = Graphic(0, 0, 18, 8, 2, Material.Bitmap(GameAssets.Buttons.gemButton))
+      ),
+      Rectangle(96, CardsCatalogViewModel.FilterButtonsOffsetY, 18, 8),
+      Depth(2),
+    ).withUpActions(DeckCollectionEvents.FilterCards((c: Card) => c.subtypes.contains(CardSubtype.Gem))),
+    Button(
+      ButtonAssets(
         up = Graphic(0, 0, 37, 8, 2, Material.Bitmap(GameAssets.Buttons.minionButton)),
         over = Graphic(0, 0, 37, 8, 2, Material.Bitmap(GameAssets.Buttons.minionButton)),
         down = Graphic(0, 0, 37, 8, 2, Material.Bitmap(GameAssets.Buttons.minionButton))
       ),
-      Rectangle(96, CardsCatalogViewModel.FilterButtonsOffsetY, 37, 8),
+      Rectangle(118, CardsCatalogViewModel.FilterButtonsOffsetY, 37, 8),
       Depth(2),
     ).withUpActions(DeckCollectionEvents.FilterCards((c: Card) => c match
       case _: Card.MinionCard => true
@@ -251,7 +260,7 @@ object CardsCatalogViewModel {
         over = Graphic(0, 0, 29, 8, 2, Material.Bitmap(GameAssets.Buttons.spellButton)),
         down = Graphic(0, 0, 29, 8, 2, Material.Bitmap(GameAssets.Buttons.spellButton))
       ),
-      Rectangle(137, CardsCatalogViewModel.FilterButtonsOffsetY, 29, 8),
+      Rectangle(159, CardsCatalogViewModel.FilterButtonsOffsetY, 29, 8),
       Depth(2),
     ).withUpActions(DeckCollectionEvents.FilterCards((c: Card) => c match
       case _: Card.SpellCard => true

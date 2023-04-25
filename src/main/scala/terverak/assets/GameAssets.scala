@@ -81,6 +81,7 @@ object GameAssets {
 
     val alienButton: AssetName = AssetName("alienButton")
     val planetButton: AssetName = AssetName("planetButton")
+    val gemButton: AssetName = AssetName("gemButton")
     
     val manaCostButton: AssetName = AssetName("manaCostButton")
     val attackPointsButton: AssetName = AssetName("attackPointsButton")
@@ -114,6 +115,7 @@ object GameAssets {
         AssetType.Image(playButton, AssetPath(AssetCardsDirectory + "play_button.png")),
         AssetType.Image(loadButton, AssetPath(AssetCardsDirectory + "load_button.png")),
         AssetType.Image(saveButton, AssetPath(AssetCardsDirectory + "save_button.png")),
+        AssetType.Image(gemButton, AssetPath(AssetCardsDirectory + "gem_button.png")),
       )
   }
 
