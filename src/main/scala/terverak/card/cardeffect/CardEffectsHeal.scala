@@ -44,16 +44,18 @@ object CardEffectsHeal {
       HealHero(amount).toString + " for each " + subtype + " " + target.toString()
   }
 
-  final case class HealTarget(amount: Int = 0, targetType: TargetTypeForCardEffect) extends CardEffectWithTargetChoice {
+  final case class HealTarget(
+    amount: Int = 0,
+    target: TargetTypeForCardEffect,
+    filterForMinions: FilterForMinions = NoFilter()
+  ) extends CardEffectWithTargetChoice {
     require(amount >= 0, "Healing amount must be equal or greater than 0")
-
-    def target = targetType
 
     override def activateEffect(game: Game, selectedIdObject: IdObject): Game = {
       game.healIdObject(selectedIdObject, amount)
     }
 
     override def toString: String =
-      super.toString + "Heal the target for " + amount + " health " + getWordWithGoodPlural("point", amount)
+      super.toString + filterForMinions.toString + "Heal the target for " + amount + " health " + getWordWithGoodPlural("point", amount)
   }
 }

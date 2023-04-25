@@ -15,29 +15,33 @@ import terverak.utils.StringUtils.*
   */
 object CardEffectsBoost {
 
-  final case class BoostMinionAttack(amount: Int, targetType: TargetTypeForCardEffect) extends CardEffectWithTargetChoice {
+  final case class BoostMinionAttack(
+    amount: Int,
+    target: TargetTypeForCardEffect,
+    filterForMinions: FilterForMinions = NoFilter()
+  ) extends CardEffectWithTargetChoice {
     require(amount >= 0)
-
-    def target = targetType
 
     override def activateEffect(game: Game, selectedIdObject: IdObject): Game = {
       game.boostAttackOfIdObject(selectedIdObject, amount)
     }    
 
     override def toString: String =
-      super.toString + "Add " + amount + " " + getWordWithGoodPlural("attack point", amount) + " to the target"
+      super.toString + filterForMinions.toString + "Add " + amount + " " + getWordWithGoodPlural("attack point", amount) + " to the target"
   }
 
-  final case class BoostMinionLife(amount: Int, targetType: TargetTypeForCardEffect) extends CardEffectWithTargetChoice {
+  final case class BoostMinionLife(
+    amount: Int,
+    target: TargetTypeForCardEffect,
+    filterForMinions: FilterForMinions = NoFilter()
+  ) extends CardEffectWithTargetChoice {
     require(amount >= 0)
-
-    def target = targetType
 
     override def activateEffect(game: Game, selectedIdObject: IdObject): Game = {
       game.boostLifeOfIdObject(selectedIdObject, amount)
     }    
 
     override def toString: String =
-      super.toString + "Add " + amount + " " + getWordWithGoodPlural("health point", amount) + " to the target"
+      super.toString + filterForMinions.toString + "Add " + amount + " " + getWordWithGoodPlural("health point", amount) + " to the target"
   }
 }

@@ -43,7 +43,7 @@ trait CardEffectWithTargetChoice extends CardEffect {
     * The filter for the minions, if the target can be a minion
     * @return the filter
     */
-  def filterForMinions: Minion => Boolean = _ => true
+  def filterForMinions: FilterForMinions
 
-  override def toString: String = "Choose " + target.toString() + " : "
+  override def toString: String = "Choose " + target.toString()
 }

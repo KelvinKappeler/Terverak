@@ -134,24 +134,24 @@ final case class PlaySceneViewModel(gameViewModel: GameViewModel,  cardDescripti
     case PlayEvents.ChooseTarget(handCard, effect, tail, invokingMinionIfMinionCard) =>
       val list = (effect.target match {
             case TargetTypeForCardEffect.AllyPlayerMinion =>
-              model.currentGame.currentPlayer.minionBoard.minions
+              model.currentGame.currentPlayer.minionBoard.minions.filter(idMinion => effect.filterForMinions.filter(idMinion.minion.card))
             case TargetTypeForCardEffect.EnemyPlayerMinion =>
-              model.currentGame.waitingPlayer.minionBoard.minions
+              model.currentGame.waitingPlayer.minionBoard.minions.filter(idMinion => effect.filterForMinions.filter(idMinion.minion.card))
             case TargetTypeForCardEffect.AllMinions =>
-              model.currentGame.currentPlayer.minionBoard.minions
-              ++ model.currentGame.waitingPlayer.minionBoard.minions
+              (model.currentGame.currentPlayer.minionBoard.minions
+              ++ model.currentGame.waitingPlayer.minionBoard.minions).filter(idMinion => effect.filterForMinions.filter(idMinion.minion.card))
             case TargetTypeForCardEffect.AllPlayers =>
               List(model.currentGame.currentPlayer, model.currentGame.waitingPlayer)
             case TargetTypeForCardEffect.Everything =>
               List(model.currentGame.currentPlayer, model.currentGame.waitingPlayer)
-              ++ model.currentGame.currentPlayer.minionBoard.minions
-              ++ model.currentGame.waitingPlayer.minionBoard.minions
+              ++ (model.currentGame.currentPlayer.minionBoard.minions
+              ++ model.currentGame.waitingPlayer.minionBoard.minions).filter(idMinion => effect.filterForMinions.filter(idMinion.minion.card))
             case TargetTypeForCardEffect.AllyPlayerAndMinions =>
               List(model.currentGame.currentPlayer)
-              ++ model.currentGame.currentPlayer.minionBoard.minions
+              ++ model.currentGame.currentPlayer.minionBoard.minions.filter(idMinion => effect.filterForMinions.filter(idMinion.minion.card))
             case TargetTypeForCardEffect.EnemyPlayerAndMinions =>
               List(model.currentGame.waitingPlayer)
-              ++ model.currentGame.waitingPlayer.minionBoard.minions
+              ++ model.currentGame.waitingPlayer.minionBoard.minions.filter(idMinion => effect.filterForMinions.filter(idMinion.minion.card))
           })
       if (list.isEmpty)
         Outcome(this).addGlobalEvents(PlayEvents.ActivateEffects(handCard, tail, invokingMinionIfMinionCard))

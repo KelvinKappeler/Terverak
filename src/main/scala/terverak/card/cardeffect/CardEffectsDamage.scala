@@ -6,6 +6,7 @@
     
 package terverak.card.cardeffect
 
+import terverak.card.*
 import terverak.play.*
 import terverak.utils.StringUtils.*
 
@@ -39,17 +40,20 @@ object CardEffectsDamage {
     * A card effect that damages a specific minion.
     * @param amount the amount of damage
     * @param targetType the target of the damage
+    * @param targetFilter the filter to apply to the target
     */
-  final case class DamageTarget(amount: Int = 0, targetType: TargetTypeForCardEffect) extends CardEffectWithTargetChoice {
+  final case class DamageTarget(
+    amount: Int = 0,
+    target: TargetTypeForCardEffect = TargetTypeForCardEffect.Everything,
+    filterForMinions: FilterForMinions = NoFilter()
+  ) extends CardEffectWithTargetChoice {
     require(amount >= 0, "Damage amount must be equal or greater than 0")
-
-    def target = targetType
 
     override def activateEffect(game: Game, selectedIdObject: IdObject): Game = {
       game.damageIdObject(selectedIdObject, amount)
     }
 
     override def toString: String = 
-      super.toString + "Deal " + amount + " " + getWordWithGoodPlural("damage", amount) + " to the target."
+      super.toString + filterForMinions.toString + "Deal " + amount + " " + getWordWithGoodPlural("damage", amount) + " to the target."
   }
 }

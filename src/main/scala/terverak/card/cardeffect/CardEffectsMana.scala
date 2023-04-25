@@ -43,9 +43,10 @@ object CardEffectsMana {
       AddMana(amount).toString + " for each " + subtype + " " + target.toString
   }
 
-  final case class DestroyTargetAndGiveManaForHealth(targetType: TargetTypeForCardEffect) extends CardEffectWithTargetChoice {
-    
-    def target = targetType
+  final case class DestroyTargetAndGiveManaForHealth(
+    target: TargetTypeForCardEffect,
+    filterForMinions: FilterForMinions = NoFilter()
+  ) extends CardEffectWithTargetChoice {
 
     override def activateEffect(game: Game, selectedIdObject: IdObject): Game = {
       val list = (game.currentPlayer.minionBoard.minions ++ game.waitingPlayer.minionBoard.minions)
@@ -61,6 +62,6 @@ object CardEffectsMana {
     }
 
     override def toString: String =
-      super.toString + "Destroy the target, and add mana equal to its health to your mana pool"
+      super.toString + filterForMinions.toString + "Destroy the target, and add mana equal to its health to your mana pool"
   }
 }

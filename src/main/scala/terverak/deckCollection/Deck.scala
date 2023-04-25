@@ -7,6 +7,7 @@
 package terverak.deckCollection
 
 import terverak.card.*
+import terverak.card.data.*
 
 /**
   * A deck of cards.
@@ -105,29 +106,24 @@ object Deck {
     cards.foldLeft(Deck(Map()))((deck, card) => deck.addCard(card))
 
   // Choose a random card from CardsData
-  val initial: Deck = Deck(
-    Map(
-      CardsData.SpellCards.meteor -> 2,
-      CardsData.MinionCards.alienBlue -> 1,
-    )
-  )
+  val initial: Deck = Deck(Map.empty)
 
   val DefaultDecks: List[Deck] = List(
     Deck(Map(
-        CardsData.MinionCards.alienGreen -> 2,
-        CardsData.MinionCards.alienBlue -> 2,
-        CardsData.MinionCards.alienRed -> 2,
-        CardsData.MinionCards.alienYellow -> 2,
-        CardsData.SpellCards.gemOrange -> 2,
-        CardsData.SpellCards.gemRed -> 2,
+        AlienCardsData.alien_green -> 2,
+        AlienCardsData.alien_blue -> 2,
+        AlienCardsData.alien_red -> 2,
+        AlienCardsData.alien_yellow -> 2,
+        GemCardsData.gem_orange -> 2,
+        GemCardsData.gem_red -> 2,
       )),
     Deck(Map(
-      CardsData.MinionCards.planet1 -> 2,
-      CardsData.MinionCards.planet2 -> 2,
-      CardsData.MinionCards.planet3 -> 2,
-      CardsData.MinionCards.planet4 -> 2,
+      PlanetCardsData.planet_aethon -> 2,
+      PlanetCardsData.planet_arion -> 2,
+      PlanetCardsData.planet_dictys -> 2,
+      PlanetCardsData.planet_nereid -> 2,
       CardsData.SpellCards.blackHoleSpell -> 2,
-      CardsData.SpellCards.meteor -> 2,
+      PlanetCardsData.meteor -> 2,
     ))
   )
 }

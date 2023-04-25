@@ -6,6 +6,8 @@
     
 package terverak.card
 
+import terverak.card.data.*
+
 /**
   * The view model of a card description.
   * @param linkedCard the card linked to the description

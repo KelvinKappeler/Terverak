@@ -8,8 +8,8 @@ package terverak.deckCollection
 
 import indigo.*
 import terverak.assets.*
-import terverak.card.Card
-import terverak.card.CardsData
+import terverak.card.*
+import terverak.card.data.*
 
 /**
   * The catalog of all the cards inside the DeckCollectionScene.
