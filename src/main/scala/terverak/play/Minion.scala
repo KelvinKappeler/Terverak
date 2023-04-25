@@ -10,8 +10,8 @@ import terverak.card.Card
 
 /**
   * Represents a minion.
- *
- * @param maxHP the maximum health points of the minion.
+  *
+  * @param maxHP the maximum health points of the minion.
   * @param healthPoints the current health points of the minion.
   * @param attackPoints the attack points of the minion.
   */

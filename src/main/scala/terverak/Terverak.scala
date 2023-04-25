@@ -14,6 +14,7 @@ import terverak.scenes.chooseDeck.*
 import terverak.scenes.deckCollection.*
 import terverak.scenes.menu.*
 import terverak.scenes.play.*
+import terverak.scenes.gameOver.*
 
 import scala.scalajs.js.annotation.JSExportTopLevel
 
@@ -29,7 +30,7 @@ object Terverak extends IndigoGame[Unit, TerverakStartupData, TerverakModel, Ter
     Option(MenuScene.name)
 
   def scenes(bootData: Unit): NonEmptyList[Scene[TerverakStartupData, TerverakModel, TerverakViewModel]] =
-    NonEmptyList(MenuScene, PlayScene, DeckCollectionScene, ChooseDeckScene)
+    NonEmptyList(MenuScene, PlayScene, DeckCollectionScene, ChooseDeckScene, GameOverScene)
 
   val eventFilters: EventFilters =
     EventFilters.Permissive

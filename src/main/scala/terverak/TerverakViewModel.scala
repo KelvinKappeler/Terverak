@@ -13,6 +13,7 @@ import terverak.scenes.chooseDeck.*
 import terverak.scenes.deckCollection.*
 import terverak.scenes.menu.*
 import terverak.scenes.play.*
+import terverak.scenes.gameOver.*
 
 /**
   * The view model of the game.
@@ -24,7 +25,8 @@ final case class TerverakViewModel(
   playSceneViewModel: PlaySceneViewModel,
   menuSceneViewModel: MenuSceneViewModel,
   deckCollectionSceneViewModel: DeckCollectionSceneViewModel,
-  chooseDeckSceneViewModel: ChooseDeckSceneViewModel
+  chooseDeckSceneViewModel: ChooseDeckSceneViewModel,
+  gameOverSceneViewModel: GameOverSceneViewModel,
 )
 
 /**
@@ -35,6 +37,7 @@ object TerverakViewModel {
     PlaySceneViewModel.initial,
     MenuSceneViewModel.initial,
     DeckCollectionSceneViewModel.initial,
-    ChooseDeckSceneViewModel.initial
+    ChooseDeckSceneViewModel.initial,
+    GameOverSceneViewModel.initial,
     )
 }

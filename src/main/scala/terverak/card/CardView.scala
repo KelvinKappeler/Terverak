@@ -15,15 +15,10 @@ import terverak.utils.TerverakText
 object CardView {
 
   /** Draws a card.
-    *
-    * @param card
-    *   the card to draw
-    * @param cardViewModel
-    *   the view model of the card
-    * @param depth
-    *   the depth of the card
-    * @return
-    *   the batch of the card
+    * @param card the card to draw
+    * @param cardViewModel the view model of the card
+    * @param depth the depth of the card
+    * @return the batch of the card
     */
   def draw(
       card: Card,
