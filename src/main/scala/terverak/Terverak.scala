@@ -12,9 +12,9 @@ import terverak.assets.*
 import terverak.deckCollection.*
 import terverak.scenes.chooseDeck.*
 import terverak.scenes.deckCollection.*
+import terverak.scenes.gameOver.*
 import terverak.scenes.menu.*
 import terverak.scenes.play.*
-import terverak.scenes.gameOver.*
 
 import scala.scalajs.js.annotation.JSExportTopLevel
 

@@ -11,9 +11,9 @@ import indigo.scenes.*
 import terverak.scenes.*
 import terverak.scenes.chooseDeck.*
 import terverak.scenes.deckCollection.*
+import terverak.scenes.gameOver.*
 import terverak.scenes.menu.*
 import terverak.scenes.play.*
-import terverak.scenes.gameOver.*
 
 /**
   * The view model of the game.
