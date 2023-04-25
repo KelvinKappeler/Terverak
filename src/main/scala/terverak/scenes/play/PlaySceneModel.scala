@@ -13,6 +13,7 @@ import terverak.assets.*
 import terverak.card.*
 import terverak.card.cardeffect.*
 import terverak.play.*
+import terverak.scenes.gameOver.GameOverScene
 
 /**
   * The model of the play scene.
@@ -118,6 +119,11 @@ final case class PlaySceneModel(currentGame: Game) {
       Outcome(copy(currentGame = newGame))
         .addGlobalEvents(PlayEvents.MinionBoardChanged(true, newGame.currentPlayer.minionBoard))
         .addGlobalEvents(PlayEvents.MinionBoardChanged(false, newGame.waitingPlayer.minionBoard))
+
+    case FrameTick =>
+      if (currentGame.currentPlayer.healthPoints <= 0) Outcome(this).addGlobalEvents(SceneEvent.JumpTo(GameOverScene.name))
+      else if (currentGame.waitingPlayer.healthPoints <= 0) Outcome(this).addGlobalEvents(SceneEvent.JumpTo(GameOverScene.name))
+      else Outcome(this)
 
     case _ => Outcome(this)
 
