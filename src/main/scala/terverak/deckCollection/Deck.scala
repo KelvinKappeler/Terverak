@@ -16,20 +16,10 @@ final case class Deck(cardsWithQuantity: Map[Card, Int]) {
   require(cardsWithQuantity.forall((_, quantity) => quantity == 1 || quantity == 2), "Quantity must be between 1 and 2")
 
   /**
-    * The maximum number of cards for a deck.
-    */
-  val MaxCards: Int = 30
-
-  /**
-    * The minimum number of cards for a deck to be valid.
-    */
-  val MinCards: Int = 20
-
-  /**
     * Returns true if the deck is valid, false otherwise.
     * @return true if the deck is valid, false otherwise.
     */
-  def isValid = cardsWithQuantity.values.sum >= MinCards
+  def isValid = cardsWithQuantity.values.sum >= Deck.MinCards
 
   /**
     * Adds a card to the deck.
@@ -38,13 +28,13 @@ final case class Deck(cardsWithQuantity: Map[Card, Int]) {
     */
   def addCard(card: Card): Deck = {
     if (cardsWithQuantity.contains(card)) {
-      if (cardsWithQuantity(card) >= 2 || cardsWithQuantity.values.sum >= MaxCards) {
+      if (cardsWithQuantity(card) >= 2 || cardsWithQuantity.values.sum >= Deck.MaxCards) {
         this
       } else {
         copy(cardsWithQuantity = cardsWithQuantity.updated(card, cardsWithQuantity(card) + 1))
       }
     } else {
-      if (cardsWithQuantity.values.sum >= MaxCards || cardsWithQuantity.size >= 18) {
+      if (cardsWithQuantity.values.sum >= Deck.MaxCards || cardsWithQuantity.size >= 18) {
         this
       } else {
         copy(cardsWithQuantity = cardsWithQuantity.updated(card, 1))
@@ -92,6 +82,16 @@ final case class Deck(cardsWithQuantity: Map[Card, Int]) {
 
 object Deck {
   /**
+    * The maximum number of cards for a deck.
+    */
+  val MaxCards: Int = 30
+
+  /**
+    * The minimum number of cards for a deck to be valid.
+    */
+  val MinCards: Int = 20
+
+  /**
     * Return the deck into a list of card name
     * @return the deck into a list of card name
     */
@@ -121,18 +121,11 @@ object Deck {
         PlanetCardsData.planet_arion -> 2,
         PlanetCardsData.planet_dictys -> 2,
         PlanetCardsData.planet_nereid -> 2,
-        OtherCardsData.blackhole -> 2,
-        PlanetCardsData.meteor -> 2,
+        OtherCardsData.blackhole -> 1,
+        PlanetCardsData.meteor -> 1,
         PlanetCardsData.generous_planets -> 2,
         OtherCardsData.brownCreature -> 2,
+        OtherCardsData.bacteria -> 2,
       )),
-    /*Deck(Map(
-      PlanetCardsData.planet_aethon -> 2,
-      PlanetCardsData.planet_arion -> 2,
-      PlanetCardsData.planet_dictys -> 2,
-      PlanetCardsData.planet_nereid -> 2,
-      OtherCardsData.blackhole -> 2,
-      PlanetCardsData.meteor -> 2,
-    ))*/
   )
 }

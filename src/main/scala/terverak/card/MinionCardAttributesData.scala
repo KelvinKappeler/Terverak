@@ -6,6 +6,8 @@
   
 package terverak.card
 
+import terverak.utils.StringUtils
+
 /** The data of the cards attributes for a minion.
   */
 object MinionCardAttributesData {
@@ -35,6 +37,14 @@ object MinionCardAttributesData {
   final case class Sprint() extends MinionCardAttribute(
     "Sprint",
     "This minion can attack during the turn it is summoned."
+  )
+
+  /**
+    * The toxicity attribute. Deal damage to everyone where the damage is the attack of this minion.
+    */
+  final case class Toxicity() extends MinionCardAttribute(
+    "Toxicity",
+    "Deal X damage to everyone at the end of your turn, where X is the attack of this minion."
   )
 
 }

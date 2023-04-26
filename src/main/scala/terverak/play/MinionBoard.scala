@@ -104,6 +104,19 @@ final case class MinionBoard(minions: List[IdObject.MinionWithId], baseMinionId:
   }
 
   /**
+    * Damage all minions on the board.
+    * @param amount the amount of damage.
+    * @return the new board.
+    */
+  def damageAllMinions(amount: Int): MinionBoard = {
+    require(amount >= 0, "amount must be positive")
+
+    val newMinionsList = minions.map(minionWithId =>
+      minionWithId.copy(minion = minionWithId.minion.takeDamage(amount)))
+    copy(minions = newMinionsList)
+  }
+
+  /**
    * Wake up all minions on the board.
    * @return the new board.
    */

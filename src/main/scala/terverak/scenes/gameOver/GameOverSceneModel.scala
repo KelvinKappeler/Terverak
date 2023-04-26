@@ -19,7 +19,7 @@ import terverak.scenes.play.*
 /**
   * The model of the game over scene.
   */
-final case class GameOverSceneModel(winner: Player) {
+final case class GameOverSceneModel(winner: Option[Player]) {
 
   def updateModel(context: SceneContext[TerverakStartupData]): GlobalEvent => Outcome[GameOverSceneModel] = {
     case PlayEvents.PlayerWon(player) => Outcome(this.copy(winner = player))
@@ -33,6 +33,6 @@ final case class GameOverSceneModel(winner: Player) {
   */
 object GameOverSceneModel {
 
-  val initial: GameOverSceneModel = GameOverSceneModel(PlaySceneModel.initial.currentGame.currentPlayer)
+  val initial: GameOverSceneModel = GameOverSceneModel(None)
 
 }

@@ -19,7 +19,7 @@ object PlanetCardsData {
       "Aethon",
       "Aethon was the cradle of an ancestral race before its destruction.",
       GameAssets.Cards.planet1,
-      3,
+      1,
       Nil,
       List(CardEffectsMana.AddMana(2)),
       List(CardSubtype.Planet),
@@ -32,12 +32,12 @@ object PlanetCardsData {
     "Nereid",
     "Mother planet of the aliens and refuge of the most valiant warriors of the galaxy.",
     GameAssets.Cards.planet2,
-    3,
+    2,
     List(CardEffectsDamage.DamageHero(2)),
     List(CardEffectsMana.AddMana(1)),
     List(CardSubtype.Planet),
     List(MinionCardAttributesData.Defender(), MinionCardAttributesData.ManaRegen(1)),
-    0,
+    1,
     2
   )
 
@@ -50,7 +50,7 @@ object PlanetCardsData {
     List(CardEffectsMana.AddMana(1)),
     List(CardSubtype.Planet),
     List(MinionCardAttributesData.Defender(), MinionCardAttributesData.ManaRegen(2)),
-    0,
+    2,
     5
   )
 
@@ -58,20 +58,20 @@ object PlanetCardsData {
     "Arion",
     "Planet deserted because of the arrid climate. Only madmen would dare to live there.",
     GameAssets.Cards.planet4,
-    3,
+    2,
     Nil,
-    List(CardEffectsMana.AddMana(1)),
+    Nil,
     List(CardSubtype.Planet),
     List(MinionCardAttributesData.Defender(), MinionCardAttributesData.ManaRegen(3)),
-    0,
-    2
+    4,
+    1
   )
 
   val generous_planets: Card.SpellCard = Card.SpellCard(
     "The generous planets",
     "In addition to giving you a place to live, planets sometimes give gifts in the form of resources. This time, the cards are in your favor.",
     GameAssets.Cards.spell1,
-    2,
+    1,
     List(
       CardEffectsDraw.DrawCardPerSubtype(
         1,

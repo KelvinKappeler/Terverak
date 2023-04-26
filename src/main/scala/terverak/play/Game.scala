@@ -26,11 +26,19 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
     val wakeUpMinions = currentPlayer.minionBoard.wakeUpMinions()
     val newCurrentPlayer = currentPlayer.copy(minionBoard = wakeUpMinions).removeMana(currentPlayer.mana)
 
+    val damageToDeal = currentPlayer.minionBoard.minions
+      .foldLeft(0)((acc, minion) =>
+        acc + minion.minion.card.attributes.collectFirst { case MinionCardAttributesData.Toxicity() => minion.minion.attackPoints }.getOrElse(0))
+
     val manaToRegen = waitingPlayer.minionBoard.minions
       .foldLeft(0)((acc, minion) =>
-        acc + minion.minion.card.attributes.collectFirst { case MinionCardAttributesData.ManaRegen(amount) => amount }.getOrElse(0))
+        acc + minion.minion.card.attributes.collectFirst {
+          case MinionCardAttributesData.ManaRegen(amount) =>
+            if (minion.minion.healthPoints > damageToDeal) amount else 0
+        }.getOrElse(0))
 
-    copy(currentPlayer = waitingPlayer.startTurn().addMana(manaToRegen), waitingPlayer = newCurrentPlayer)
+    copy(currentPlayer = waitingPlayer.startTurn().addMana(manaToRegen).takeDamage(damageToDeal), waitingPlayer = newCurrentPlayer.takeDamage(damageToDeal))
+    .damageAllMinions(damageToDeal).refresh()
   }
 
   /**
@@ -67,6 +75,20 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
     copy(
       currentPlayer = currentPlayer.damageIdObject(idObject, amount),
       waitingPlayer = waitingPlayer.damageIdObject(idObject, amount)
+    )
+  }
+
+  /**
+    * Damage all minions of the game.
+    * @param amount the amount of damage
+    * @return the new game
+    */
+  def damageAllMinions(amount: Int): Game = {
+    require(amount >= 0, "Damage amount must be equal or greater than 0")
+
+    copy(
+      currentPlayer = currentPlayer.damageAllMinions(amount),
+      waitingPlayer = waitingPlayer.damageAllMinions(amount)
     )
   }
 

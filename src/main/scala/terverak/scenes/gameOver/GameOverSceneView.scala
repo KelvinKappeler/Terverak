@@ -18,18 +18,24 @@ import terverak.utils.TerverakText
 object GameOverSceneView {
   
   def updateView(context: SceneContext[TerverakStartupData], model: GameOverSceneModel, viewModel: GameOverSceneViewModel): Outcome[SceneUpdateFragment] = {
+    val playerWon = if (model.winner.isDefined) {
+      TerverakText.drawText("War is over, congratulations to the winner :" , 10, 10, 1, GameAssets.Fonts.defaultFont8, RGBA.Tomato)
+      ++ Batch(Graphic(
+            10,
+            30,
+            72,
+            72,
+            2,
+            Material.Bitmap(model.winner.get.heroPicture)
+      ))
+    } else {
+      TerverakText.drawText("It's a tie : nobody won!" , 10, 10, 1, GameAssets.Fonts.defaultFont8, RGBA.Tomato)
+    }
+
     Outcome(
       SceneUpdateFragment.empty.addLayer(
         Layer(BindingKey("GameOverLayer"),
-        TerverakText.drawText("War is over, congratulations to the winner :" , 10, 10, 1, GameAssets.Fonts.defaultFont8, RGBA.Tomato)
-        ++ Batch(Graphic(
-              10,
-              30,
-              72,
-              72,
-              2,
-              Material.Bitmap(model.winner.heroPicture)
-            ))
+        playerWon
         ++ Batch(viewModel.backToMenuButton.draw)
       )
     ))

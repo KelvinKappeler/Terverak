@@ -19,7 +19,7 @@ object CardDescriptionView {
   private val baseDepth = 100
   private val defaultFont = GameAssets.Fonts.defaultFont8
   private val textOffset = 4 + defaultFont.fontWidth
-  private val defaultWidth = 285
+  private val defaultWidth = 240
 
   /** Draws a card description.
     * @param card the card to draw

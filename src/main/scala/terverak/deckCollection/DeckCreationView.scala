@@ -56,12 +56,12 @@ object DeckCreationView {
       if (viewModel.isText) {
         val color = if (model.deck.isValid) RGBA.Green else RGBA.Red
         TerverakText.drawText(
-        model.deck.cardsWithQuantity.values.sum.toString + "/" + model.deck.MaxCards.toString,
+        model.deck.cardsWithQuantity.values.sum.toString + "/" + Deck.MaxCards.toString,
         viewModel.position.x,
         viewModel.position.y + DeckCreationViewModel.DefaultHeight + 10 + 2 * DeckCreationViewModel.DefaultOffsetY,
         30, GameAssets.Fonts.defaultFont8, color)
         ++ TerverakText.drawText(
-          StringUtils.getMultilinesText("A deck must be between 12 and 18 cards to be valid", DeckCreationViewModel.DefaultWidth, GameAssets.Fonts.defaultFont8.fontWidth)._1,
+          StringUtils.getMultilinesText("A deck must be between " + Deck.MinCards + " and " + Deck.MaxCards + " cards to be valid", DeckCreationViewModel.DefaultWidth, GameAssets.Fonts.defaultFont8.fontWidth)._1,
           viewModel.position.x,
           viewModel.position.y + DeckCreationViewModel.DefaultHeight + 4 * DeckCreationViewModel.DefaultOffsetY,
           30, GameAssets.Fonts.defaultFont8, RGBA.White)

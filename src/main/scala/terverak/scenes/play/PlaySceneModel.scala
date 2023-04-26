@@ -122,8 +122,9 @@ final case class PlaySceneModel(currentGame: Game) {
         .addGlobalEvents(PlayEvents.MinionBoardChanged(false, newGame.waitingPlayer.minionBoard))
 
     case FrameTick =>
-      if (currentGame.currentPlayer.healthPoints <= 0) Outcome(this).addGlobalEvents(SceneEvent.JumpTo(GameOverScene.name), PlayEvents.PlayerWon(currentGame.waitingPlayer))
-      else if (currentGame.waitingPlayer.healthPoints <= 0) Outcome(this).addGlobalEvents(SceneEvent.JumpTo(GameOverScene.name), PlayEvents.PlayerWon(currentGame.currentPlayer))
+      if ((currentGame.currentPlayer.healthPoints <= 0) && (currentGame.waitingPlayer.healthPoints <= 0)) Outcome(this).addGlobalEvents(SceneEvent.JumpTo(GameOverScene.name), PlayEvents.PlayerWon(None))
+      else if (currentGame.currentPlayer.healthPoints <= 0) Outcome(this).addGlobalEvents(SceneEvent.JumpTo(GameOverScene.name), PlayEvents.PlayerWon(Option(currentGame.waitingPlayer)))
+      else if (currentGame.waitingPlayer.healthPoints <= 0) Outcome(this).addGlobalEvents(SceneEvent.JumpTo(GameOverScene.name), PlayEvents.PlayerWon(Option(currentGame.currentPlayer)))
       else Outcome(this)
 
     case _ => Outcome(this)

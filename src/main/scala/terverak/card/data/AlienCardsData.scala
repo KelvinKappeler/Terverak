@@ -33,12 +33,12 @@ object AlienCardsData {
     "Terrifyingly powerful... but at what cost.",
     GameAssets.Cards.alienYellow,
     4,
-    List(CardEffectsDamage.DamageHero(5, false)),
+    List(CardEffectsDamage.DamageHero(3, false)),
     List(CardEffectsDamage.DamageHero(1, false)),
     List(CardSubtype.Alien),
     Nil,
     4,
-    6
+    5
   )
 
   val alien_blue: Card.MinionCard = Card.MinionCard(

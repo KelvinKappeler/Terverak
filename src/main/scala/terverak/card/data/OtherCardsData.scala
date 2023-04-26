@@ -38,11 +38,25 @@ object OtherCardsData {
     2
   )
 
+  val bacteria: Card.MinionCard = Card.MinionCard(
+    "Bacteria",
+    "Bacteria are the most widespread forms of life in the universe, but also the most dangerous.",
+    GameAssets.Cards.bacteria,
+    2,
+    Nil,
+    List(CardEffectsDamage.DamageEveryone(1)),
+    Nil,
+    List(MinionCardAttributesData.Toxicity()),
+    1,
+    4
+  )
+
   /**
     * The cards of the game.
     */
   val cards: Set[Card] = Set(
     blackhole,
-    brownCreature
+    brownCreature,
+    bacteria
   )
 }

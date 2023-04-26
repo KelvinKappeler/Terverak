@@ -115,6 +115,19 @@ final case class Player(
   }
 
   /**
+   * Damage all minions.
+   * @param amount the amount of damage
+   * @return the new player
+   */
+  def damageAllMinions(amount: Int): Player = {
+    require(amount >= 0, "Damage amount must be equal or greater than 0")
+
+    copy(
+      minionBoard = minionBoard.damageAllMinions(amount),
+    )
+  }
+
+  /**
     * Heals a specific id object.
     * @param idObject the id object to heal
     * @param amount the amount of healing

@@ -130,5 +130,5 @@ object PlayEvents {
     * Event when the game is over.
     * @param player the player who won
     */
-  final case class PlayerWon(player: Player) extends GlobalEvent
+  final case class PlayerWon(player: Option[Player]) extends GlobalEvent
 }

@@ -37,6 +37,38 @@ object CardEffectsDamage {
   }
 
   /**
+    * A card effect that damages all minions.
+    * @param amount the amount of damage
+    */
+  final case class DamageAllMinions(amount: Int = 0) extends CardEffect {
+    require(amount >= 0, "Damage amount must be equal or greater than 0")
+
+    override def activateEffect(game: Game): Game = {
+      game.damageAllMinions(amount)
+    }
+
+    override def toString: String =
+      "Deal " + amount + " " + getWordWithGoodPlural("damage", amount) + " to all minions."
+  }
+
+  /**
+    * A card effect that damages all minions and players.
+    * @param amount the amount of damage
+    */
+  final case class DamageEveryone(amount: Int = 0) extends CardEffect {
+    require(amount >= 0, "Damage amount must be equal or greater than 0")
+
+    override def activateEffect(game: Game): Game = {
+      val g1 = DamageHero(amount, isEnemyHero = true).activateEffect(game)
+      val g2 = DamageHero(amount, isEnemyHero = false).activateEffect(g1)
+      DamageAllMinions(amount).activateEffect(g2)
+    }
+
+    override def toString: String =
+      "Deal " + amount + " " + getWordWithGoodPlural("damage", amount) + " to everyone."
+  }
+
+  /**
     * A card effect that damages a specific minion.
     * @param amount the amount of damage
     * @param targetType the target of the damage
