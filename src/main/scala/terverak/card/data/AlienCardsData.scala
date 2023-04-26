@@ -37,8 +37,8 @@ object AlienCardsData {
     List(CardEffectsDamage.DamageHero(1, false)),
     List(CardSubtype.Alien),
     Nil,
-    7,
-    7
+    4,
+    6
   )
 
   val alien_blue: Card.MinionCard = Card.MinionCard(
@@ -50,7 +50,7 @@ object AlienCardsData {
     List(CardEffectsMana.AddMana(2)),
     List(CardSubtype.Alien),
     Nil,
-    1,
+    2,
     3
   )
 

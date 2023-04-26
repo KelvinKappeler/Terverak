@@ -18,12 +18,12 @@ final case class Deck(cardsWithQuantity: Map[Card, Int]) {
   /**
     * The maximum number of cards for a deck.
     */
-  val MaxCards: Int = 18
+  val MaxCards: Int = 30
 
   /**
     * The minimum number of cards for a deck to be valid.
     */
-  val MinCards: Int = 12
+  val MinCards: Int = 20
 
   /**
     * Returns true if the deck is valid, false otherwise.
@@ -44,7 +44,7 @@ final case class Deck(cardsWithQuantity: Map[Card, Int]) {
         copy(cardsWithQuantity = cardsWithQuantity.updated(card, cardsWithQuantity(card) + 1))
       }
     } else {
-      if (cardsWithQuantity.values.sum >= MaxCards) {
+      if (cardsWithQuantity.values.sum >= MaxCards || cardsWithQuantity.size >= 18) {
         this
       } else {
         copy(cardsWithQuantity = cardsWithQuantity.updated(card, 1))
@@ -116,14 +116,22 @@ object Deck {
         AlienCardsData.alien_yellow -> 2,
         GemCardsData.gem_orange -> 2,
         GemCardsData.gem_red -> 2,
+        GemCardsData.gem_blue -> 2,
+        PlanetCardsData.planet_aethon -> 2,
+        PlanetCardsData.planet_arion -> 2,
+        PlanetCardsData.planet_dictys -> 2,
+        PlanetCardsData.planet_nereid -> 2,
+        OtherCardsData.blackhole -> 2,
+        PlanetCardsData.meteor -> 2,
+        PlanetCardsData.generous_planets -> 2,
       )),
-    Deck(Map(
+    /*Deck(Map(
       PlanetCardsData.planet_aethon -> 2,
       PlanetCardsData.planet_arion -> 2,
       PlanetCardsData.planet_dictys -> 2,
       PlanetCardsData.planet_nereid -> 2,
       OtherCardsData.blackhole -> 2,
       PlanetCardsData.meteor -> 2,
-    ))
+    ))*/
   )
 }

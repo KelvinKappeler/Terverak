@@ -60,11 +60,11 @@ object PlanetCardsData {
     GameAssets.Cards.planet4,
     3,
     Nil,
-    Nil,
+    List(CardEffectsMana.AddMana(1)),
     List(CardSubtype.Planet),
     List(MinionCardAttributesData.Defender(), MinionCardAttributesData.ManaRegen(3)),
     0,
-    1
+    2
   )
 
   val generous_planets: Card.SpellCard = Card.SpellCard(
