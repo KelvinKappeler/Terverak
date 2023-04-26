@@ -43,5 +43,6 @@ object OtherCardsData {
     */
   val cards: Set[Card] = Set(
     blackhole,
+    brownCreature
   )
 }
