@@ -124,6 +124,7 @@ object Deck {
         OtherCardsData.blackhole -> 2,
         PlanetCardsData.meteor -> 2,
         PlanetCardsData.generous_planets -> 2,
+        OtherCardsData.brownCreature -> 2,
       )),
     /*Deck(Map(
       PlanetCardsData.planet_aethon -> 2,

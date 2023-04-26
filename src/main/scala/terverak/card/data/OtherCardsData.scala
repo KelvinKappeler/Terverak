@@ -25,6 +25,19 @@ object OtherCardsData {
       Nil
   )
 
+  val brownCreature: Card.MinionCard = Card.MinionCard(
+    "Bronzy",
+    "These cute creatures are not very intelligent, but have pretty sharp teeth.",
+    GameAssets.Cards.brownCreature,
+    2,
+    Nil,
+    List(CardEffectsMana.AddMana(1)),
+    Nil,
+    Nil,
+    3,
+    2
+  )
+
   /**
     * The cards of the game.
     */
