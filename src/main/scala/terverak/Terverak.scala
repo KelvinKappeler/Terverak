@@ -24,7 +24,7 @@ import scala.scalajs.js.annotation.JSExportTopLevel
 @JSExportTopLevel("IndigoGame")
 object Terverak extends IndigoGame[Unit, TerverakStartupData, TerverakModel, TerverakViewModel]:
 
-  private val Magnification = 4
+  private val Magnification = 2
 
   def initialScene(bootData: Unit): Option[SceneName] =
     Option(MenuScene.name)
@@ -39,7 +39,8 @@ object Terverak extends IndigoGame[Unit, TerverakStartupData, TerverakModel, Ter
     Outcome {
       val assetPath: String = flags.getOrElse("baseUrl", "")
 
-      BootResult.noData(GameConfig.default.withViewport(550, 400).withMagnification(Magnification))
+      BootResult.noData(GameConfig.default.withViewport(1920, 1080)
+        .withMagnification(Magnification))
         .withAssets(GameAssets.assets)
         .withFonts(GameAssets.Fonts.fontInfo16, GameAssets.Fonts.fontInfo8)
     }
@@ -55,7 +56,7 @@ object Terverak extends IndigoGame[Unit, TerverakStartupData, TerverakModel, Ter
       assetCollection: AssetCollection,
       dice: Dice
   ): Outcome[Startup[TerverakStartupData]] =
-    Outcome(Startup.Success(TerverakStartupData()))
+    Outcome(Startup.Success(TerverakStartupData.initial))
 
   def updateModel(
       context: FrameContext[TerverakStartupData],
