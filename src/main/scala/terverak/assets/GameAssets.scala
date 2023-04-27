@@ -42,6 +42,7 @@ object GameAssets {
     val planetBurning: AssetName = AssetName("planetBurning")
     val smallAstronaut: AssetName = AssetName("smallAstronaut")
     val ship1: AssetName = AssetName("ship1")
+    val demoniacCreature: AssetName = AssetName("demoniacCreature")
 
     //spells
     val spell1: AssetName = AssetName("spell1")
@@ -76,6 +77,7 @@ object GameAssets {
         AssetType.Image(smallAstronaut, AssetPath(AssetCardsDirectory + "small_astronaut.png")),
         AssetType.Image(planetBurning, AssetPath(AssetCardsDirectory + "burning_planet.png")),
         AssetType.Image(ship1, AssetPath(AssetCardsDirectory + "ship1.png")),
+        AssetType.Image(demoniacCreature, AssetPath(AssetCardsDirectory + "demoniac_creature.png"))
       )
   }
 

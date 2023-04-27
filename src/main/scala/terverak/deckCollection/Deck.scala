@@ -121,11 +121,32 @@ object Deck {
         PlanetCardsData.planet_arion -> 2,
         PlanetCardsData.planet_dictys -> 2,
         PlanetCardsData.planet_nereid -> 2,
-        OtherCardsData.blackhole -> 1,
         PlanetCardsData.meteor -> 1,
         PlanetCardsData.generous_planets -> 2,
         OtherCardsData.brownCreature -> 2,
         OtherCardsData.bacteria -> 2,
+        OtherCardsData.blackhole -> 1,
       )),
+    Deck(Map(
+        PlanetCardsData.planet_aethon -> 2,
+        PlanetCardsData.planet_arion -> 1,
+        PlanetCardsData.planet_dictys -> 1,
+        PlanetCardsData.planet_nereid -> 2,
+        PlanetCardsData.planet_burning -> 2,
+        PlanetCardsData.generous_planets -> 1,
+        PlanetCardsData.meteor -> 1,
+        OtherCardsData.smallAstronaut -> 2,
+        OtherCardsData.brownCreature -> 2,
+        OtherCardsData.bacteria -> 1,
+        OtherCardsData.demoniacCreature -> 2,
+        GemCardsData.gem_orange -> 2,
+        GemCardsData.gem_blue -> 2,
+        GemCardsData.gem_red -> 1,
+        AlienCardsData.alien_green -> 2,
+        AlienCardsData.alien_blue -> 2,
+        AlienCardsData.alien_red -> 2,
+        AlienCardsData.alien_yellow -> 2,
+
+    ))
   )
 }

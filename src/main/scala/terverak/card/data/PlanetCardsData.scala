@@ -67,17 +67,14 @@ object PlanetCardsData {
     1
   )
 
-  val planet_burning: Card.MinionCard = Card.MinionCard(
+  val planet_burning: Card.SpellCard = Card.SpellCard(
     "Burning planet",
-    "Blablabla",
+    "It hurts!",
     GameAssets.Cards.planetBurning,
-    99,
-    Nil,
-    Nil,
-    List(CardSubtype.Planet),
-    Nil,
-    1,
-    1
+    4,
+    List(CardEffectsDamage.DamageEnnemyMinions(2)),
+    List(CardEffectsMana.AddMana(1)),
+    List(CardSubtype.Planet)
   )
 
   val generous_planets: Card.SpellCard = Card.SpellCard(

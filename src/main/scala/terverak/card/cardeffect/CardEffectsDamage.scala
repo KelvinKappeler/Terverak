@@ -68,6 +68,17 @@ object CardEffectsDamage {
       "Deal " + amount + " " + getWordWithGoodPlural("damage", amount) + " to everyone."
   }
 
+  final case class DamageEnnemyMinions(amount: Int = 0) extends CardEffect {
+    require(amount >= 0, "Damage amount must be equal or greater than 0")
+
+    override def activateEffect(game: Game): Game = {
+      game.copy(waitingPlayer = game.waitingPlayer.damageAllMinions(amount))
+    }
+
+    override def toString: String =
+      "Deal " + amount + " " + getWordWithGoodPlural("damage", amount) + " to all enemy minions."
+  }
+
   /**
     * A card effect that damages a specific minion.
     * @param amount the amount of damage

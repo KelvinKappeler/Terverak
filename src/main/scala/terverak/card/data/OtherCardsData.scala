@@ -53,14 +53,14 @@ object OtherCardsData {
 
   val smallAstronaut: Card.MinionCard = Card.MinionCard(
     "Astronaut",
-    "Blablabla",
+    "This little astronaut got lost in this unforgiving world. He is looking for a way to find his family.",
     GameAssets.Cards.smallAstronaut,
-    99,
-    Nil,
-    Nil,
-    Nil,
-    Nil,
     1,
+    Nil,
+    List(CardEffectsMana.AddMana(1)),
+    Nil,
+    List(MinionCardAttributesData.Sprint()),
+    2,
     1
   )
 
@@ -77,6 +77,19 @@ object OtherCardsData {
     1
   )
 
+  val demoniacCreature: Card.MinionCard = Card.MinionCard(
+    "Demoniac creature",
+    "Hidden in the depths of the universe, this creature is the incarnation of evil.",
+    GameAssets.Cards.demoniacCreature,
+    5,
+    Nil,
+    Nil,
+    Nil,
+    Nil,
+    6,
+    5
+  )
+
   /**
     * The cards of the game.
     */
@@ -85,6 +98,7 @@ object OtherCardsData {
     brownCreature,
     bacteria,
     smallAstronaut,
-    ship1
+    ship1,
+    demoniacCreature
   )
 }
