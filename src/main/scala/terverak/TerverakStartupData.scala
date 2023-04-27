@@ -12,3 +12,7 @@ import terverak.deckCollection.User
   * The startup data of the game.
   */
 final case class TerverakStartupData()
+
+object TerverakStartupData {
+  val initial: TerverakStartupData = TerverakStartupData()
+}
