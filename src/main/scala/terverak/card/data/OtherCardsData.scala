@@ -51,12 +51,40 @@ object OtherCardsData {
     4
   )
 
+  val smallAstronaut: Card.MinionCard = Card.MinionCard(
+    "Astronaut",
+    "Blablabla",
+    GameAssets.Cards.smallAstronaut,
+    99,
+    Nil,
+    Nil,
+    Nil,
+    Nil,
+    1,
+    1
+  )
+
+  val ship1: Card.MinionCard = Card.MinionCard(
+    "Ship1",
+    "Blablabla",
+    GameAssets.Cards.ship1,
+    99,
+    Nil,
+    Nil,
+    Nil,
+    Nil,
+    1,
+    1
+  )
+
   /**
     * The cards of the game.
     */
   val cards: Set[Card] = Set(
     blackhole,
     brownCreature,
-    bacteria
+    bacteria,
+    smallAstronaut,
+    ship1
   )
 }

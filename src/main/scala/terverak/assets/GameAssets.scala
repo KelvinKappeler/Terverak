@@ -39,6 +39,9 @@ object GameAssets {
     val meteor: AssetName = AssetName("meteor")
     val brownCreature: AssetName = AssetName("brownCreature")
     val bacteria: AssetName = AssetName("bacteria")
+    val planetBurning: AssetName = AssetName("planetBurning")
+    val smallAstronaut: AssetName = AssetName("smallAstronaut")
+    val ship1: AssetName = AssetName("ship1")
 
     //spells
     val spell1: AssetName = AssetName("spell1")
@@ -62,7 +65,6 @@ object GameAssets {
         AssetType.Image(alienGreen, AssetPath(AssetCardsDirectory + "alien_green.png")),
         AssetType.Image(alienBlue, AssetPath(AssetCardsDirectory + "alien_blue.png")),
         AssetType.Image(alienRed, AssetPath(AssetCardsDirectory + "alien_red.png")),
-
         AssetType.Image(spell1, AssetPath(AssetCardsDirectory + "spell1.png")),
         AssetType.Image(blackHole, AssetPath(AssetCardsDirectory + "black_hole.png")),
         AssetType.Image(meteor, AssetPath(AssetCardsDirectory + "spell2.png")),
@@ -71,6 +73,9 @@ object GameAssets {
         AssetType.Image(gemOrange, AssetPath(AssetCardsDirectory + "gem_orange.png")),
         AssetType.Image(brownCreature, AssetPath(AssetCardsDirectory + "brown_creature.png")),
         AssetType.Image(bacteria, AssetPath(AssetCardsDirectory + "bacteria.png")),
+        AssetType.Image(smallAstronaut, AssetPath(AssetCardsDirectory + "small_astronaut.png")),
+        AssetType.Image(planetBurning, AssetPath(AssetCardsDirectory + "burning_planet.png")),
+        AssetType.Image(ship1, AssetPath(AssetCardsDirectory + "ship1.png")),
       )
   }
 

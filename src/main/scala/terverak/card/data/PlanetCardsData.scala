@@ -67,6 +67,19 @@ object PlanetCardsData {
     1
   )
 
+  val planet_burning: Card.MinionCard = Card.MinionCard(
+    "Burning planet",
+    "Blablabla",
+    GameAssets.Cards.planetBurning,
+    99,
+    Nil,
+    Nil,
+    List(CardSubtype.Planet),
+    Nil,
+    1,
+    1
+  )
+
   val generous_planets: Card.SpellCard = Card.SpellCard(
     "The generous planets",
     "In addition to giving you a place to live, planets sometimes give gifts in the form of resources. This time, the cards are in your favor.",
@@ -98,6 +111,7 @@ object PlanetCardsData {
     planet_nereid,
     planet_dictys,
     planet_arion,
+    planet_burning,
     generous_planets,
     meteor
   )
