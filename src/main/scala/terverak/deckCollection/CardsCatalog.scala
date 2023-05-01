@@ -6,10 +6,8 @@
     
 package terverak.deckCollection
 
-import indigo.*
-import terverak.assets.*
 import terverak.card.*
-import terverak.card.data.*
+import stainless.collection.*
 
 /**
   * The catalog of all the cards inside the DeckCollectionScene.
@@ -18,6 +16,6 @@ final case class CardsCatalog(cards: List[Card])
 
 object CardsCatalog {
 
-  val initial: CardsCatalog = CardsCatalog(CardsData.cards.toList.sortBy(_.manaCost))
+  val initial: CardsCatalog = CardsCatalog(CardsData.cards.toList)
 
 }

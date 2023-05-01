@@ -6,10 +6,16 @@
   
 package terverak.card
 
+import stainless.lang.*
+
 /** A card attribute for a minion. Example : "Defender" -> "This card can't
   * attack"
   */
-trait MinionCardAttribute(name: String, description: String) {
+trait MinionCardAttribute {
+
+  def name: String
+  def description: String
+  def amount: BigInt = BigInt(0)
 
   override def toString: String = name + " : " + description
 
