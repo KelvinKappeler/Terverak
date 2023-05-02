@@ -6,8 +6,8 @@
 
 package terverak.play
 
-import indigo.*
 import terverak.play.IdObject.*
+import stainless.lang.*
 
 import scala.annotation.tailrec
 
@@ -15,11 +15,11 @@ import scala.annotation.tailrec
   * A player.
   */
 final case class Player(
-  id: Int,
-  heroPicture: AssetName,
-  maxHealthPoints: Int,
-  healthPoints: Int,
-  mana: Int,
+  id: BigInt,
+  heroPicture: String,
+  maxHealthPoints: BigInt,
+  healthPoints: BigInt,
+  mana: BigInt,
   deck: DeckZone,
   hand: Hand,
   minionBoard: MinionBoard,
@@ -31,45 +31,47 @@ final case class Player(
     * @param amount the amount of damage to take.
     * @return the new player.
     */
-  def takeDamage(amount: Int): Player = {
-    require(amount >= 0, "Damage amount must be equal or greater than 0")
+  def takeDamage(amount: BigInt): Player = {
+    require(amount >= 0)
 
     copy(healthPoints = healthPoints - amount)
-  } ensuring(_.healthPoints == healthPoints - amount, "Player health points must be decreased by the damage amount")
+  } ensuring(_.healthPoints == healthPoints - amount)
 
   /**
     * Heals the player.
     * @param amount the amount of health to heal.
     * @return the new player.
     */
-  def heal(amount: Int): Player = {
-    require(amount >= 0, "Healing amount must be equal or greater than 0")
-
-    copy(healthPoints = Math.min(healthPoints + amount, maxHealthPoints))
-  } ensuring(player => player.healthPoints == Math.min(healthPoints + amount, player.maxHealthPoints), "Player health points must be increased by the healing amount")
+  def heal(amount: BigInt): Player = {
+    require(amount >= 0)
+    val newHealthPoints =
+      if ((healthPoints + amount) <= maxHealthPoints) (healthPoints + amount)
+      else maxHealthPoints
+    copy(healthPoints = newHealthPoints)
+  }
 
   /**
     * Adds mana to the player.
     * @param amount the amount of mana to add.
     * @return the new player.
     */
-  def addMana(amount: Int): Player = {
-    require(amount >= 0, "Mana amount must be equal or greater than 0")
+  def addMana(amount: BigInt): Player = {
+    require(amount >= 0)
 
     copy(mana = mana + amount)
-  } ensuring(_.mana == mana + amount, "Player mana must be increased by the mana amount")
+  } ensuring(_.mana == mana + amount)
 
   /**
     * Removes mana from the player.
     * @param amount the amount of mana to remove.
     * @return the new player.
     */
-  def removeMana(amount: Int): Player = {
-    require(amount >= 0, "Mana amount must be equal or greater than 0")
-    require(mana - amount >= 0, "Player must not have negative mana")
+  def removeMana(amount: BigInt): Player = {
+    require(amount >= 0)
+    require(mana - amount >= 0)
 
     copy(mana = mana - amount)
-  } ensuring(_.mana == mana - amount, "Player mana must be decreased by the mana amount")
+  } ensuring(_.mana == mana - amount)
 
   /**
     * Draws a card from the deck.
@@ -78,12 +80,12 @@ final case class Player(
     * @return the new player.
    */
   @tailrec
-  def drawCards(amount: Int): Player = {
-    require(amount >= 0, "Draw amount must be equal or greater than 0")
+  def drawCards(amount: BigInt): Player = {
+    require(amount >= 0)
     if amount == 0 || hand.cards.length == Hand.MaxHandSize then
       this
     else if deck.cards.isEmpty then
-      copy(discardZone = DiscardZone(List.empty), deck = DeckZone(discardZone.cards).shuffle())
+      copy(discardZone = DiscardZone(), deck = DeckZone(discardZone.cards)/*.shuffle()*/)
         .drawCards(amount)
     else
       val (newDeck, drawnCard) = deck.removeTopCard()
@@ -97,8 +99,8 @@ final case class Player(
     * @param amount the amount of damage
     * @return the new player
     */
-  def damageIdObject(idObject: IdObject, amount: Int): Player = {
-    require(amount >= 0, "Damage amount must be equal or greater than 0")
+  def damageIdObject(idObject: IdObject, amount: BigInt): Player = {
+    require(amount >= 0)
 
     idObject match {
       case minion: IdObject.MinionWithId =>
@@ -119,8 +121,8 @@ final case class Player(
    * @param amount the amount of damage
    * @return the new player
    */
-  def damageAllMinions(amount: Int): Player = {
-    require(amount >= 0, "Damage amount must be equal or greater than 0")
+  def damageAllMinions(amount: BigInt): Player = {
+    require(amount >= 0)
 
     copy(
       minionBoard = minionBoard.damageAllMinions(amount),
@@ -133,8 +135,8 @@ final case class Player(
     * @param amount the amount of healing
     * @return the new player
     */
-  def healIdObject(idObject: IdObject, amount: Int): Player = {
-    require(amount >= 0, "Healing amount must be equal or greater than 0")
+  def healIdObject(idObject: IdObject, amount: BigInt): Player = {
+    require(amount >= 0)
 
     idObject match {
       case minion: IdObject.MinionWithId =>
@@ -156,8 +158,8 @@ final case class Player(
     * @param amount the amount of attack to boost
     * @return the new player
     */
-  def boostAttackOfIdObject(idObject: IdObject, amount: Int): Player = {
-    require(amount >= 0, "Attack boost amount must be equal or greater than 0")
+  def boostAttackOfIdObject(idObject: IdObject, amount: BigInt): Player = {
+    require(amount >= 0)
 
     idObject match {
       case minion: IdObject.MinionWithId =>
@@ -174,8 +176,8 @@ final case class Player(
     * @param amount the amount of health to boost
     * @return the new player
     */
-  def boostHealthOfIdObject(idObject: IdObject, amount: Int): Player = {
-    require(amount >= 0, "Health boost amount must be equal or greater than 0")
+  def boostHealthOfIdObject(idObject: IdObject, amount: BigInt): Player = {
+    require(amount >= 0)
 
     idObject match {
       case minion: IdObject.MinionWithId =>
@@ -203,7 +205,7 @@ final case class Player(
     * @return the new player.
     */
   def moveHandCardToDiscardZone(handCard: HandCard): Player = {
-    require(hand.cards.contains(handCard), "Card must be in the hand")
+    require(hand.cards.contains(handCard))
 
     copy(hand = hand.removeCard(handCard), discardZone = discardZone.addCard(handCard.card))
   }

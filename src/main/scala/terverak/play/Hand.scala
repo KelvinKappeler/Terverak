@@ -8,12 +8,14 @@ package terverak.play
 
 import terverak.card.Card
 import terverak.play.IdObject.*
+import stainless.lang.* 
+import stainless.collection.*
 
 /**
   * A hand of cards.
   * @param cards The cards in the hand.
   */
-final case class Hand(cards: List[HandCard], baseCardId: Int) {
+final case class Hand(cards: List[HandCard], baseCardId: BigInt) {
 
   /**
     * Adds a card to the hand.
@@ -21,10 +23,10 @@ final case class Hand(cards: List[HandCard], baseCardId: Int) {
     * @return the new hand.
     */
   def addCard(card: Card): Hand = {
-    require(cards.length < Hand.MaxHandSize, "Hand must not be full")
+    require(cards.length < Hand.MaxHandSize)
 
     copy(cards = HandCard(card, nextId()) :: cards)
-  } ensuring(_.cards.length == cards.length + 1, "Hand length must be increased by 1")
+  } ensuring(_.cards.length == cards.length + 1)
 
   /**
     * Removes a specific card from the hand.
@@ -32,24 +34,24 @@ final case class Hand(cards: List[HandCard], baseCardId: Int) {
     * @return the new hand.
     */
   def removeCard(card: HandCard): Hand = {
-    require(cards.length > 0, "Hand must not be empty")
-    require(cards.contains(card), "Hand must contain the card to remove")
+    require(cards.length > 0)
+    require(cards.contains(card))
 
     def removeCardRec(cards: List[HandCard]): List[HandCard] = {
       cards match {
         case head :: tail => if (head.id == card.id) tail else head :: removeCardRec(tail)
-        case Nil => cards
+        case Nil() => cards
       }
     }
 
     copy(cards = removeCardRec(cards))
-  } ensuring(_.cards.length == cards.length - 1, "Hand length must be decreased by 1")
+  } ensuring(_.cards.length == cards.length - 1)
 
   /**
    * Compute the next id for a card in the hand. 
    */
-  private def nextId(): Int = {
-    if (cards.isEmpty) baseCardId else cards.maxBy(_.id).id + IdObject.BaseIncrement
+  private def nextId(): BigInt = {
+    if (cards.isEmpty) baseCardId else cards.head.id + IdObject.BaseIncrement
   }
 }
 
@@ -57,5 +59,5 @@ object Hand {
     /**
     * The maximum number of cards in a hand.
     */
-  val MaxHandSize = 7
+  val MaxHandSize = BigInt(7)
 }

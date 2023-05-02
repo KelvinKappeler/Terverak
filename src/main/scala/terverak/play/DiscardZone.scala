@@ -7,6 +7,7 @@
 package terverak.play
 
 import terverak.card.Card
+import stainless.collection.*
 
 /**
   * The discard zone.
@@ -14,7 +15,7 @@ import terverak.card.Card
  * @param cards the cards in the discard zone
   */
 final case class DiscardZone(
-  cards: List[Card] = List.empty
+  cards: List[Card] = Nil()
 ) {
 
   /**

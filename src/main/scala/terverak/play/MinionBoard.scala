@@ -8,12 +8,14 @@ package terverak.play
 
 import terverak.card.MinionCardAttributesData
 import terverak.play.*
+import stainless.lang.*
+import stainless.collection.*
 
 /**
   * The board of the minions for a player.
   */
-final case class MinionBoard(minions: List[IdObject.MinionWithId], baseMinionId: Int) {
-  require(baseMinionId >= 0, "Base minion id must be positive")
+final case class MinionBoard(minions: List[IdObject.MinionWithId], baseMinionId: BigInt) {
+  require(baseMinionId >= 0)
 
   /**
    * Adds a minion to the board.
@@ -21,9 +23,9 @@ final case class MinionBoard(minions: List[IdObject.MinionWithId], baseMinionId:
    * @return the new board.
    */
   def addMinion(minion: Minion): MinionBoard = {
-    require(minions.length < MinionBoard.MaxMinionBoardSize, "Minion board must not be full")
+    require(minions.length < MinionBoard.MaxMinionBoardSize)
     copy(minions = IdObject.MinionWithId(minion, nextId()) :: minions)
-  } ensuring(_.minions.length == minions.length + 1, "Minion board length must be increased by 1")
+  } ensuring(_.minions.length == minions.length + 1)
 
   /**
     * Damage a specific minion
@@ -31,8 +33,8 @@ final case class MinionBoard(minions: List[IdObject.MinionWithId], baseMinionId:
     * @param amount the amount of damage
     * @return the new board
     */
-  def damageMinion(minionId: IdObject.MinionWithId, amount: Int): MinionBoard = {
-    require(amount >= 0, "amount must be positive")
+  def damageMinion(minionId: IdObject.MinionWithId, amount: BigInt): MinionBoard = {
+    require(amount >= 0)
 
     val newMinionsList = minions.map(minionWithId =>
       if (minionWithId.id == minionId.id)
@@ -47,8 +49,8 @@ final case class MinionBoard(minions: List[IdObject.MinionWithId], baseMinionId:
     * @param amount the amount of damage
     * @return the new board
     */
-  def healMinion(minionId: IdObject.MinionWithId, amount: Int): MinionBoard = {
-    require(amount >= 0, "amount must be positive")
+  def healMinion(minionId: IdObject.MinionWithId, amount: BigInt): MinionBoard = {
+    require(amount >= 0)
 
     val newMinionsList = minions.map(minionWithId =>
       if (minionWithId.id == minionId.id)
@@ -63,8 +65,8 @@ final case class MinionBoard(minions: List[IdObject.MinionWithId], baseMinionId:
     * @param amount the amount of damage
     * @return the new board
     */
-  def boostMinionAttack(minionId: IdObject.MinionWithId, amount: Int): MinionBoard = {
-    require(amount >= 0, "amount must be positive")
+  def boostMinionAttack(minionId: IdObject.MinionWithId, amount: BigInt): MinionBoard = {
+    require(amount >= 0)
 
     val newMinionsList = minions.map(minionWithId =>
       if (minionWithId.id == minionId.id)
@@ -79,8 +81,8 @@ final case class MinionBoard(minions: List[IdObject.MinionWithId], baseMinionId:
     * @param amount the amount of damage
     * @return the new board
     */
-  def boostMinionHealth(minionId: IdObject.MinionWithId, amount: Int): MinionBoard = {
-    require(amount >= 0, "amount must be positive")
+  def boostMinionHealth(minionId: IdObject.MinionWithId, amount: BigInt): MinionBoard = {
+    require(amount >= 0)
 
     val newMinionsList = minions.map(minionWithId =>
       if (minionWithId.id == minionId.id)
@@ -108,8 +110,8 @@ final case class MinionBoard(minions: List[IdObject.MinionWithId], baseMinionId:
     * @param amount the amount of damage.
     * @return the new board.
     */
-  def damageAllMinions(amount: Int): MinionBoard = {
-    require(amount >= 0, "amount must be positive")
+  def damageAllMinions(amount: BigInt): MinionBoard = {
+    require(amount >= 0)
 
     val newMinionsList = minions.map(minionWithId =>
       minionWithId.copy(minion = minionWithId.minion.takeDamage(amount)))
@@ -145,8 +147,8 @@ final case class MinionBoard(minions: List[IdObject.MinionWithId], baseMinionId:
   /**
    * Compute the next id for a minion on the board.
    */
-  private def nextId(): Int = {
-    if (minions.isEmpty) baseMinionId else minions.maxBy(_.id).id + IdObject.BaseIncrement
+  private def nextId(): BigInt = {
+    if (minions.isEmpty) baseMinionId else minions.head.id + IdObject.BaseIncrement
   }
 }
 
@@ -154,5 +156,5 @@ object MinionBoard {
   /**
   * The maximum number of minions on the board.
   */
-  val MaxMinionBoardSize = 5
+  val MaxMinionBoardSize = BigInt(5)
 }

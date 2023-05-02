@@ -7,15 +7,14 @@
 package terverak.play
 
 import terverak.card.Card
+import stainless.lang.*
 
 /**
   * An object with an id.
   */
 trait IdObject {
 
-  def id: Int
-
-  require(id >= 0, "Id must be positive")
+  def id: BigInt
 }
 
 object IdObject {
@@ -23,16 +22,16 @@ object IdObject {
   /**
     * The base increment for the id of an object.
     */
-  val BaseIncrement: Int = 4
+  val BaseIncrement: BigInt = BigInt(4)
   
   /**
     * A minion on the board.
     */
   final case class MinionWithId(
     minion: Minion,
-    id: Int,
+    id: BigInt,
   ) extends IdObject {
-    require(id >= 0, "Id must be positive")
+    require(id >= 0)
   }
 
   /**
@@ -42,8 +41,8 @@ object IdObject {
     */
   final case class HandCard(
     card: Card,
-    id: Int
+    id: BigInt
   ) extends IdObject {
-    require(id >= 0, "Id must be positive")
+    require(id >= 0)
   }
 }

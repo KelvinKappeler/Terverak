@@ -7,6 +7,7 @@
 package terverak.play
 
 import terverak.card.Card
+import stainless.lang.*
 
 /**
   * Represents a minion.
@@ -15,20 +16,22 @@ import terverak.card.Card
   * @param healthPoints the current health points of the minion.
   * @param attackPoints the attack points of the minion.
   */
-final case class Minion(card: Card.MinionCard, maxHP: Int, healthPoints: Int, attackPoints: Int, canAttack: Boolean) {
-  require(maxHP > 0, "Max HP must be greater than 0")
-  require(attackPoints >= 0, "Attack points must be equal or greater than 0")
-  require(healthPoints <= maxHP, "Health points must be equal or lower than max HP")
+final case class Minion(card: Card.MinionCard, maxHP: BigInt, healthPoints: BigInt, attackPoints: BigInt, canAttack: Boolean) {
+  require(maxHP > 0)
+  require(attackPoints >= 0)
+  require(healthPoints <= maxHP)
 
   /**
     * Heals the minion.
     * @param amount the amount of health to heal.
     * @return the new minion.
     */
-  def heal(amount: Int): Minion = {
-    require(amount >= 0, "Healing amount must be equal or greater than 0")
+  def heal(amount: BigInt): Minion = {
+    require(amount >= 0)
 
-    val newHealthPoints = Math.min(maxHP, healthPoints + amount)
+    val newHealthPoints = 
+      if (maxHP <= (healthPoints + amount)) maxHP
+      else (healthPoints + amount)
     copy(healthPoints = newHealthPoints)
   }
 
@@ -37,8 +40,8 @@ final case class Minion(card: Card.MinionCard, maxHP: Int, healthPoints: Int, at
     * @param amount the amount of damage to take.
     * @return the new minion.
     */
-  def takeDamage(amount: Int): Minion = {
-    require(amount >= 0, "Damage amount must be equal or greater than 0")
+  def takeDamage(amount: BigInt): Minion = {
+    require(amount >= 0)
 
     copy(healthPoints = healthPoints - amount)
   }
@@ -48,8 +51,8 @@ final case class Minion(card: Card.MinionCard, maxHP: Int, healthPoints: Int, at
     * @param amount the amount of attack points to boost.
     * @return the new minion.
     */
-  def boostAttack(amount: Int): Minion = {
-    require(amount >= 0, "Boost amount must be equal or greater than 0")
+  def boostAttack(amount: BigInt): Minion = {
+    require(amount >= 0)
 
     copy(attackPoints = attackPoints + amount)
   }
@@ -59,8 +62,8 @@ final case class Minion(card: Card.MinionCard, maxHP: Int, healthPoints: Int, at
     * @param amount the amount of health points to boost.
     * @return the new minion.
     */
-  def boostHealth(amount: Int): Minion = {
-    require(amount >= 0, "Boost amount must be equal or greater than 0")
+  def boostHealth(amount: BigInt): Minion = {
+    require(amount >= 0)
 
     copy(maxHP = maxHP + amount, healthPoints = healthPoints + amount)
   }
@@ -79,7 +82,7 @@ final case class Minion(card: Card.MinionCard, maxHP: Int, healthPoints: Int, at
     * @return the new player and the new minion.
     */
   def attackPlayer(player: Player): (Player, Minion) = {
-    require(attackPoints > 0, "Minion must have attack points to attack")
+    require(attackPoints > 0)
 
     (player.takeDamage(attackPoints), copy(canAttack = false))
   }
@@ -90,7 +93,7 @@ final case class Minion(card: Card.MinionCard, maxHP: Int, healthPoints: Int, at
     * @return the updated target minion and attacking minion.
     */
   def attackMinion(minion: Minion): (Minion, Minion) = {
-    require(attackPoints > 0, "Minion must have attack points to attack")
+    require(attackPoints > 0)
 
     (minion.takeDamage(attackPoints), this.takeDamage(minion.attackPoints).copy(canAttack = false))
   }

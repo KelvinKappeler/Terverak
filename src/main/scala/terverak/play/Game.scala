@@ -4,18 +4,12 @@
 // Bachelor Project EPFL, 2023
 // =======================================
 
+/*
 package terverak.play
 
-import terverak.assets.*
 import terverak.card.*
-import terverak.card.cardeffect.CardEffects.*
-import terverak.card.cardeffect.CardEffectsBoost.*
-import terverak.card.cardeffect.CardEffectsDamage.*
-import terverak.card.cardeffect.CardEffectsDraw.*
-import terverak.card.cardeffect.CardEffectsHeal.*
-import terverak.card.cardeffect.CardEffectsMana.*
-import terverak.card.cardeffect.*
 import terverak.play.IdObject.*
+import stainless.lang.* 
 
 /**
   * A game of Terverak.
@@ -75,8 +69,8 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
     * @param amount the amount of damage
     * @return the new game
     */
-  def damageIdObject(idObject: IdObject, amount: Int): Game = {
-    require(amount >= 0, "Damage amount must be equal or greater than 0")
+  def damageIdObject(idObject: IdObject, amount: BigInt): Game = {
+    require(amount >= 0)
 
     copy(
       currentPlayer = currentPlayer.damageIdObject(idObject, amount),
@@ -89,8 +83,8 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
     * @param amount the amount of damage
     * @return the new game
     */
-  def damageAllMinions(amount: Int): Game = {
-    require(amount >= 0, "Damage amount must be equal or greater than 0")
+  def damageAllMinions(amount: BigInt): Game = {
+    require(amount >= 0)
 
     copy(
       currentPlayer = currentPlayer.damageAllMinions(amount),
@@ -104,8 +98,8 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
     * @param amount the amount of heal
     * @return the new game
     */
-  def healIdObject(idObject: IdObject, amount: Int): Game = {
-    require(amount >= 0, "Heal amount must be equal or greater than 0")
+  def healIdObject(idObject: IdObject, amount: BigInt): Game = {
+    require(amount >= 0)
 
     copy(
       currentPlayer = currentPlayer.healIdObject(idObject, amount),
@@ -119,8 +113,8 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
     * @param amount the amount of boost
     * @return the new game
     */
-  def boostAttackOfIdObject(idObject: IdObject, amount: Int): Game = {
-    require(amount >= 0, "Boost amount must be equal or greater than 0")
+  def boostAttackOfIdObject(idObject: IdObject, amount: BigInt): Game = {
+    require(amount >= 0)
 
     copy(
       currentPlayer = currentPlayer.boostAttackOfIdObject(idObject, amount),
@@ -134,8 +128,8 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
     * @param amount the amount of boost
     * @return the new game
     */
-  def boostLifeOfIdObject(idObject: IdObject, amount: Int): Game = {
-    require(amount >= 0, "Boost amount must be equal or greater than 0")
+  def boostLifeOfIdObject(idObject: IdObject, amount: BigInt): Game = {
+    require(amount >= 0)
 
     copy(
       currentPlayer = currentPlayer.boostHealthOfIdObject(idObject, amount),
@@ -165,7 +159,7 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
    * @param target the target of the effect (current player, waiting player or both players)
    * @return the number of minions with the specific subtype
    */
-  def countMinionsWithSubtype(cardSubtype: CardSubtype, target: BoardSelectionForCardEffect): Int = {
+  def countMinionsWithSubtype(cardSubtype: CardSubtype, target: BoardSelectionForCardEffect): BigInt = {
     target match {
       case BoardSelectionForCardEffect.CurrentPlayerMinionsBoard => currentPlayer.minionBoard.minions.count(_.minion.card.subtypes.contains(cardSubtype))
       case BoardSelectionForCardEffect.WaitingPlayerMinionsBoard => waitingPlayer.minionBoard.minions.count(_.minion.card.subtypes.contains(cardSubtype))
@@ -280,3 +274,4 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
   }
 
 }
+*/
