@@ -6,6 +6,8 @@
   
 package terverak.deckCollection
 
+import stainless.collection.*
+
 /**
   * Represents an user.
   * @param decks the decks of the user (at least one)

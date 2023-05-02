@@ -6,11 +6,19 @@
   
 package terverak.card
 
+sealed trait CardSubtype {
+  def str: String
+  override def toString(): String = str
+}
+
+final case class CardSubtypeEnum(str: String) extends CardSubtype
+
 /**
   * Subtype of a card.
+  * Changed for stainless compatibility
   */
-enum CardSubtype {
-  case Planet
-  case Alien
-  case Gem
+object CardSubtype {
+  val Planet = CardSubtypeEnum("Planet")
+  val Alien = CardSubtypeEnum("Alien")
+  val Gem = CardSubtypeEnum("Gem")
 }

@@ -6,16 +6,15 @@
 
 package terverak.deckCollection
 
-import indigo.*
-import terverak.assets.*
-import terverak.card.Card
+import terverak.card.*
+import stainless.lang.*
 
 /**
   * Represents the creation of a deck.
   * @param user the user.
   */
-final case class DeckCreation(user: User, deckNumber: Int = 0) {
-  require(deckNumber >= 0 && deckNumber <= user.decks.length - 1, "The deck number must be between 0 and the number of decks of the user.")
+final case class DeckCreation(user: User, deckNumber: BigInt = BigInt(0)) {
+  require(deckNumber >= 0 && deckNumber <= user.decks.length - 1)
 
   /**
     * Returns the deck of the user.
@@ -29,7 +28,8 @@ final case class DeckCreation(user: User, deckNumber: Int = 0) {
     */
   def addCardToCurrentDeck(card: Card): DeckCreation = {
     copy(user = user.copy(decks = user.decks.updated(deckNumber, user.decks(deckNumber).addCard(card))))
-  }
+  } ensuring(res => res.user.decks(deckNumber).values.sum == user.decks(deckNumber).values.sum
+    || res.user.decks(deckNumber).values.sum == user.decks(deckNumber).values.sum + 1)
 
   /**
     * Remove a card to the current deck.
@@ -38,23 +38,24 @@ final case class DeckCreation(user: User, deckNumber: Int = 0) {
     */
   def removeCardToCurrentDeck(card: Card): DeckCreation = {
     copy(user = user.copy(decks = user.decks.updated(deckNumber, user.decks(deckNumber).removeCard(card))))
-  }
+  } ensuring(res => res.user.decks(deckNumber).values.sum == user.decks(deckNumber).values.sum
+    || res.user.decks(deckNumber).values.sum == user.decks(deckNumber).values.sum - 1)
 
   /**
     * Returns the next deck.
     * @return the next deck.
     */
   def nextDeck(): DeckCreation = {
-    copy(deckNumber = (deckNumber + 1) % user.decks.length)
-  }
+    copy(deckNumber = (deckNumber + BigInt(1)) % BigInt(user.decks.length))
+  } ensuring(res => if res.user.decks.length > 1 then res.deckNumber != deckNumber else res.deckNumber == deckNumber)
 
   /**
     * Returns the previous deck.
     * @return the previous deck.
     */
   def previousDeck(): DeckCreation = {
-    copy(deckNumber = (deckNumber - 1 + user.decks.length) % user.decks.length)
-  }
+    copy(deckNumber = (deckNumber - BigInt(1) + BigInt(user.decks.length)) % BigInt(user.decks.length))
+  } ensuring(res => if res.user.decks.length > 1 then res.deckNumber != deckNumber else res.deckNumber == deckNumber)
 }
 
 object DeckCreation {

@@ -79,15 +79,12 @@ _canonicalize_file_path() {
 BASE_DIR="$( dirname "$( realpath "${BASH_SOURCE[0]}" )" )"
 Z3_DIR="$BASE_DIR/z3"
 STAINLESS_JAR="$BASE_DIR/lib/stainless-dotty-standalone-0.9.7.jar"
-SCALAZ3_JAR="$BASE_DIR/lib/scalaz3-mac-64-3.jar"
-JARS="$STAINLESS_JAR:$SCALAZ3_JAR"
 
-for JAR in "$STAINLESS_JAR" "$SCALAZ3_JAR"; do
-  if ! [[ -r "$JAR" ]]; then
-    echo "Read access for the jar file $JAR is required."
+if ! [[ -r "$STAINLESS_JAR" ]]; then
+    echo "Read access for the jar file $STAINLESS_JAR is required."
     exit 1
-  fi
-done
+fi
 
 # NOTE: $JAVA_OPTS not quoted, as it may be empty!
-exec env PATH="$Z3_DIR:$PATH" java -cp "$JARS" $JAVA_OPTS stainless.Main "$@"
+# Cygpath necessary, see https://stackoverflow.com/a/16640483
+exec env PATH="$Z3_DIR:$PATH" java -cp $(cygpath -w $STAINLESS_JAR) $JAVA_OPTS stainless.Main "$@"

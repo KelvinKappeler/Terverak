@@ -6,8 +6,8 @@
 
 package terverak.card
 
-import indigo.*
-import terverak.card.cardeffect.CardEffect
+import stainless.collection.*
+import stainless.lang.*
 
 /**
   * A card model in Terverak.
@@ -15,15 +15,11 @@ import terverak.card.cardeffect.CardEffect
 sealed trait Card {
   def name: String
   def description: String
-  def imageName: AssetName
-  def manaCost: Int
+  def imageName: String
+  def manaCost: BigInt
   def effectsWhenPlayed: List[CardEffect]
   def effectsWhenDiscard: List[CardEffect]
   def subtypes: List[CardSubtype]
-
-  require(name.nonEmpty, "Name must not be empty")
-  require(manaCost >= 0, "Mana cost must be equal or greater than 0")
-  require(subtypes.distinct.size == subtypes.size, "Subtypes must be unique")
 }
 
 /**
@@ -37,18 +33,21 @@ object Card {
   final case class MinionCard (
     name: String = "Unknown",
     description: String = "",
-    imageName: AssetName,
-    manaCost: Int = 1,
-    effectsWhenPlayed: List[CardEffect] = Nil,
-    effectsWhenDiscard: List[CardEffect] = Nil,
-    subtypes: List[CardSubtype] = Nil,
-    attributes: List[MinionCardAttribute] = Nil,
-    damage: Int = 0,
-    life: Int = 1
+    imageName: String,
+    manaCost: BigInt = BigInt(1),
+    effectsWhenPlayed: List[CardEffect] = Nil(),
+    effectsWhenDiscard: List[CardEffect] = Nil(),
+    subtypes: List[CardSubtype] = Nil(),
+    attributes: List[MinionCardAttribute] = Nil(),
+    damage: BigInt = BigInt(0),
+    life: BigInt = BigInt(1)
   ) extends Card {
-    require(damage >= 0, "Damage must be equal or greater than 0")
-    require(life >= 1, "Life must be equal or greater than 1")
-    require(attributes.distinct.size == attributes.size, "Attributes must be unique")
+    require(name != "")
+    require(manaCost >= 0)
+    require(subtypes.unique.size == subtypes.size)
+    require(damage >= 0)
+    require(life >= 1)
+    require(attributes.unique.size == attributes.size)
   }
 
   /**
@@ -57,10 +56,14 @@ object Card {
   final case class SpellCard (
     name: String = "Unknown",
     description: String = "",
-    imageName: AssetName,
-    manaCost: Int = 1,
-    effectsWhenPlayed: List[CardEffect] = Nil,
-    effectsWhenDiscard: List[CardEffect] = Nil,
-    subtypes: List[CardSubtype] = Nil,
-  ) extends Card
+    imageName: String,
+    manaCost: BigInt = BigInt(1),
+    effectsWhenPlayed: List[CardEffect] = Nil(),
+    effectsWhenDiscard: List[CardEffect] = Nil(),
+    subtypes: List[CardSubtype] = Nil(),
+  ) extends Card {
+    require(name != "")
+    require(manaCost >= 0)
+    require(subtypes.unique.size == subtypes.size)
+  }
 }
