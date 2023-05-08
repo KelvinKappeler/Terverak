@@ -8,6 +8,7 @@ package terverak.deckCollection
 
 import terverak.card.*
 import stainless.collection.*
+import stainless.lang.*
 
 /**
   * The catalog of all the cards inside the DeckCollectionScene.

@@ -12,27 +12,11 @@ import stainless.collection.*
   * Represents an user.
   * @param decks the decks of the user (at least one)
   */
-final case class User(decks: List[Deck])
+final case class User(decks: List[Deck]) {
+  require(decks.size >= 1)
+}
 
 object User {
-
-  /**
-    * Transform a format that can be loaded easily to a format that can be used.
-    * @param decks the decks in a format that can be loaded easily.
-    * @return the decks.
-    */
-  def formatForLoading(decks: List[List[String]]): User = {
-    User(decks = decks.map(deck => Deck.formatForLoading(deck)))
-  }
-
-  /**
-    * Transform the decks to a format that can be saved easily.
-    * @return the decks in a format that can be saved easily.
-    */
-  def formatForSaving(user: User): List[List[String]] = {
-    user.decks.map(deck => Deck.formatForSaving(deck))
-  }
-
   val initial: User = User(List(Deck.initial, Deck.initial, Deck.initial))
   val InitialKey: String = "user"
 }
