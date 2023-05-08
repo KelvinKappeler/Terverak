@@ -7,7 +7,6 @@
 package terverak.deckCollection
 
 import terverak.card.*
-import terverak.stainless.MapExtension.*
 import stainless.collection.*
 import stainless.lang.*
 
@@ -15,7 +14,7 @@ import stainless.lang.*
   * A deck of cards.
   */
 final case class Deck(cardsWithQuantity: Map[Card, BigInt]) {
-  //require(cardsWithQuantity.theMap.forall((_, quantity) => quantity == 1 || quantity == 2))
+  //require(cardsWithQuantity.values.foldLeft(true)((bool, value) => bool && (value == 1 || value == 2)))
 
   /**
     * Returns true if the deck is valid, false otherwise.
@@ -42,7 +41,8 @@ final case class Deck(cardsWithQuantity: Map[Card, BigInt]) {
         copy(cardsWithQuantity = cardsWithQuantity.updated(card, 1))
       }
     }
-  } /*ensuring(res => ListOps.sum(res.cardsWithQuantity.values) == ListOps.sum(cardsWithQuantity.values)
+  } //ensuring(res => res.cardsWithQuantity.values.foldLeft(true)((bool, value) => bool && (value == 1 || value == 2)))
+  /*ensuring(res => ListOps.sum(res.cardsWithQuantity.values) == ListOps.sum(cardsWithQuantity.values)
     || ListOps.sum(res.cardsWithQuantity.values) == 1 + ListOps.sum(cardsWithQuantity.values))*/
 
   /**
@@ -60,7 +60,8 @@ final case class Deck(cardsWithQuantity: Map[Card, BigInt]) {
     } else {
       this
     }
-  } /*ensuring(res => ListOps.sum(res.cardsWithQuantity.values) == ListOps.sum(cardsWithQuantity.values)
+  } //ensuring(res => res.cardsWithQuantity.values.foldLeft(true)((bool, value) => bool && (value == 1 || value == 2)))
+    /*ensuring(res => ListOps.sum(res.cardsWithQuantity.values) == ListOps.sum(cardsWithQuantity.values)
     || ListOps.sum(res.cardsWithQuantity.values) == ListOps.sum(cardsWithQuantity.values) - 1)*/
 }
 

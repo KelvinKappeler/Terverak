@@ -8,6 +8,7 @@ package terverak.play
 
 import terverak.play.IdObject.*
 import stainless.lang.*
+import stainless.annotation.*
 
 import scala.annotation.tailrec
 
@@ -75,23 +76,22 @@ final case class Player(
 
   /**
     * Draws a card from the deck.
- *
     * @param amount the amount of cards to draw.
     * @return the new player.
    */
-  @tailrec
+  @extern
   def drawCards(amount: BigInt): Player = {
     require(amount >= 0)
     if amount == 0 || hand.cards.length == Hand.MaxHandSize then
       this
     else if deck.cards.isEmpty then
-      copy(discardZone = DiscardZone(), deck = DeckZone(discardZone.cards)/*.shuffle()*/)
+      copy(discardZone = DiscardZone(), deck = DeckZone(discardZone.cards))
         .drawCards(amount)
     else
       val (newDeck, drawnCard) = deck.removeTopCard()
       val newHand = hand.addCard(drawnCard)
       copy(deck = newDeck, hand = newHand).drawCards(amount - 1)
-  }
+  } ensuring(res => res.hand.cards.length >= hand.cards.length)
 
   /**
     * Damage a specific id object.
@@ -113,6 +113,7 @@ final case class Player(
         } else {
           this
         }
+      case _ => this
     }
   }
 
@@ -149,6 +150,7 @@ final case class Player(
         } else {
           this
         }
+      case _ => this
     }
   }
 

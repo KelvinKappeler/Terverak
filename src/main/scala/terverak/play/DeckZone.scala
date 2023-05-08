@@ -58,11 +58,4 @@ final case class DeckZone(cards: List[Card]) {
       DeckZone(rec(cards))
     }
 
-    /**
-     * Shuffles the deck.
-     * @return the shuffled deck.
-     */
-    //def shuffle(): DeckZone = {
-    //  copy(cards = scala.util.Random.shuffle(cards))
-    //}
 }
