@@ -27,20 +27,22 @@ final case class DeckCreation(user: User, deckNumber: BigInt = BigInt(0)) {
     * @param card the card to add.
     * @return the deck creation with the card added.
     */
-  /*def addCardToCurrentDeck(card: Card): DeckCreation = {
+  def addCardToCurrentDeck(card: Card): DeckCreation = {
     copy(user = user.copy(decks = user.decks.updated(deckNumber, user.decks(deckNumber).addCard(card))))
-  } ensuring(res => ListOps.sum(res.user.decks(deckNumber).cardsWithQuantity.values) == ListOps.sum(user.decks(deckNumber).cardsWithQuantity.values)
-    || ListOps.sum(res.user.decks(deckNumber).cardsWithQuantity.values) == ListOps.sum(user.decks(deckNumber).cardsWithQuantity.values))*/
+  } ensuring(res => res.user.decks.size == user.decks.size &&
+    (ListOps.sum(res.user.decks(deckNumber).cardsWithQuantity.values) == ListOps.sum(user.decks(deckNumber).cardsWithQuantity.values)
+    || ListOps.sum(res.user.decks(deckNumber).cardsWithQuantity.values) == ListOps.sum(user.decks(deckNumber).cardsWithQuantity.values)))
 
   /**
     * Remove a card to the current deck.
     * @param card the card to remove.
     * @return the deck creation with the card removed.
     */
-  /*def removeCardToCurrentDeck(card: Card): DeckCreation = {
+  def removeCardToCurrentDeck(card: Card): DeckCreation = {
     copy(user = user.copy(decks = user.decks.updated(deckNumber, user.decks(deckNumber).removeCard(card))))
-  } ensuring(res => ListOps.sum(res.user.decks(deckNumber).cardsWithQuantity.values) == ListOps.sum(user.decks(deckNumber).cardsWithQuantity.values)
-    || ListOps.sum(res.user.decks(deckNumber).cardsWithQuantity.values) == ListOps.sum(user.decks(deckNumber).cardsWithQuantity.values) - 1)*/
+  } ensuring(res => res.user.decks.size == user.decks.size && 
+    (ListOps.sum(res.user.decks(deckNumber).cardsWithQuantity.values) == ListOps.sum(user.decks(deckNumber).cardsWithQuantity.values)
+    || ListOps.sum(res.user.decks(deckNumber).cardsWithQuantity.values) == ListOps.sum(user.decks(deckNumber).cardsWithQuantity.values) - 1))
 
   /**
     * Returns the next deck.

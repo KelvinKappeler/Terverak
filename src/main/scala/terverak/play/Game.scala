@@ -4,12 +4,12 @@
 // Bachelor Project EPFL, 2023
 // =======================================
 
-/*
 package terverak.play
 
 import terverak.card.*
 import terverak.play.IdObject.*
-import stainless.lang.* 
+import stainless.lang.*
+import stainless.collection.*
 
 /**
   * A game of Terverak.
@@ -26,16 +26,25 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
     val wakeUpMinions = currentPlayer.minionBoard.wakeUpMinions()
     val newCurrentPlayer = currentPlayer.copy(minionBoard = wakeUpMinions).removeMana(currentPlayer.mana)
 
-    val damageToDeal = currentPlayer.minionBoard.minions
-      .foldLeft(0)((acc, minion) =>
-        acc + minion.minion.card.attributes.collectFirst { case MinionCardAttributesData.Toxicity() => minion.minion.attackPoints }.getOrElse(0))
-
-    val manaToRegen = waitingPlayer.minionBoard.minions
-      .foldLeft(0)((acc, minion) =>
-        acc + minion.minion.card.attributes.collectFirst {
-          case MinionCardAttributesData.ManaRegen(amount) =>
-            if (minion.minion.healthPoints > damageToDeal) amount else 0
-        }.getOrElse(0))
+    val damageToDeal = 
+      ListOps.sum(
+        currentPlayer.minionBoard.minions.filter(
+          _.minion.card.attributes match {
+            case MinionCardAttributesData.Toxicity() => true
+            case _ => false
+          }
+        ).map(_.minion.attackPoints))
+    
+    val manaToRegen = 
+      ListOps.sum(
+        waitingPlayer.minionBoard.minions.map(manaMinion =>
+          manaMinion.minion.card.attributes match {
+              case MinionCardAttributesData.ManaRegen(amount) => 
+                if (manaMinion.minion.healthPoints > damageToDeal) then amount else 0
+              case _ => 0
+          }
+        )
+      )
 
     copy(currentPlayer = waitingPlayer.startTurn().addMana(manaToRegen).takeDamage(damageToDeal), waitingPlayer = newCurrentPlayer.takeDamage(damageToDeal))
     .damageAllMinions(damageToDeal).refresh()
@@ -159,6 +168,7 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
    * @param target the target of the effect (current player, waiting player or both players)
    * @return the number of minions with the specific subtype
    */
+  /*
   def countMinionsWithSubtype(cardSubtype: CardSubtype, target: BoardSelectionForCardEffect): BigInt = {
     target match {
       case BoardSelectionForCardEffect.CurrentPlayerMinionsBoard => currentPlayer.minionBoard.minions.count(_.minion.card.subtypes.contains(cardSubtype))
@@ -166,13 +176,14 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
       case _ => currentPlayer.minionBoard.minions.count(_.minion.card.subtypes.contains(cardSubtype))
         + waitingPlayer.minionBoard.minions.count(_.minion.card.subtypes.contains(cardSubtype))
     }
-  }
+  }*/
 
   /**
     * Activate a card effect
     * @param effect the effect to activate
     * @return the new game
     */
+    /*
   def activateEffect(effect: CardEffect, selectedIdObject: Option[IdObject]): Game = {
     effect match {
 
@@ -271,7 +282,6 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
         }
       case _ => this
     }
-  }
+  }*/
 
 }
-*/

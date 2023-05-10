@@ -14,7 +14,7 @@ import stainless.lang.*
   * A deck of cards.
   */
 final case class Deck(cardsWithQuantity: Map[Card, BigInt]) {
-  //require(cardsWithQuantity.values.foldLeft(true)((bool, value) => bool && (value == 1 || value == 2)))
+  require(cardsWithQuantity.values.foldLeft(true)((bool, value) => bool && (value == 1 || value == 2)))
 
   /**
     * Returns true if the deck is valid, false otherwise.
@@ -41,7 +41,7 @@ final case class Deck(cardsWithQuantity: Map[Card, BigInt]) {
         copy(cardsWithQuantity = cardsWithQuantity.updated(card, 1))
       }
     }
-  } //ensuring(res => res.cardsWithQuantity.values.foldLeft(true)((bool, value) => bool && (value == 1 || value == 2)))
+  } ensuring(res => res.cardsWithQuantity.values.foldLeft(true)((bool, value) => bool && (value == 1 || value == 2)))
   /*ensuring(res => ListOps.sum(res.cardsWithQuantity.values) == ListOps.sum(cardsWithQuantity.values)
     || ListOps.sum(res.cardsWithQuantity.values) == 1 + ListOps.sum(cardsWithQuantity.values))*/
 
@@ -60,9 +60,9 @@ final case class Deck(cardsWithQuantity: Map[Card, BigInt]) {
     } else {
       this
     }
-  } //ensuring(res => res.cardsWithQuantity.values.foldLeft(true)((bool, value) => bool && (value == 1 || value == 2)))
-    /*ensuring(res => ListOps.sum(res.cardsWithQuantity.values) == ListOps.sum(cardsWithQuantity.values)
-    || ListOps.sum(res.cardsWithQuantity.values) == ListOps.sum(cardsWithQuantity.values) - 1)*/
+  } ensuring(res => res.cardsWithQuantity.values.foldLeft(true)((bool, value) => bool && (value == 1 || value == 2)))
+    //ensuring(res => ListOps.sum(res.cardsWithQuantity.values) == ListOps.sum(cardsWithQuantity.values)
+    //|| ListOps.sum(res.cardsWithQuantity.values) == ListOps.sum(cardsWithQuantity.values) - 1)
 }
 
 object Deck {
@@ -76,7 +76,6 @@ object Deck {
     */
   val MinCards: BigInt = BigInt(20)
 
-  // Choose a random card from CardsData
   val initial: Deck = Deck(Map.empty)
 
   val DefaultDecks: List[Deck] = List(
