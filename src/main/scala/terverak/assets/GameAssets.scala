@@ -16,7 +16,7 @@ object GameAssets {
   
   private val AssetsDirectory: String = "assets/"
 
-  val assets: Set[AssetType] = Cards.assets ++ Fonts.assets ++ Backgrounds.assets ++ Heroes.assets ++ Audio.assets ++ Buttons.assets
+  val assets: Set[AssetType] = Cards.assets ++ Fonts.assets ++ Backgrounds.assets ++ Heroes.assets ++ Buttons.assets
 
   /**
     * Cards assets.
@@ -111,6 +111,7 @@ object GameAssets {
 
     val endTurnButton: AssetName = AssetName("endTurnButton")
     val backToMenuButton: AssetName = AssetName("backToMenuButton")
+    val createDeckButton: AssetName = AssetName("createDeckButton")
 
     val assets: Set[AssetType] =
       Set(
@@ -131,7 +132,8 @@ object GameAssets {
         AssetType.Image(saveButton, AssetPath(AssetCardsDirectory + "save_button.png")),
         AssetType.Image(gemButton, AssetPath(AssetCardsDirectory + "gem_button.png")),
         AssetType.Image(endTurnButton, AssetPath(AssetCardsDirectory + "end_turn_button.png")),
-        AssetType.Image(backToMenuButton, AssetPath(AssetCardsDirectory + "menu_button.png"))
+        AssetType.Image(backToMenuButton, AssetPath(AssetCardsDirectory + "menu_button.png")),
+        AssetType.Image(createDeckButton, AssetPath(AssetCardsDirectory + "create_deck_button.png"))
       )
   }
 
@@ -140,11 +142,21 @@ object GameAssets {
     */
   object Backgrounds {
 
+    private val AssetCardsDirectory: String = AssetsDirectory + "backgrounds/"
+
     val discardZone: AssetName = AssetName("discardZone")
+    val menuBackground: AssetName = AssetName("menuBackground")
+    val title: AssetName = AssetName("title")
+    val background: AssetName = AssetName("background")
+    val black_hole: AssetName = AssetName("black_hole")
 
     val assets: Set[AssetType] =
       Set(
-        AssetType.Image(discardZone, AssetPath(AssetsDirectory + "discard_zone.png"))
+        AssetType.Image(discardZone, AssetPath(AssetCardsDirectory + "discard_zone.png")),
+        AssetType.Image(menuBackground, AssetPath(AssetCardsDirectory + "menu.png")),
+        AssetType.Image(title, AssetPath(AssetCardsDirectory + "title.png")),
+        AssetType.Image(background, AssetPath(AssetCardsDirectory + "background.png")),
+        AssetType.Image(black_hole, AssetPath(AssetCardsDirectory + "black_hole.png"))
       )
   }
 
@@ -153,28 +165,13 @@ object GameAssets {
     */
   object Heroes {
 
-    val human: AssetName = AssetName("human")
-    val troll: AssetName = AssetName("troll")
+    val player1: AssetName = AssetName("player1")
+    val player2: AssetName = AssetName("player2")
 
     val assets: Set[AssetType] =
       Set(
-        AssetType.Image(human, AssetPath(AssetsDirectory + "hero_human.png")),
-        AssetType.Image(troll, AssetPath(AssetsDirectory + "hero_troll.png"))
-      )
-  }
-
-  /**
-    * Audio assets.
-    */
-  object Audio {
-
-    private val AssetAudioDirectory: String = AssetsDirectory + "audio/"
-
-    val batoNoise: AssetName = AssetName("batoNoise")
-    
-    val assets: Set[AssetType] =
-      Set(
-        AssetType.Audio(batoNoise, AssetPath(AssetAudioDirectory + "bato_noise.mp3"))
+        AssetType.Image(player1, AssetPath(AssetsDirectory + "player1.png")),
+        AssetType.Image(player2, AssetPath(AssetsDirectory + "player2.png"))
       )
   }
 

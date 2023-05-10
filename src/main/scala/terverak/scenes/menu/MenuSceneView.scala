@@ -26,7 +26,8 @@ object MenuSceneView {
       ++ TerverakText.drawText("Terverak", 10, 10, 1, GameAssets.Fonts.defaultFont8, RGBA.White)
       ++ TerverakText.drawText("Press Space to play", 10, 40, 1, GameAssets.Fonts.defaultFont8, RGBA.White)
       ++ TerverakText.drawText("Press E to change your deck", 10, 70, 1, GameAssets.Fonts.defaultFont8, RGBA.White)
-      
+      ++ Batch(Graphic(0, 0, 650, 350, 90, Material.Bitmap(GameAssets.Backgrounds.menuBackground)))
+      ++ Batch(Graphic(325 - (59*3)/2, 50, 59, 12, 70, Material.Bitmap(GameAssets.Backgrounds.title)).scaleBy(3, 3))
       )
     ))
   }

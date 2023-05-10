@@ -59,22 +59,22 @@ object GameViewModel {
   val endTurnButton: Button =  
    Button(
       ButtonAssets(
-        up = Graphic(0, 0, 72, 18, 2, Material.Bitmap(GameAssets.Buttons.endTurnButton)),
-        over = Graphic(0, 0, 72, 18, 2, Material.Bitmap(GameAssets.Buttons.endTurnButton)),
-        down = Graphic(0, 0, 72, 18, 2, Material.Bitmap(GameAssets.Buttons.endTurnButton))
+        up = Graphic(0, 0, 48, 8, 2, Material.Bitmap(GameAssets.Buttons.endTurnButton)).scaleBy(2, 2),
+        over = Graphic(0, 0, 48, 8, 2, Material.Bitmap(GameAssets.Buttons.endTurnButton)).scaleBy(2, 2),
+        down = Graphic(0, 0, 48, 8, 2, Material.Bitmap(GameAssets.Buttons.endTurnButton)).scaleBy(2, 2)
       ),
-      Rectangle(HandViewModel.HandSize.width + PlayerViewModel.HeroSize.width + 10, HandViewModel.initialCurrentPlayerHand.position.y + HandViewModel.HandSize.height - 25, 72, 18),
+      Rectangle(HandViewModel.HandSize.width + PlayerViewModel.HeroSize.width + 10, HandViewModel.initialCurrentPlayerHand.position.y + HandViewModel.HandSize.height - 25, 96, 16),
       Depth(2),
     ).withUpActions(PlayEvents.EndTurn())
 
   val backToMenuButton: Button = 
     Button(
       ButtonAssets(
-        up = Graphic(0, 0, 103, 18, 2, Material.Bitmap(GameAssets.Buttons.backToMenuButton)),
-        over = Graphic(0, 0, 103, 18, 2, Material.Bitmap(GameAssets.Buttons.backToMenuButton)),
-        down = Graphic(0, 0, 103, 18, 2, Material.Bitmap(GameAssets.Buttons.backToMenuButton))
+        up = Graphic(0, 0, 54, 8, 2, Material.Bitmap(GameAssets.Buttons.backToMenuButton)).scaleBy(2, 2),
+        over = Graphic(0, 0, 54, 8, 2, Material.Bitmap(GameAssets.Buttons.backToMenuButton)).scaleBy(2, 2),
+        down = Graphic(0, 0, 54, 8, 2, Material.Bitmap(GameAssets.Buttons.backToMenuButton)).scaleBy(2, 2)
       ),
-      Rectangle(HandViewModel.HandSize.width + PlayerViewModel.HeroSize.width + 160,  HandViewModel.initialCurrentPlayerHand.position.y + HandViewModel.HandSize.height - 25, 103, 18),
+      Rectangle(HandViewModel.HandSize.width + PlayerViewModel.HeroSize.width + 10 + 106,  HandViewModel.initialCurrentPlayerHand.position.y + HandViewModel.HandSize.height - 25, 108, 16),
       Depth(2),
     ).withUpActions(SceneEvent.JumpTo(MenuScene.name))
 
