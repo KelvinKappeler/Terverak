@@ -26,6 +26,7 @@ object ChooseDeckSceneView {
         ++ DeckCreationView.draw(model.deckCreation1, viewModel.deckCreationViewModel1)
         ++ DeckCreationView.draw(model.deckCreation2, viewModel.deckCreationViewModel2)
         ++ Batch(viewModel.buttonPlay.draw)
+        ++ Batch(viewModel.buttonReturn.draw)
         ++ TerverakText.drawText("Player 1", 40, 30, 1, GameAssets.Fonts.defaultFont8, RGBA.White)
         ++ TerverakText.drawText("Player 2", 230, 30, 1, GameAssets.Fonts.defaultFont8, RGBA.White)
         )

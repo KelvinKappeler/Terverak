@@ -18,14 +18,15 @@ import terverak.scenes.deckCollection.*
 /**
   * The viewmodel of the choose deck scene.
   */
-final case class ChooseDeckSceneViewModel(buttonPlay: Button, deckCreationViewModel1: DeckCreationViewModel, deckCreationViewModel2: DeckCreationViewModel) {
+final case class ChooseDeckSceneViewModel(buttonPlay: Button, buttonReturn: Button, deckCreationViewModel1: DeckCreationViewModel, deckCreationViewModel2: DeckCreationViewModel) {
 
   def updateViewModel(context: SceneContext[TerverakStartupData], model: ChooseDeckSceneModel): GlobalEvent => Outcome[ChooseDeckSceneViewModel] =
     case FrameTick =>
       val o1 = deckCreationViewModel1.updateButtons(context.inputState.mouse).map(deck => copy(deckCreationViewModel1 = deck))
       val o2 = deckCreationViewModel2.updateButtons(context.inputState.mouse).map(deck => copy(deckCreationViewModel2 = deck))
       val o3 = buttonPlay.update(context.inputState.mouse).map(button => copy(buttonPlay = button))
-      o1.flatMap(_ => o2).flatMap(_ => o3)
+      val o4 = buttonReturn.update(context.inputState.mouse).map(button => copy(buttonReturn = button))
+      o1.flatMap(_ => o2).flatMap(_ => o3).flatMap(_ => o4)
     case _ => Outcome(this)
 
 }
@@ -47,6 +48,15 @@ object ChooseDeckSceneViewModel {
       Rectangle(40, 80 + DeckCreationViewModel.DefaultHeight, 46, 26),
       Depth(1),
     ).withUpActions(TerverakEvents.OnClickOnStartGame()),
+    Button(
+      ButtonAssets(
+        up = Graphic(0, 0, 54, 8, 2, Material.Bitmap(GameAssets.Buttons.backToMenuButton)).scaleBy(2, 2),
+        over = Graphic(0, 0, 54, 8, 2, Material.Bitmap(GameAssets.Buttons.backToMenuButton)).scaleBy(2, 2),
+        down = Graphic(0, 0, 54, 8, 2, Material.Bitmap(GameAssets.Buttons.backToMenuButton)).scaleBy(2, 2)
+      ),
+      Rectangle(100, 80 + DeckCreationViewModel.DefaultHeight, 108, 16),
+      Depth(1),
+    ).withUpActions(DeckCollectionEvents.GoToMenu()),
     DeckCreationViewModel(DeckCreationViewModel.DefaultButtons(initialPointForDeckCreation1, 0), initialPointForDeckCreation1, false),
     DeckCreationViewModel(DeckCreationViewModel.DefaultButtons(initialPointForDeckCreation2, 1), initialPointForDeckCreation2, false))
   

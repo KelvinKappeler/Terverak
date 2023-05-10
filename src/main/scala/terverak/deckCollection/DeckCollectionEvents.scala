@@ -66,4 +66,18 @@ object DeckCollectionEvents {
    */
   final case class LoadDecks() extends GlobalEvent
   
+  /**
+    * Event to go to the play.
+    */
+  final case class GoToPlay() extends GlobalEvent
+
+  /**
+    * Event to go to the deck collection.
+    */
+  final case class GoToDeckCollection() extends GlobalEvent
+
+  /**
+    * Event to go to the menu.
+    */
+  final case class GoToMenu() extends GlobalEvent
 }

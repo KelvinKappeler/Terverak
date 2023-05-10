@@ -47,7 +47,6 @@ final case class GameViewModel(currentPlayerViewModel: PlayerViewModel, waitingP
 
   def updateButtons(mouse: Mouse): Outcome[GameViewModel] = {
       endTurnButton.update(mouse).map(_ => this).flatMap(_ => backToMenuButton.update(mouse).map(_ => this))
-      
   }
 
 }
