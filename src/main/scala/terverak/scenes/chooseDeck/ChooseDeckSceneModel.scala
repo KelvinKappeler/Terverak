@@ -21,7 +21,7 @@ import terverak.scenes.play.*
 final case class ChooseDeckSceneModel(deckCreation1: DeckCreation, deckCreation2: DeckCreation) {
 
   def updateModel(context: SceneContext[TerverakStartupData]): GlobalEvent => Outcome[ChooseDeckSceneModel] = {
-    case KeyboardEvent.KeyDown(Key.ESCAPE) =>
+    case DeckCollectionEvents.GoToMenu() =>
       Outcome(this).addGlobalEvents(SceneEvent.JumpTo(MenuScene.name))
     case TerverakEvents.OnClickOnStartGame() =>
       if (deckCreation1.deck.isValid && deckCreation2.deck.isValid)

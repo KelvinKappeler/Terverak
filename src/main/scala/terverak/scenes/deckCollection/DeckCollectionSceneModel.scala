@@ -25,7 +25,7 @@ import terverak.scenes.menu.*
 final case class DeckCollectionSceneModel(cardsCatalog: CardsCatalog, deckCreation: DeckCreation) {
 
   def updateModel(context: SceneContext[TerverakStartupData]): GlobalEvent => Outcome[DeckCollectionSceneModel] = {
-    case KeyboardEvent.KeyDown(Key.ESCAPE) =>
+    case DeckCollectionEvents.GoToMenu() =>
       Outcome(this).addGlobalEvents(
         SceneEvent.JumpTo(MenuScene.name),
         TerverakEvents.OnChangeSceneForUser(deckCreation.user))

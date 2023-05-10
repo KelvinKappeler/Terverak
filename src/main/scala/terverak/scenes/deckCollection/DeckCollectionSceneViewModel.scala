@@ -22,7 +22,8 @@ final case class DeckCollectionSceneViewModel(
   cardsCatalogViewModel: CardsCatalogViewModel,
   deckCreationViewModel: DeckCreationViewModel,
   cardDescriptionViewModel: CardDescriptionViewModel,
-  saveLoadButtons: SaveLoadButtons
+  saveLoadButtons: SaveLoadButtons,
+  buttonReturn: Button
 ) {
 
   def updateViewModel(context: SceneContext[TerverakStartupData], model: DeckCollectionSceneModel): GlobalEvent => Outcome[DeckCollectionSceneViewModel] = {
@@ -31,7 +32,8 @@ final case class DeckCollectionSceneViewModel(
       val o2 = deckCreationViewModel.updateButtons(context.inputState.mouse).map(deck => copy(deckCreationViewModel = deck))
       val o3 = cardsCatalogViewModel.updateHitArea(context.inputState.mouse).map(catalog => copy(cardsCatalogViewModel = catalog))
       val o4 = saveLoadButtons.updateButtons(context.inputState.mouse).map(buttons => copy(saveLoadButtons = buttons))
-      o1.flatMap(_ => o2).flatMap(_ => o3).flatMap(_ => o4)
+      val o5 = buttonReturn.update(context.inputState.mouse).map(button => copy(buttonReturn = button))
+      o1.flatMap(_ => o2).flatMap(_ => o3).flatMap(_ => o4).flatMap(_ => o5)
     case DeckCollectionEvents.NextPage() =>
       Outcome(copy(cardsCatalogViewModel = cardsCatalogViewModel.nextPage(model.cardsCatalog)))
     case DeckCollectionEvents.PreviousPage() =>
@@ -58,7 +60,16 @@ object DeckCollectionSceneViewModel {
     CardsCatalogViewModel.initial,
     DeckCreationViewModel.initial,
     CardDescriptionViewModel.initial,
-    SaveLoadButtons.initial
+    SaveLoadButtons.initial,
+    Button(
+      ButtonAssets(
+        up = Graphic(0, 0, 54, 8, 2, Material.Bitmap(GameAssets.Buttons.backToMenuButton)).scaleBy(1, 1),
+        over = Graphic(0, 0, 54, 8, 2, Material.Bitmap(GameAssets.Buttons.backToMenuButton)).scaleBy(1, 1),
+        down = Graphic(0, 0, 54, 8, 2, Material.Bitmap(GameAssets.Buttons.backToMenuButton)).scaleBy(1, 1)
+      ),
+      Rectangle(DeckCreationViewModel.InitialPoint.x + 70, DeckCreationViewModel.DefaultHeight + 90, 54, 8),
+      Depth(1),
+    ).withUpActions(DeckCollectionEvents.GoToMenu()),
   )
   
 }
