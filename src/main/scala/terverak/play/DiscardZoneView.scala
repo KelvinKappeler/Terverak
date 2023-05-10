@@ -28,6 +28,8 @@ object DiscardZoneView {
     val width = DiscardZoneViewModel.DiscardZoneSize.width
     val height = DiscardZoneViewModel.DiscardZoneSize.height
 
+    val backgroundBatch = Batch(Shape.Box(Rectangle(x, y, width, height) , Fill.Color(RGBA.Black.withAlpha(0.3))).withDepth(Depth(81)))
+
     val batch = 
       if (discardZone.cards.nonEmpty) {
         Batch(Graphic(x + 4, y + 4, CardViewModel.CardSize.width, CardViewModel.CardSize.height, 90, Material.Bitmap(GameAssets.Cards.cardBack)))
@@ -43,7 +45,7 @@ object DiscardZoneView {
         Batch()
       }
     
-    batch ++ Batch(Graphic(x, y, width, height, 100, Material.Bitmap(GameAssets.Backgrounds.discardZone)))
+    batch ++ backgroundBatch ++ Batch(Graphic(x, y, width, height, 100, Material.Bitmap(GameAssets.Backgrounds.discardZone)))
   
   }
 }

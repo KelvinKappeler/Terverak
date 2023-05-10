@@ -27,6 +27,6 @@ final case class DiscardZoneViewModel(
 object DiscardZoneViewModel {
   val DiscardZoneSize: Size = Size(40, 72)
 
-  val initialCurrentPlayerDiscardZone: DiscardZoneViewModel = DiscardZoneViewModel(Point(0, HandViewModel.HandSize.height + DiscardZoneSize.height))
-  val initialWaitingPlayerDiscardZone: DiscardZoneViewModel = DiscardZoneViewModel(Point(0, HandViewModel.HandSize.height))
+  val initialCurrentPlayerDiscardZone: DiscardZoneViewModel = DiscardZoneViewModel(Point(0, 20 + HandViewModel.HandSize.height + DiscardZoneSize.height))
+  val initialWaitingPlayerDiscardZone: DiscardZoneViewModel = DiscardZoneViewModel(Point(0, 20 + HandViewModel.HandSize.height))
 }

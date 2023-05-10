@@ -56,6 +56,8 @@ object GameViewModel {
 
   val initial: GameViewModel = GameViewModel(PlayerViewModel.initialCurrentPlayer, PlayerViewModel.initialWaitingPlayer, GameState.Playing)
 
+  val GlobalOffSetY: Int = 20
+
   val endTurnButton: Button =  
    Button(
       ButtonAssets(

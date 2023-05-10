@@ -104,6 +104,6 @@ object MinionBoardViewModel {
 
   val MinionBoardSize: Size = Size((MinionBoardViewModel.MinionSpacing * MinionBoard.MaxMinionBoardSize) + MinionBoardViewModel.OffsetX, MinionViewModel.MinionSize.height + 2*MinionBoardViewModel.OffsetY)
 
-  val initialCurrentPlayerMinionBoard: MinionBoardViewModel = MinionBoardViewModel(Point(DiscardZoneViewModel.DiscardZoneSize.width, HandViewModel.HandSize.height + MinionBoardViewModel.MinionBoardSize.height), List.empty)
-  val initialWaitingPlayerMinionBoard: MinionBoardViewModel = MinionBoardViewModel(Point(DiscardZoneViewModel.DiscardZoneSize.width, HandViewModel.HandSize.height), List.empty)
+  val initialCurrentPlayerMinionBoard: MinionBoardViewModel = MinionBoardViewModel(Point(DiscardZoneViewModel.DiscardZoneSize.width, HandViewModel.HandSize.height + MinionBoardViewModel.MinionBoardSize.height + 20), List.empty)
+  val initialWaitingPlayerMinionBoard: MinionBoardViewModel = MinionBoardViewModel(Point(DiscardZoneViewModel.DiscardZoneSize.width, HandViewModel.HandSize.height + 20), List.empty)
 }
