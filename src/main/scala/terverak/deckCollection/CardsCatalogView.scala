@@ -29,7 +29,7 @@ object CardsCatalogView {
         initialPoint.y,
         CardsCatalogViewModel.DefaultWidth,
         CardsCatalogViewModel.DefaultHeight
-      ), Fill.Color(RGBA.Purple)).withDepth(Depth(defaultDepth))
+      ), Fill.Color(RGBA.Black.withAlpha(0.5))).withDepth(Depth(defaultDepth))
     )
 
     val cardsBatch =

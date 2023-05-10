@@ -76,4 +76,4 @@ object Terverak extends IndigoGame[Unit, TerverakStartupData, TerverakModel, Ter
       model: TerverakModel,
       viewModel: TerverakViewModel
   ): Outcome[SceneUpdateFragment] =
-    Outcome(SceneUpdateFragment.empty)
+    Outcome(SceneUpdateFragment.empty.addLayer(Layer(Batch(Graphic(0, 0, 650, 350, 100, Material.Bitmap(GameAssets.Backgrounds.background))))))

@@ -23,7 +23,7 @@ object DeckCreationView {
         viewModel.position.y,
         DeckCreationViewModel.DefaultWidth,
         DeckCreationViewModel.DefaultHeight
-      ), Fill.Color(RGBA.Salmon)).withDepth(Depth(30))
+      ), Fill.Color(RGBA.Black.withAlpha(0.5))).withDepth(Depth(30))
     )
 
     val cardsBatch = model.deck.cardsWithQuantity.zipWithIndex.foldLeft(Batch.empty[SceneNode]) { case (batch, (cardWithQuantity, index)) =>

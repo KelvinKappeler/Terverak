@@ -25,7 +25,7 @@ object MinionBoardView {
     Batch(
       Shape.Box(
         Rectangle(minionBoardViewModel.position.x, minionBoardViewModel.position.y, MinionBoardViewModel.MinionBoardSize.width, MinionBoardViewModel.MinionBoardSize.height),
-        Fill.Color(RGBA.Silver)).withDepth(Depth(depth)))
+        Fill.Color(RGBA.Black.withAlpha(0))).withDepth(Depth(depth)))
       ++ minionBoard.minions.zip(minionBoardViewModel.minionsViewModel).foldLeft(Batch.empty)((batch, minionAndViewModel) =>
       batch ++ MinionView.draw(minionAndViewModel._1.minion, minionAndViewModel._2, isCurrentPlayer, depth - 1))
   }

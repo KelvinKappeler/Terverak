@@ -145,18 +145,14 @@ object GameAssets {
     private val AssetCardsDirectory: String = AssetsDirectory + "backgrounds/"
 
     val discardZone: AssetName = AssetName("discardZone")
-    val menuBackground: AssetName = AssetName("menuBackground")
     val title: AssetName = AssetName("title")
     val background: AssetName = AssetName("background")
-    val black_hole: AssetName = AssetName("black_hole")
 
     val assets: Set[AssetType] =
       Set(
         AssetType.Image(discardZone, AssetPath(AssetCardsDirectory + "discard_zone.png")),
-        AssetType.Image(menuBackground, AssetPath(AssetCardsDirectory + "menu.png")),
         AssetType.Image(title, AssetPath(AssetCardsDirectory + "title.png")),
         AssetType.Image(background, AssetPath(AssetCardsDirectory + "background.png")),
-        AssetType.Image(black_hole, AssetPath(AssetCardsDirectory + "black_hole.png"))
       )
   }
 
