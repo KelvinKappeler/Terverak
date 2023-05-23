@@ -9,12 +9,13 @@ package terverak.deckCollection
 import terverak.card.*
 import stainless.collection.*
 import stainless.lang.*
+import stainless.annotation.*
 
 /**
   * A deck of cards.
   */
-final case class Deck(cardsWithQuantity: Map[Card, BigInt]) {
-  require(cardsWithQuantity.values.foldLeft(true)((bool, value) => bool && (value == 1 || value == 2)))
+final case class Deck(cardsWithQuantity: ListMap[Card, BigInt]) {
+  require(cardsWithQuantity.toList.forall((_, value) => value == 1 || value == 2))
 
   /**
     * Returns true if the deck is valid, false otherwise.
@@ -27,7 +28,7 @@ final case class Deck(cardsWithQuantity: Map[Card, BigInt]) {
     * @param card the card to add.
     * @return the new deck, or the same deck if the card is already in the deck twice, or if the deck is full.
     */
-  def addCard(card: Card): Deck = {
+  /*def addCard(card: Card): Deck = {
     if (cardsWithQuantity.contains(card)) {
       if (cardsWithQuantity(card) >= 2 || ListOps.sum(cardsWithQuantity.values) >= Deck.MaxCards) {
         this
@@ -41,7 +42,7 @@ final case class Deck(cardsWithQuantity: Map[Card, BigInt]) {
         copy(cardsWithQuantity = cardsWithQuantity.updated(card, 1))
       }
     }
-  } ensuring(res => res.cardsWithQuantity.values.foldLeft(true)((bool, value) => bool && (value == 1 || value == 2)))
+  } ensuring(res => res.cardsWithQuantity.values.foldLeft(true)((bool, value) => bool && (value == 1 || value == 2)))*/
   /*ensuring(res => ListOps.sum(res.cardsWithQuantity.values) == ListOps.sum(cardsWithQuantity.values)
     || ListOps.sum(res.cardsWithQuantity.values) == 1 + ListOps.sum(cardsWithQuantity.values))*/
 
@@ -53,14 +54,19 @@ final case class Deck(cardsWithQuantity: Map[Card, BigInt]) {
   def removeCard(card: Card): Deck = {
     if (cardsWithQuantity.contains(card)) {
       if (cardsWithQuantity(card) == 1) {
-        copy(cardsWithQuantity = cardsWithQuantity - card)
+        ListSpecs.listFilterValidProp(cardsWithQuantity.toList, (_, value) => value == 1 || value == 2, _._1 != card)
+        val res = copy(cardsWithQuantity = cardsWithQuantity - card)
+        assert(res.cardsWithQuantity.toList.forall((_, value) => value == 1 || value == 2))
+        res
       } else {
-        copy(cardsWithQuantity = cardsWithQuantity.updated(card, cardsWithQuantity(card) - 1))
+        val res = copy(cardsWithQuantity = cardsWithQuantity.updated(card, cardsWithQuantity(card) - 1))
+        assert(res.cardsWithQuantity.toList.forall((_, value) => value == 1 || value == 2))
+        res
       }
     } else {
       this
     }
-  } ensuring(res => res.cardsWithQuantity.values.foldLeft(true)((bool, value) => bool && (value == 1 || value == 2)))
+  } ensuring(res => res.cardsWithQuantity.toList.forall((_, value) => value == 1 || value == 2))
     //ensuring(res => ListOps.sum(res.cardsWithQuantity.values) == ListOps.sum(cardsWithQuantity.values)
     //|| ListOps.sum(res.cardsWithQuantity.values) == ListOps.sum(cardsWithQuantity.values) - 1)
 }
@@ -76,10 +82,10 @@ object Deck {
     */
   val MinCards: BigInt = BigInt(20)
 
-  val initial: Deck = Deck(Map.empty)
+  val initial: Deck = Deck(ListMap.empty)
 
-  val DefaultDecks: List[Deck] = List(
-    Deck(Map(
+  @ignore val DefaultDecks: List[Deck] = List(
+    Deck(ListMap(List(
         AlienCardsData.alien_green -> BigInt(2),
         AlienCardsData.alien_blue -> BigInt(2),
         AlienCardsData.alien_red -> BigInt(2),
@@ -96,8 +102,8 @@ object Deck {
         OtherCardsData.brownCreature -> BigInt(2),
         OtherCardsData.bacteria -> BigInt(2),
         OtherCardsData.blackhole -> BigInt(1),
-      )),
-    Deck(Map(
+      ))),
+    Deck(ListMap(List(
         PlanetCardsData.planet_aethon -> BigInt(2),
         PlanetCardsData.planet_arion -> BigInt(1),
         PlanetCardsData.planet_dictys -> BigInt(2),
@@ -116,6 +122,6 @@ object Deck {
         AlienCardsData.alien_blue -> BigInt(2),
         AlienCardsData.alien_red -> BigInt(2),
         AlienCardsData.alien_yellow -> BigInt(2),
-    ))
+    )))
   )
 }

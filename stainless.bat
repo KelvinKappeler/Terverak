@@ -7,4 +7,4 @@ popd
 
 set PATH=%PATH%;%script_dir%\z3
 
-java -jar %script_dir%\lib\stainless-dotty-standalone-0.9.7.jar %*
+java -jar %script_dir%\lib\stainless-dotty-standalone-0.9.7-35-g4c973e7-SNAPSHOT.jar %*

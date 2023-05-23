@@ -17,7 +17,7 @@ import stainless.annotation.*
   * @param cards The cards in the hand.
   */
 final case class Hand(cards: List[HandCard], baseCardId: BigInt) {
-  //require(cards.length < Hand.MaxHandSize)
+  require(cards.length < Hand.MaxHandSize)
 
   /**
     * Adds a card to the hand.
@@ -25,6 +25,7 @@ final case class Hand(cards: List[HandCard], baseCardId: BigInt) {
     * @return the new hand.
     */
   def addCard(card: Card): Hand = {
+    require(cards.length + 1 < Hand.MaxHandSize)
     
     copy(cards = Cons(HandCard(card, nextId()), cards))
   } //ensuring(res => res.cards.length == cards.length + 1)
