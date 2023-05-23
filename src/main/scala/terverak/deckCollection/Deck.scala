@@ -3,48 +3,54 @@
 // Kelvin Kappeler & Bastien Jolidon
 // Bachelor Project EPFL, 2023
 // =======================================
-  
+
 package terverak.deckCollection
 
 import terverak.card.*
 import stainless.collection.*
 import stainless.lang.*
 import stainless.annotation.*
+import stainless.proof.*
 
 /**
   * A deck of cards.
   */
 final case class Deck(cardsWithQuantity: ListMap[Card, BigInt]) {
-  require(cardsWithQuantity.toList.forall((_, value) => value == 1 || value == 2))
+  require(cardsWithQuantity.forall(Deck.qtyInv))
+
+  def nbCards = cardsWithQuantity.values.sum
 
   /**
     * Returns true if the deck is valid, false otherwise.
     * @return true if the deck is valid, false otherwise.
     */
-  def isValid = ListOps.sum(cardsWithQuantity.values) >= Deck.MinCards
+  def isValid = nbCards >= Deck.MinCards
 
   /**
     * Adds a card to the deck.
     * @param card the card to add.
     * @return the new deck, or the same deck if the card is already in the deck twice, or if the deck is full.
     */
-  /*def addCard(card: Card): Deck = {
+  def addCard(card: Card): Deck = {
     if (cardsWithQuantity.contains(card)) {
-      if (cardsWithQuantity(card) >= 2 || ListOps.sum(cardsWithQuantity.values) >= Deck.MaxCards) {
+      if (cardsWithQuantity(card) >= 2 || nbCards >= Deck.MaxCards) {
         this
       } else {
+        ListMapLemmas.applyForall(cardsWithQuantity, Deck.qtyInv, card)
+        ListMapLemmas.addValidProp(cardsWithQuantity, Deck.qtyInv, card, cardsWithQuantity(card) + 1)
+        //Deck.sumUpdatedLemma(cardsWithQuantity, card, cardsWithQuantity(card) + 1)
         copy(cardsWithQuantity = cardsWithQuantity.updated(card, cardsWithQuantity(card) + 1))
       }
     } else {
-      if (ListOps.sum(cardsWithQuantity.values) >= Deck.MaxCards || cardsWithQuantity.keys.size >= 18) {
+      if (nbCards >= Deck.MaxCards || cardsWithQuantity.keys.size >= 18) {
         this
       } else {
+        ListMapLemmas.addValidProp(cardsWithQuantity, Deck.qtyInv, card, 1)
+        Deck.sumAddedLemma(cardsWithQuantity, card, 1)
         copy(cardsWithQuantity = cardsWithQuantity.updated(card, 1))
       }
     }
-  } ensuring(res => res.cardsWithQuantity.values.foldLeft(true)((bool, value) => bool && (value == 1 || value == 2)))*/
-  /*ensuring(res => ListOps.sum(res.cardsWithQuantity.values) == ListOps.sum(cardsWithQuantity.values)
-    || ListOps.sum(res.cardsWithQuantity.values) == 1 + ListOps.sum(cardsWithQuantity.values))*/
+  }.ensuring(res => res == this || res.nbCards == this.nbCards + 1)
 
   /**
     * Remove a card to the deck.
@@ -54,21 +60,19 @@ final case class Deck(cardsWithQuantity: ListMap[Card, BigInt]) {
   def removeCard(card: Card): Deck = {
     if (cardsWithQuantity.contains(card)) {
       if (cardsWithQuantity(card) == 1) {
-        ListSpecs.listFilterValidProp(cardsWithQuantity.toList, (_, value) => value == 1 || value == 2, _._1 != card)
-        val res = copy(cardsWithQuantity = cardsWithQuantity - card)
-        assert(res.cardsWithQuantity.toList.forall((_, value) => value == 1 || value == 2))
-        res
+        ListMapLemmas.removeValidProp(cardsWithQuantity, Deck.qtyInv, card)
+        Deck.sumRemovedLemma(cardsWithQuantity, card)
+        copy(cardsWithQuantity = cardsWithQuantity - card)
       } else {
-        val res = copy(cardsWithQuantity = cardsWithQuantity.updated(card, cardsWithQuantity(card) - 1))
-        assert(res.cardsWithQuantity.toList.forall((_, value) => value == 1 || value == 2))
-        res
+        ListMapLemmas.applyForall(cardsWithQuantity, Deck.qtyInv, card)
+        ListMapLemmas.addValidProp(cardsWithQuantity, Deck.qtyInv, card, cardsWithQuantity(card) - 1)
+        //Deck.sumUpdatedLemma(cardsWithQuantity, card, cardsWithQuantity(card) - 1)
+        copy(cardsWithQuantity = cardsWithQuantity.updated(card, cardsWithQuantity(card) - 1))
       }
     } else {
       this
     }
-  } ensuring(res => res.cardsWithQuantity.toList.forall((_, value) => value == 1 || value == 2))
-    //ensuring(res => ListOps.sum(res.cardsWithQuantity.values) == ListOps.sum(cardsWithQuantity.values)
-    //|| ListOps.sum(res.cardsWithQuantity.values) == ListOps.sum(cardsWithQuantity.values) - 1)
+  }.ensuring(res => res == this || res.nbCards == this.nbCards - 1)
 }
 
 object Deck {
@@ -76,6 +80,8 @@ object Deck {
     * The maximum number of cards for a deck.
     */
   val MaxCards: BigInt = BigInt(30)
+
+  val qtyInv: ((Card, BigInt)) => Boolean = (_, qty) => qty == 1 || qty == 2
 
   /**
     * The minimum number of cards for a deck to be valid.
@@ -124,4 +130,50 @@ object Deck {
         AlienCardsData.alien_yellow -> BigInt(2),
     )))
   )
+
+  @opaque @inlineOnce
+  def sumRemovedLemma[K](xs: ListMap[K, BigInt], k: K): Unit = {
+    require(xs.contains(k))
+  }.ensuring(xs.values.sum - xs(k) == (xs - k).values.sum)
+
+  @opaque @inlineOnce
+  def sumAddedLemma[K](xs: ListMap[K, BigInt], k: K, v: BigInt): Unit = {
+    require(!xs.contains(k))
+  }.ensuring(xs.values.sum + v == (xs + (k -> v)).values.sum)
+/*
+  @opaque @inlineOnce
+  def sumUpdatedLemma[K](xs: ListMap[K, BigInt], k: K, v: BigInt): Unit = {
+    require(xs.contains(k))
+    @opaque @inlineOnce
+    def rec(xs: ListMap[K, BigInt]): Unit = {
+      decreases(xs)
+      xs.toList match {
+        case Nil() => () // Cas de base: rien de spécial
+        case Cons((k2, v2), tl) =>
+          val tlMap = ListMap(tl)
+          rec(tlMap) // Cas récursif
+          assert(tlMap.contains(k) ==> (tlMap.updated(k, v).values.sum == tlMap.values.sum + (v - tlMap(k)))) // IH
+          if (k2 == k) {
+            // Les check et les assert sont à peu près identique. La différence est que check est toujours "visible" pour prouver
+            // la postcondition, alors que le assert ne l'est pas s'il se trouve dans des branches.
+            // En général, on utilise assert pour prouver des résultats intermédiaire et check pour la postcondition
+            check(xs.contains(k))
+            check(xs.updated(k, v).values.sum == xs.values.sum + (v - xs(k)))
+          } else {
+            if (tlMap.contains(k)) {
+              assert(tlMap.updated(k, v).values.sum == tlMap.values.sum + (v - tlMap(k))) // IH
+              assert(xs.contains(k)) // Car tlMap.contains(k)
+              assert(xs.updated(k, v) == ListMap(Cons((k2, v2), tl)).updated(k, v)) // Par définition
+              assert(tlMap(k) == xs(k)) // Car k2 != k
+              assert(xs.values.sum == v2 + tlMap.values.sum) // Par définition de sum
+              assert(xs.updated(k, v).values.sum == v2 + tlMap.updated(k, v).values.sum) // Par définition de sum
+              check(xs.contains(k) ==> (xs.updated(k, v).values.sum == xs.values.sum + (v - xs(k)))) // Ce qu'on veut
+            } else {
+              check(!xs.contains(k))
+            }
+          }
+      }
+    }.ensuring(_ => xs.contains(k) ==> (xs.updated(k, v).values.sum == xs.values.sum + (v - xs(k)))) // On a une PC plus forte que celle que l'on veut prouver pour avoir une IH plus puissante
+  }.ensuring(xs.updated(k, v).values.sum == xs.values.sum + (v - xs(k)))
+  */
 }

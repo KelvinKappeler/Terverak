@@ -30,8 +30,8 @@ final case class DeckCreation(user: User, deckNumber: BigInt = BigInt(0)) {
   def addCardToCurrentDeck(card: Card): DeckCreation = {
     copy(user = user.copy(decks = user.decks.updated(deckNumber, user.decks(deckNumber).addCard(card))))
   } ensuring(res => res.user.decks.size == user.decks.size &&
-    (ListOps.sum(res.user.decks(deckNumber).cardsWithQuantity.values) == ListOps.sum(user.decks(deckNumber).cardsWithQuantity.values)
-    || ListOps.sum(res.user.decks(deckNumber).cardsWithQuantity.values) == ListOps.sum(user.decks(deckNumber).cardsWithQuantity.values)))
+    (res.user.decks(deckNumber) == user.decks(deckNumber)
+    || res.user.decks(deckNumber).nbCards == user.decks(deckNumber).nbCards + 1))
 
   /**
     * Remove a card to the current deck.
@@ -40,9 +40,9 @@ final case class DeckCreation(user: User, deckNumber: BigInt = BigInt(0)) {
     */
   def removeCardToCurrentDeck(card: Card): DeckCreation = {
     copy(user = user.copy(decks = user.decks.updated(deckNumber, user.decks(deckNumber).removeCard(card))))
-  } ensuring(res => res.user.decks.size == user.decks.size && 
-    (ListOps.sum(res.user.decks(deckNumber).cardsWithQuantity.values) == ListOps.sum(user.decks(deckNumber).cardsWithQuantity.values)
-    || ListOps.sum(res.user.decks(deckNumber).cardsWithQuantity.values) == ListOps.sum(user.decks(deckNumber).cardsWithQuantity.values) - 1))
+  } ensuring(res => res.user.decks.size == user.decks.size &&
+    (res.user.decks(deckNumber) == user.decks(deckNumber)
+    || res.user.decks(deckNumber).nbCards == user.decks(deckNumber).nbCards - 1))
 
   /**
     * Returns the next deck.
