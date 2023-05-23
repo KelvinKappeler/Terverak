@@ -38,7 +38,7 @@ final case class Deck(cardsWithQuantity: ListMap[Card, BigInt]) {
       } else {
         ListMapLemmas.applyForall(cardsWithQuantity, Deck.qtyInv, card)
         ListMapLemmas.addValidProp(cardsWithQuantity, Deck.qtyInv, card, cardsWithQuantity(card) + 1)
-        //Deck.sumUpdatedLemma(cardsWithQuantity, card, cardsWithQuantity(card) + 1)
+        Deck.sumUpdatedLemma(cardsWithQuantity, card, cardsWithQuantity(card) + 1)
         copy(cardsWithQuantity = cardsWithQuantity.updated(card, cardsWithQuantity(card) + 1))
       }
     } else {
@@ -66,7 +66,7 @@ final case class Deck(cardsWithQuantity: ListMap[Card, BigInt]) {
       } else {
         ListMapLemmas.applyForall(cardsWithQuantity, Deck.qtyInv, card)
         ListMapLemmas.addValidProp(cardsWithQuantity, Deck.qtyInv, card, cardsWithQuantity(card) - 1)
-        //Deck.sumUpdatedLemma(cardsWithQuantity, card, cardsWithQuantity(card) - 1)
+        Deck.sumUpdatedLemma(cardsWithQuantity, card, cardsWithQuantity(card) - 1)
         copy(cardsWithQuantity = cardsWithQuantity.updated(card, cardsWithQuantity(card) - 1))
       }
     } else {
@@ -140,7 +140,7 @@ object Deck {
   def sumAddedLemma[K](xs: ListMap[K, BigInt], k: K, v: BigInt): Unit = {
     require(!xs.contains(k))
   }.ensuring(xs.values.sum + v == (xs + (k -> v)).values.sum)
-/*
+
   @opaque @inlineOnce
   def sumUpdatedLemma[K](xs: ListMap[K, BigInt], k: K, v: BigInt): Unit = {
     require(xs.contains(k))
@@ -175,5 +175,4 @@ object Deck {
       }
     }.ensuring(_ => xs.contains(k) ==> (xs.updated(k, v).values.sum == xs.values.sum + (v - xs(k)))) // On a une PC plus forte que celle que l'on veut prouver pour avoir une IH plus puissante
   }.ensuring(xs.updated(k, v).values.sum == xs.values.sum + (v - xs(k)))
-  */
 }

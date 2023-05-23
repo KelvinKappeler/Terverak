@@ -10,13 +10,13 @@ import terverak.card.Card
 import terverak.play.IdObject.*
 import stainless.lang.* 
 import stainless.collection.*
-import stainless.annotation.*
 
 /**
   * A hand of cards.
   * @param cards The cards in the hand.
   */
-final case class Hand(cards: List[HandCard], baseCardId: BigInt) {
+final case class Hand(cards: List[IdObject.HandCard], baseCardId: BigInt) {
+  require(baseCardId >= 0)
   require(cards.length < Hand.MaxHandSize)
 
   /**
@@ -27,8 +27,8 @@ final case class Hand(cards: List[HandCard], baseCardId: BigInt) {
   def addCard(card: Card): Hand = {
     require(cards.length + 1 < Hand.MaxHandSize)
     
-    copy(cards = Cons(HandCard(card, nextId()), cards))
-  } //ensuring(res => res.cards.length == cards.length + 1)
+    copy(cards = IdObject.HandCard(card, nextId()) :: cards)
+  } ensuring(_.cards.length == cards.length + 1)
 
   /**
     * Removes a specific card from the hand.
@@ -40,14 +40,14 @@ final case class Hand(cards: List[HandCard], baseCardId: BigInt) {
     require(cards.contains(card))
 
     copy(cards = cards.filter(_.id != card.id))
-  } //ensuring(res => res.cards.length == cards.length - 1)
+  } ensuring(res => res.cards.length <= cards.length)
 
   /**
    * Compute the next id for a card in the hand. 
    */
   private def nextId(): BigInt = {
     if (cards.isEmpty) baseCardId else cards.head.id + IdObject.BaseIncrement
-  } //ensuring(res => !(cards.map(_._2).contains(res)))
+  }
 }
 
 object Hand {

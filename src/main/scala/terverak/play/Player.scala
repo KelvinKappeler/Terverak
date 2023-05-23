@@ -138,7 +138,7 @@ final case class Player(
     */
   def healIdObject(idObject: IdObject, amount: BigInt): Player = {
     require(amount >= 0)
-
+    
     idObject match {
       case minion: IdObject.MinionWithId =>
         copy(
@@ -183,6 +183,7 @@ final case class Player(
 
     idObject match {
       case minion: IdObject.MinionWithId =>
+
         copy(
           minionBoard = minionBoard.boostMinionHealth(minion, amount),
         )
@@ -196,6 +197,8 @@ final case class Player(
     * @return
     */
   def destroyMinion(minion: IdObject.MinionWithId): Player = {
+    require(minionBoard.minions.contains(minion))
+
     copy(
       minionBoard = minionBoard.destroyMinion(minion),
     )
