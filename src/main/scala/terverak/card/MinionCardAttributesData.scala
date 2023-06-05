@@ -3,7 +3,7 @@
 // Kelvin Kappeler & Bastien Jolidon
 // Bachelor Project EPFL, 2023
 // =======================================
-  
+
 package terverak.card
 
 import stainless.lang.*
@@ -26,6 +26,7 @@ object MinionCardAttributesData {
     * @param amount the amount of mana to regenerate.
     */
   final case class ManaRegen(amountMana: BigInt) extends MinionCardAttribute {
+    require(amountMana >= 0)
     @extern override def name: String = "Mana " + amountMana.toString
     @extern override def description: String = "Regenerate " + amountMana.toString + " mana at the beginning of your turn."
     override def amount: BigInt = amountMana

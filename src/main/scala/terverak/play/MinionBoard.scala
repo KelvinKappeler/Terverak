@@ -35,8 +35,6 @@ final case class MinionBoard(minions: List[IdObject.MinionWithId], baseMinionId:
     */
   def damageMinion(minionId: IdObject.MinionWithId, amount: BigInt): MinionBoard = {
     require(amount >= 0)
-    require(minions.contains(minionId))
-
     val newMinionsList = minions.map(minionWithId =>
       if (minionWithId.id == minionId.id)
         minionWithId.copy(minion = minionWithId.minion.takeDamage(amount))
@@ -52,7 +50,6 @@ final case class MinionBoard(minions: List[IdObject.MinionWithId], baseMinionId:
     */
   def healMinion(minionId: IdObject.MinionWithId, amount: BigInt): MinionBoard = {
     require(amount >= 0)
-    require(minions.contains(minionId))
 
     val newMinionsList = minions.map(minionWithId =>
       if (minionWithId.id == minionId.id)
@@ -69,9 +66,6 @@ final case class MinionBoard(minions: List[IdObject.MinionWithId], baseMinionId:
     */
   def boostMinionAttack(minionId: IdObject.MinionWithId, amount: BigInt): MinionBoard = {
     require(amount >= 0)
-    require(minions.contains(minionId))
-
-
     val newMinionsList = minions.map(minionWithId =>
       if (minionWithId.id == minionId.id)
         minionWithId.copy(minion = minionWithId.minion.boostAttack(amount))
@@ -87,8 +81,6 @@ final case class MinionBoard(minions: List[IdObject.MinionWithId], baseMinionId:
     */
   def boostMinionHealth(minionId: IdObject.MinionWithId, amount: BigInt): MinionBoard = {
     require(amount >= 0)
-    require(minions.contains(minionId))
-
     val newMinionsList = minions.map(minionWithId =>
       if (minionWithId.id == minionId.id)
         minionWithId.copy(minion = minionWithId.minion.boostHealth(amount))
@@ -102,13 +94,11 @@ final case class MinionBoard(minions: List[IdObject.MinionWithId], baseMinionId:
     * @return the new board
     */
   def destroyMinion(minionId: IdObject.MinionWithId): MinionBoard = {
-    require(minions.contains(minionId))
-
     val newMinionsList = minions.map(minionWithId =>
       if (minionWithId.id == minionId.id)
         minionWithId.copy(minion = minionWithId.minion.destroy())
       else minionWithId)
-    
+
     copy(minions = newMinionsList)
   } ensuring(res => res.minions.length == minions.length)
 

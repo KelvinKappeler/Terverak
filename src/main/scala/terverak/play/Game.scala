@@ -17,7 +17,7 @@ import stainless.collection.*
   * @param waitingPlayer the waiting player
   */
 final case class Game(currentPlayer: Player, waitingPlayer: Player) {
-  
+
   /**
   * New turn in Terverak.
   * @return the new game
@@ -26,23 +26,23 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
     val wakeUpMinions = currentPlayer.minionBoard.wakeUpMinions()
     val newCurrentPlayer = currentPlayer.copy(minionBoard = wakeUpMinions).removeMana(currentPlayer.mana)
 
-    val damageToDeal = 
+    val damageToDeal =
       ListOps.sum(
         currentPlayer.minionBoard.minions.filter(
-          _.minion.card.attributes match {
+          _.minion.card.attributes.exists {
             case MinionCardAttributesData.Toxicity() => true
             case _ => false
           }
         ).map(_.minion.attackPoints))
-    
-    val manaToRegen = 
+
+    val manaToRegen =
       ListOps.sum(
         waitingPlayer.minionBoard.minions.map(manaMinion =>
-          manaMinion.minion.card.attributes match {
-              case MinionCardAttributesData.ManaRegen(amount) => 
-                if (manaMinion.minion.healthPoints > damageToDeal) then amount else 0
-              case _ => 0
-          }
+          manaMinion.minion.card.attributes.map {
+              case MinionCardAttributesData.ManaRegen(amount) =>
+                if (manaMinion.minion.healthPoints > damageToDeal) then amount else BigInt(0)
+              case _ => BigInt(0)
+          }.sum
         )
       )
 
@@ -197,7 +197,7 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
             minionBoard = newMinionBoard
           )
         )
-        
+
       case AddAttackPerSubtype(amount, subtype, target) =>
         val number = countMinionsWithSubtype(subtype, target) * amount
         val minionToBuff = currentPlayer.minionBoard.minions.head
@@ -235,7 +235,7 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
 
       case DrawCard(amount) =>
         copy(currentPlayer = currentPlayer.drawCards(amount))
-      
+
       case DrawCardPerSubtype(amount, subtype, target) =>
         activateEffect(DrawCard(countMinionsWithSubtype(subtype, target) * amount), None)
 
@@ -244,7 +244,7 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
 
       case AddManaPerSubtype(amount: Int, subtype: CardSubtype, target: BoardSelectionForCardEffect) =>
         activateEffect(AddMana(countMinionsWithSubtype(subtype, target) * amount), None)
-        
+
       case cardEffectTarget: CardEffectWithTargetChoice =>
         selectedIdObject match {
           case None => this
@@ -254,12 +254,12 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
               case DamageTarget(amount, _, _) =>
                 damageIdObject(idObject, amount)
 
-              case DestroyMinion(_, _) => 
+              case DestroyMinion(_, _) =>
                 destroyMinion(idObject)
-              
+
               case DestroyTargetAndGiveManaForHealth(_, _) =>
                 val list = (currentPlayer.minionBoard.minions ++ waitingPlayer.minionBoard.minions).filter(_.id == idObject.id)
-            
+
                 if (list.isEmpty) {
                   this
                 } else {
@@ -271,12 +271,12 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
               case HealTarget(amount, _, _) =>
                 healIdObject(idObject, amount)
 
-              case BoostMinionAttack(amount, _, _) => 
+              case BoostMinionAttack(amount, _, _) =>
                 boostAttackOfIdObject(idObject, amount)
 
               case BoostMinionLife(amount, _, _) =>
                 boostLifeOfIdObject(idObject, amount)
-              
+
               case _ => this
             }
         }
