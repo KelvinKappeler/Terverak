@@ -26,7 +26,7 @@ final case class Player(
   minionBoard: MinionBoard,
   discardZone: DiscardZone
 ) extends IdObject {
-
+  require(mana >= 0)
   /**
     * The player takes an amount of damage.
     * @param amount the amount of damage to take.
@@ -138,7 +138,7 @@ final case class Player(
     */
   def healIdObject(idObject: IdObject, amount: BigInt): Player = {
     require(amount >= 0)
-    
+
     idObject match {
       case minion: IdObject.MinionWithId =>
         copy(
@@ -197,8 +197,6 @@ final case class Player(
     * @return
     */
   def destroyMinion(minion: IdObject.MinionWithId): Player = {
-    require(minionBoard.minions.contains(minion))
-
     copy(
       minionBoard = minionBoard.destroyMinion(minion),
     )

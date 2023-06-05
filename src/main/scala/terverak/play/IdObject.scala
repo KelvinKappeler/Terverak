@@ -18,12 +18,12 @@ trait IdObject {
 }
 
 object IdObject {
-  
+
   /**
     * The base increment for the id of an object.
     */
   val BaseIncrement: BigInt = BigInt(4)
-  
+
   /**
     * A minion on the board.
     */
