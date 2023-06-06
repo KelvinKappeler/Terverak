@@ -26,6 +26,7 @@ final case class Player(
   minionBoard: MinionBoard,
   discardZone: DiscardZone
 ) extends IdObject {
+  require(mana >= 0)
 
   /**
     * The player takes an amount of damage.
@@ -197,7 +198,7 @@ final case class Player(
     * @return
     */
   def destroyMinion(minion: IdObject.MinionWithId): Player = {
-    require(minionBoard.minions.contains(minion))
+    //require(minionBoard.minions.contains(minion))
 
     copy(
       minionBoard = minionBoard.destroyMinion(minion),

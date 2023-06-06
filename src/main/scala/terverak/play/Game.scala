@@ -29,7 +29,7 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
     val damageToDeal = 
       ListOps.sum(
         currentPlayer.minionBoard.minions.filter(
-          _.minion.card.attributes match {
+          _.minion.card.attributes.exists {
             case MinionCardAttributesData.Toxicity() => true
             case _ => false
           }
@@ -38,11 +38,11 @@ final case class Game(currentPlayer: Player, waitingPlayer: Player) {
     val manaToRegen = 
       ListOps.sum(
         waitingPlayer.minionBoard.minions.map(manaMinion =>
-          manaMinion.minion.card.attributes match {
-              case MinionCardAttributesData.ManaRegen(amount) => 
-                if (manaMinion.minion.healthPoints > damageToDeal) then amount else 0
-              case _ => 0
-          }
+          manaMinion.minion.card.attributes.map {
+              case MinionCardAttributesData.ManaRegen(amount) =>
+                if (manaMinion.minion.healthPoints > damageToDeal) then amount else BigInt(0)
+              case _ => BigInt(0)
+          }.sum
         )
       )
 
