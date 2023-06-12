@@ -65,12 +65,12 @@ object OtherCardsData {
   )
 
   val ship1: Card.MinionCard = Card.MinionCard(
-    "Ship1",
-    "Blablabla",
+    "Small ship",
+    "Fast, but not furious.",
     GameAssets.Cards.ship1,
-    99,
-    Nil,
-    Nil,
+    1,
+    List(CardEffectsDamage.DamageTarget(1, TargetTypeForCardEffect.EnemyPlayerAndMinions)),
+    List(CardEffectsMana.AddMana(1)),
     Nil,
     Nil,
     1,
