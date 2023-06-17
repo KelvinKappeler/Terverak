@@ -39,6 +39,7 @@ object CardEffectsMana {
     target: TargetTypeForCardEffect,
     filterForMinions: FilterForMinions = FilterForMinions.NoFilter()
   ) extends CardEffectWithTargetChoice {
+    
     override def toString: String =
       super.toString() + "Destroy the target, and add mana equal to its health to your mana pool"
   }

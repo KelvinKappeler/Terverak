@@ -78,7 +78,7 @@ _canonicalize_file_path() {
 
 BASE_DIR="$( dirname "$( realpath "${BASH_SOURCE[0]}" )" )"
 Z3_DIR="$BASE_DIR/z3"
-STAINLESS_JAR="$BASE_DIR/lib/stainless-dotty-standalone-0.9.7-36-gcb802ac-SNAPSHOT.jar"
+STAINLESS_JAR="$BASE_DIR/lib/stainless-dotty-standalone-0.9.8.jar"
 
 if ! [[ -r "$STAINLESS_JAR" ]]; then
     echo "Read access for the jar file $STAINLESS_JAR is required."

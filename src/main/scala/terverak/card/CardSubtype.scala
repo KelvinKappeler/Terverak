@@ -6,6 +6,10 @@
   
 package terverak.card
 
+// During the development of this project,
+// Stainless did not allow enums.
+// So we had to change the enums to this version using a trait, a case class, and an object.
+
 sealed trait CardSubtype {
   def str: String
   override def toString(): String = str

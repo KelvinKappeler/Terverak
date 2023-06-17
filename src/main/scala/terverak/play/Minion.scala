@@ -76,18 +76,6 @@ final case class Minion(card: Card.MinionCard, maxHP: BigInt, healthPoints: BigI
     copy(healthPoints = 0)
   } ensuring(res => res.healthPoints == 0)
 
-  /*
-  /**
-    * Attacks a player.
-    * @param player the player to attack.
-    * @return the new player and the new minion.
-    */
-  def attackPlayer(player: Player): (Player, Minion) = {
-    require(attackPoints > 0)
-
-    (player.takeDamage(attackPoints), copy(canAttack = false))
-  } ensuring(res => res._1.healthPoints <= player.healthPoints && res._2.canAttack == false)*/
-
   /**
     * Attacks a minion.
     * @param minion the minion to attack.
