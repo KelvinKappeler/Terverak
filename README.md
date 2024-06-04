@@ -3,7 +3,7 @@
 This repo is Bastien Jolidon and Kelvin Kappeler's Bachelor project for the IC section of EPFL entitled: _Creation of a video game in Scala, and test the properties of its model with Stainless._
 
 The project is composed of two parts:
-- The first part is the video game, playable, which you can find in the main branch. You can run the game by running sbt on the root of the project, and then typing _runGame_ in the sbt console.
+- The first part is the video game, playable, which you can find in the main branch. You can test the game by clicking on this [link](https://kelvinkappeler.github.io/Terverak/).
 - The second part is in the Stainless branch and is the code that allowed us to demonstrate the properties of the game model via Stainless. You can, on Windows, run the following command to analyze the game yourself with Stainless :
 
 ```
