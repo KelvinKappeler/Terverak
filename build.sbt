@@ -15,9 +15,9 @@ lazy val mygame =
     .settings( // Normal SBT settings
       name         := "terverak",
       version      := "0.0.1",
-      scalaVersion := "3.2.0",
+      scalaVersion := "3.3.3",
       scalacOptions ++= Seq("-Ysafe-init"),
-      organization := "epfl",
+      organization := "terverak",
       libraryDependencies ++= Seq(
         "org.scalameta" %%% "munit" % "0.7.29" % Test,
       ),
